@@ -11,6 +11,6 @@ src/<br />
 ├── interpolation/<br />
 │   └── ... // berisi berbagai class seperti penghitung interpolasi linier, interpolasi bicubic spline, dsb.<br />
 └── utils/<br />
-   └── InputFunctions.java // berisi fungsi-fungsi untuk input (termasuk validasi input, dsb.)<br />
-   └── OutputFunctions.java // berisi fungsi-fungsi untuk output<br />
+   └── InputFunctions.java // berisi metode-metode untuk input (termasuk validasi input, dsb.)<br />
+   └── OutputFunctions.java // berisi metode-metode untuk output<br />
 </pre>
