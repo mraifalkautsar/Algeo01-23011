@@ -2,7 +2,7 @@
 
 Struktur Program
 
-src/
+src/ \n
 ├── Main.java
 ├── matrix/
 │   └── ... // berisi berbagai class seperti primitif matriks, eliminasi gauss, penghitung matriks balikan, dsb.
