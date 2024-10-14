@@ -77,7 +77,10 @@ public class GaussJordan {
                         if (matrix[i][j] < 0) {
                             System.out.print(" + ");
                         } else {System.out.print(" - ");}
-                        System.out.print(Math.abs(matrix[i][j])+"X"+(j+1));
+                        if (Math.abs(matrix[i][j]) == 1) {  // handling output solusi parameter jika koefisiennya 1
+                            System.out.print("X"+(j+1));
+                        } else {System.out.print(Math.abs(matrix[i][j])+"X"+(j+1));}
+                        
                     }
                 }
                 found = false;
