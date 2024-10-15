@@ -51,12 +51,10 @@ public class Matrix {
     }
 
     // Menyalin suatu matriks ke matriks lain
-    public void copyMatrix(Matrix mOut) {
-        mOut.rowEff = this.rowEff;
-        mOut.colEff = this.colEff;
+    public void copyMatrix(Matrix mIn) {
         for (int i = 0; i < rowEff; i++) {
             for (int j = 0; j < colEff; j++) {
-                mOut.data[i][j] = this.data[i][j];
+                this.data[i][j] = mIn.data[i][j];
             }
         }
     }
