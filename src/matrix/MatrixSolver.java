@@ -1,5 +1,8 @@
 package matrix;
 
+import matrix.Matrix.Fraction;
+
+
 public class MatrixSolver {
     private Matrix matrix; 
 
@@ -87,5 +90,105 @@ public class MatrixSolver {
         }
     
         return determinant;
+    }
+
+    // Fungsi untuk menghitung adjoin matriks
+    public Fraction[][] adjoin() {
+        int n = matrix.rowEff;
+        Fraction[][] adjugateMatrix = new Fraction[n][n];
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                double[][] minor = minor(matrix.data, i, j);
+                double det = determinantByCofactorExpansion(minor);
+                adjugateMatrix[j][i] = matrix.new Fraction((int) Math.pow(-1, i + j) * (int) det, 1);
+            }
+        }
+
+        return adjugateMatrix;
+    }
+    
+    // Fungsi untuk menghitung balikan matriks
+    public Fraction[][] inverseAdjoin() {
+        double det = determinantByCofactorExpansion(matrix.data);
+        if (det == 0) throw new IllegalArgumentException("Matrix tidak dapat dibalik, determinan = 0.");
+        Fraction[][] adjoinMatrix = adjoin();
+        Fraction determinantFraction = matrix.new Fraction((int) det, 1); 
+        int n = matrix.data.length;
+        Fraction[][] inverseMatrix = new Fraction[n][n];
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                inverseMatrix[i][j] = adjoinMatrix[i][j].divide(determinantFraction);
+            }
+        }
+        return inverseMatrix;
+    }
+
+    // Fungsi untuk menghitung invers matriks menggunakan metode Gauss-Jordan
+    public Fraction[][] inverseGaussJordan() {
+        int n = matrix.rowEff;
+
+        // Mmenambah matriks identitas di sebelah kanan
+        Fraction[][] augmentedMatrix = new Fraction[n][2 * n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                augmentedMatrix[i][j] = matrix.new Fraction((int) matrix.data[i][j], 1); // Salin matriks asli
+            }
+            for (int j = n; j < 2 * n; j++) {
+                augmentedMatrix[i][j] = (i == j - n) ? matrix.new Fraction(1, 1) : matrix.new Fraction(0, 1); // Matriks identitas
+            }
+        }
+
+        // Melakukan eliminasi Gauss-Jordan
+        for (int i = 0; i < n; i++) {
+            if (augmentedMatrix[i][i].toDouble() == 0) {
+                boolean swapped = false;
+                for (int k = i + 1; k < n; k++) {
+                    if (augmentedMatrix[k][i].toDouble() != 0) {
+                        swapRows(augmentedMatrix, i, k);
+                        swapped = true;
+                        break;
+                    }
+                }
+                if (!swapped) {
+                    throw new ArithmeticException("Matrix tidak memiliki invers.");
+                }
+            }
+
+            // Normalisasi baris pivot (buat elemen diagonal menjadi 1)
+            Fraction pivot = augmentedMatrix[i][i];
+            for (int j = 0; j < 2 * n; j++) {
+                augmentedMatrix[i][j] = augmentedMatrix[i][j].divide(pivot);
+            }
+
+            // Eliminasi elemen di atas dan di bawah pivot
+            for (int k = 0; k < n; k++) {
+                if (k != i) {
+                    Fraction factor = augmentedMatrix[k][i];
+                    for (int j = 0; j < 2 * n; j++) {
+                        augmentedMatrix[k][j] = augmentedMatrix[k][j].subtract(factor.multiply(augmentedMatrix[i][j]));
+                    }
+                }
+            }
+        }
+
+        // Ekstrak matriks invers dari matriks augmented
+        Fraction[][] inverseMatrix = new Fraction[n][n];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                inverseMatrix[i][j] = augmentedMatrix[i][j + n];
+            }
+        }
+        return inverseMatrix;
+    }
+
+    // Fungsi untuk menukar dua baris dalam matriks bentuk Fraction
+    private void swapRows(Fraction[][] matrix, int row1, int row2) {
+        for (int j = 0; j < matrix[row1].length; j++) {
+            Fraction temp = matrix[row1][j];
+            matrix[row1][j] = matrix[row2][j];
+            matrix[row2][j] = temp;
+        }
     }
 }
