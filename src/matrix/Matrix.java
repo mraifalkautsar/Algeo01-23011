@@ -351,6 +351,18 @@ public class Matrix {
         public Fraction divide(Fraction other) {
             return new Fraction(this.numerator * other.denominator, this.denominator * other.numerator);
         }
+
+        // Fungsi untuk mengalikan Fraction
+        public Fraction multiply(Fraction other) {
+            return new Fraction(this.numerator * other.numerator, this.denominator * other.denominator);
+        }
+
+        // Fungsi untuk menambahkan Fraction
+        public Fraction subtract(Fraction other) {
+            int commonDenominator = this.denominator * other.denominator;
+            int newNumerator = this.numerator * other.denominator - other.numerator * this.denominator;
+            return new Fraction(newNumerator, commonDenominator);
+        }
     
         // Menampilkan Fraction dalam bentuk string
         @Override
