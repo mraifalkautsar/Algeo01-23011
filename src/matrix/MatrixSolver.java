@@ -321,11 +321,11 @@ public class MatrixSolver {
     }
 
     // Fungsi Eliminasi gauss
-    public void gaussElimination() {
+    public double[] gaussElimination() {
         int n = matrix.rowEff;
         int m = matrix.colEff;
 
-        int i,j, k;
+        int i, j, k;
         for (i = 0; i < n; i++) {
             // mencari pivot terbesar di kolom i
             int maxRow = i;
@@ -347,8 +347,8 @@ public class MatrixSolver {
                     matrix.data[k][j] -= factor * matrix.data[i][j];
                 }
             }
-
         }
+
         // cek inkonsistensi
         boolean consistent = true;
         for (i = 0; i < n; i++) {
@@ -356,8 +356,10 @@ public class MatrixSolver {
             if (isRowZero(truncatedRow) && matrix.data[i][m - 1] != 0) {
                 consistent = false;
                 System.out.println("No Solution");
+                return null; // Return null in case there's no solution
             }
         }
+
         if (consistent) {
             // Back substitution untuk mencari solusi
             double[] solution = new double[n];
@@ -367,12 +369,10 @@ public class MatrixSolver {
                     matrix.data[k][n] -= matrix.data[k][i] * solution[i];
                 }
             }
-
-            // Mencetak solusi
-            System.out.println("Solusi SPL:");
-            for (i = 0; i < n; i++) {
-                System.out.printf("x%d = %.2f%n", i + 1, solution[i]);
-            }
+            return solution; // Return the solution array
         }
+
+        return null; // Return null if the system is inconsistent
     }
 }
+
