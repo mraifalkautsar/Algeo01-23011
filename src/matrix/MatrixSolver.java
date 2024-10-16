@@ -299,4 +299,80 @@ public class MatrixSolver {
 
         return modifiedMatrix;
     }
+
+    // Fungsi untuk memotong elemen terakhir baris
+    private double[] truncateLastCol(double[] row) {
+        double[] truncatedRow = new double[row.length - 1];
+        int i;
+        for (i = 0; i < truncatedRow.length; i++) {
+            truncatedRow[i] = row[i];
+        }
+        return truncatedRow;
+    }
+
+    // Fungsi untuk mengecek apakah elemen baris adalah nol semua
+    private boolean isRowZero(double[] row) {
+        boolean res = true;
+        int i;
+        for (i = 0; i < row.length; i++) {
+            res = res && (row[i] == 0);
+        }
+        return res;
+    }
+
+    // Fungsi Eliminasi gauss
+    public void gaussElimination() {
+        int n = matrix.rowEff;
+        int m = matrix.colEff;
+
+        int i,j, k;
+        for (i = 0; i < n; i++) {
+            // mencari pivot terbesar di kolom i
+            int maxRow = i;
+            for (k = i + 1; k < n; k++) {
+                if (Math.abs(matrix.data[k][i]) > Math.abs(matrix.data[maxRow][i])) {
+                    maxRow = k;
+                }
+            }
+
+            // menukar baris maksimum dengan baris saat ini
+            double[] temp = matrix.data[i];
+            matrix.data[i] = matrix.data[maxRow];
+            matrix.data[maxRow] = temp;
+
+            // membuat menjadi nol semua elemen dibawah pivot
+            for (k = i + 1; k < n; k++) {
+                double factor = matrix.data[k][i] / matrix.data[i][i];
+                for (j = i; j <= n; j++) {
+                    matrix.data[k][j] -= factor * matrix.data[i][j];
+                }
+            }
+
+        }
+        // cek inkonsistensi
+        boolean consistent = true;
+        for (i = 0; i < n; i++) {
+            double[] truncatedRow = truncateLastCol(matrix.data[i]);
+            if (isRowZero(truncatedRow) && matrix.data[i][m - 1] != 0) {
+                consistent = false;
+                System.out.println("No Solution");
+            }
+        }
+        if (consistent) {
+            // Back substitution untuk mencari solusi
+            double[] solution = new double[n];
+            for (i = n - 1; i >= 0; i--) {
+                solution[i] = matrix.data[i][n] / matrix.data[i][i];
+                for (k = i - 1; k >= 0; k--) {
+                    matrix.data[k][n] -= matrix.data[k][i] * solution[i];
+                }
+            }
+
+            // Mencetak solusi
+            System.out.println("Solusi SPL:");
+            for (i = 0; i < n; i++) {
+                System.out.printf("x%d = %.2f%n", i + 1, solution[i]);
+            }
+        }
+    }
 }
