@@ -1,42 +1,35 @@
 package interpolation;
 import matrix.Matrix;
+import matrix.MatrixSolver;
 
 public class PolynomialInterpolation {
 
-    public static double[] calculatePolynomialEquation(int n, double[][] tuples, double x) {
+    public static double[] calculatePolynomialEquation(int n, double[][] tuples) {
+        // Buat matriks augmented berukuran n x n + 1 (kenapa ditambah 1? untuk ruang vektor y.)
+        Matrix matrixAugmented = new Matrix(n, n + 1);
 
-        Matrix matrixAugmented = new Matrix(n, n+1);
-
+        // Isi matriks dengan nilai dari titik-titik data
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                matrixAugmented.setElement(i, j, tuples[i][0]); // dipangkatkan
+                matrixAugmented.setElement(i, j, Math.pow(tuples[i][0], j)); // Set x^j
             }
-            matrixAugmented.setElement(i, n, tuples[i][1]);
+            matrixAugmented.setElement(i, n, tuples[i][1]); // Set y value
         }
 
-        // Solve dengan eliminasi Gauss-Jordan atau Kaidah Cramer.
+        // Pecahkan matriks dengan eliminasi gauss.
+        MatrixSolver matrixToSolve = new MatrixSolver(matrixAugmented);
+        return matrixToSolve.gaussElimination();
 
-        return new double[n];
     }
 
-    public static double calculateY(double[] coefficients) {
-
+    public static double calculateY(double[] coefficients, double x) {
         int numberOfCoefficients = coefficients.length;
-        double estimatedY = coefficients[0];
+        double estimatedY = coefficients[0]; // Mulai dari suku konstan
 
         for (int i = 1; i < numberOfCoefficients; i++) {
-            estimatedY = coefficients[i]; // dipangkatkan
+            estimatedY += coefficients[i] * Math.pow(x, i); // Tambahkan suku-suku setelahnya
         }
 
         return estimatedY;
     }
-
-    // n = input()
-    // for (int i = 0; i < n; i++)
-    //      arr[i] = input()
-    //
-    // for (int i = 0; i < n; i++)
-    //      for (int j = 1; j < n + 1; j++)
-    //          output(pow(arr[i], j))
-    //      output(arr[n +1])
 }
