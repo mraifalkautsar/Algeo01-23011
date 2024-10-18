@@ -1,7 +1,8 @@
 package Algeo01.interpolation;
+
 import Algeo01.matrix.Matrix;
 import Algeo01.matrix.MatrixSolver;
-import utils.InputFunctions;
+import Algeo01.utils.InputFunctions;
 import java.io.IOException;
 
 public class BicubicSplineInterpolation {

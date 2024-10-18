@@ -8,8 +8,6 @@ import Algeo01.utils.InputFunctions;
 import Algeo01.utils.OutputFunctions;
 import java.util.Scanner;
 
-import static Algeo01.matrix.MatrixSolver.gaussElimination;
-
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -67,7 +65,7 @@ public class Main {
     public static void SistemPersamaanLinier() {
         Matrix matrixAugmented = InputFunctions.readMatrixFromInput();
 
-        double[] solution = gaussElimination(matrixAugmented);
+        double[] solution = MatrixSolver.gaussElimination(matrixAugmented);
         OutputFunctions.printCoefficients(solution, true);
     }
 
