@@ -1,4 +1,4 @@
-package matrix;
+package Algeo01.matrix;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

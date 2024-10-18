@@ -1,9 +1,8 @@
-package regression;
-import matrix.Matrix;
-import matrix.MatrixSolver;
+package Algeo01.regression;
+import Algeo01.matrix.Matrix;
+import Algeo01.matrix.MatrixSolver;
 
 // BRAINSTORM ALGORITMA
-
 // pengisian baris paling atas
 // inisialisasi matriks ukuran m+1 x m+2
 
@@ -27,47 +26,46 @@ import matrix.MatrixSolver;
 
 // IMPLEMENTASI
 public class MultipleLinearRegression {
-    public static double[] calculateEstimationEquation(double[][] tuples, int n, int m, double x) {
-        // Buat matriks augmented berukuran m+1 x m+2
-        Matrix matrixAugmented = new Matrix(m+1,  m+2);
+    public static double[] calculateRegressionEquation(double[][] data_array, int m, int n) {
+        // Buat matriks augmented berukuran n+1 x n+2
+        Matrix matrixAugmented = new Matrix(n+1,  n+2);
 
         // Pengisian baris pertama
-        matrixAugmented.setElement(0, 0, n);
-        for (int k_kanan = 0; k_kanan < m+1; k_kanan++) {
+        matrixAugmented.setElement(0, 0, m);
+        for (int k_kanan = 0; k_kanan < n+1; k_kanan++) {
             double element_sum = 0;
-            for (int i = 0; i < n; i++) {
-                element_sum += tuples[i][k_kanan];
+            for (int i = 0; i < m; i++) {
+                element_sum += data_array[i][k_kanan];
             }
             matrixAugmented.setElement(0, k_kanan+1, element_sum); // Set y value
         }
 
         // Pengisian baris-baris seterusnya
-        for (int k_bawah = 0; k_bawah < m; k_bawah++) {
+        for (int k_bawah = 0; k_bawah < n; k_bawah++) {
             double element_sum = 0;
-            for (int i = 0; i < n; i++) {
-                element_sum += tuples[i][k_bawah];
+            for (int i = 0; i < m; i++) {
+                element_sum += data_array[i][k_bawah];
             }
             matrixAugmented.setElement(k_bawah + 1, 0, element_sum);
-            for (int k_kanan = 0; k_kanan < m+1; k_kanan++) {
+            for (int k_kanan = 0; k_kanan < n+1; k_kanan++) {
                 element_sum = 0;
-                for (int i = 0; i < n; i++) {
-                    element_sum += tuples[i][k_bawah] * tuples[i][k_kanan];
+                for (int i = 0; i < m; i++) {
+                    element_sum += data_array[i][k_bawah] * data_array[i][k_kanan];
                 }
                 matrixAugmented.setElement(k_bawah+1,k_kanan+1, element_sum);
             }
         }
 
-        MatrixSolver matrixToSolve = new MatrixSolver(matrixAugmented);
-        return matrixToSolve.gaussElimination();
+        return MatrixSolver.gaussElimination(matrixAugmented);
     }
 
-    public static double calculateY(double[] coefficients) {
+    public static double calculateY(double[] coefficients, double[] x_array) {
 
-        int numberOfCoefficients = coefficients.length;
-        double estimatedY = coefficients[0];
+        double estimatedY;
 
-        for (int i = 1; i < numberOfCoefficients; i++) {
-            estimatedY = coefficients[i]; // dipangkatkan
+        estimatedY = coefficients[0];
+        for (int i = 1; i < coefficients.length; i++) {
+            estimatedY = coefficients[i] * x_array[i-1];
         }
 
         return estimatedY;

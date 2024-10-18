@@ -1,6 +1,6 @@
-package interpolation;
-import matrix.Matrix;
-import matrix.MatrixSolver;
+package Algeo01.interpolation;
+import Algeo01.matrix.Matrix;
+import Algeo01.matrix.MatrixSolver;
 
 public class PolynomialInterpolation {
 

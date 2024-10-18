@@ -1,4 +1,4 @@
-package matrix;
+package Algeo01.matrix;
 
 public class MatrixSolver {
     private Matrix matrix; 
@@ -106,7 +106,7 @@ public class MatrixSolver {
     }
     
     // Fungsi untuk menghitung balikan matriks
-    public Matrix inverseAdjoin() {
+    public static Matrix inverseAdjoin() {
         double det = determinantByCofactorExpansion(matrix.data);
         if (det == 0) throw new IllegalArgumentException("Matrix tidak dapat dibalik, determinan = 0.");
         Matrix adjoinMatrix = adjoin();
