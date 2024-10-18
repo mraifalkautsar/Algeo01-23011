@@ -1,39 +1,56 @@
 package utils;
 
+import javafx.scene.control.TextArea;
+import matrix.Matrix;
+
 public class OutputFunctions {
-    // Metode untuk mencetak sebuah matriks
-    public static void printMatrix(double[][] matrix) {
-        System.out.println("Matrix:");
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                System.out.print(matrix[i][j] + "\t");
+
+    // Display matrix in output terminal (TextArea)
+    public static void displayMatrix(Matrix matrix, TextArea outputTerminal) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < matrix.rowEff; i++) {
+            for (int j = 0; j < matrix.colEff; j++) {
+                sb.append(matrix.data[i][j]);
+                if (j < matrix.colEff - 1) {
+                    sb.append(" ");
+                }
             }
-            System.out.println();
+            sb.append("\n");
         }
+        outputTerminal.appendText(sb.toString());
     }
 
-    // Metode untuk mencetak sebuah array
-    public static void printArray(double[] array, String arrayName) {
-        System.out.println(arrayName + ":");
+    // Print an array to the output terminal (TextArea)
+    public static void printArray(double[] array, String arrayName, TextArea outputTerminal) {
+        StringBuilder sb = new StringBuilder(arrayName + ":\n");
         for (int i = 0; i < array.length; i++) {
-            System.out.println("Element [" + (i + 1) + "] = " + array[i]);
+            sb.append("Element [").append(i + 1).append("] = ").append(array[i]).append("\n");
         }
+        outputTerminal.appendText(sb.toString());
     }
 
-    // Metode untuk mencetak solusi persamaan linier
-    public static void printSolution(double[] solution) {
+    // Print solution of a system of linear equations to the output terminal (TextArea)
+    public static void printCoefficients(double[] solution, boolean alpha, TextArea outputTerminal) {
         if (solution == null) {
-            System.out.println("No solution found.");
+            outputTerminal.appendText("No solution found.\n");
         } else {
-            System.out.println("Solution:");
-            for (int i = 0; i < solution.length; i++) {
-                System.out.println("x" + (i + 1) + " = " + solution[i]);
+            StringBuilder sb = new StringBuilder("Solution:\n");
+            if (alpha) {
+                for (int i = 0; i < solution.length; i++) {
+                    sb.append("a").append(i + 1).append(" = ").append(solution[i]).append("\n");
+                }
+            } else {
+                for (int i = 0; i < solution.length; i++) {
+                    sb.append("b").append(i + 1).append(" = ").append(solution[i]).append("\n");
+                }
             }
+            outputTerminal.appendText(sb.toString());
         }
     }
 
-    // Metode untuk mengetak persamaan regresi
-    public static void printRegressionEquation(double[] regression) {
-        System.out.println("y = " + regression[0] + " * x + " + regression[1]);
+    // Print regression equation to the output terminal (TextArea)
+    public static void printRegressionEquation(double[] regression, TextArea outputTerminal) {
+        String result = "y = " + regression[0] + " * x + " + regression[1] + "\n";
+        outputTerminal.appendText(result);
     }
 }

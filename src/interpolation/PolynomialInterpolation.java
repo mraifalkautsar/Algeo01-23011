@@ -17,8 +17,7 @@ public class PolynomialInterpolation {
         }
 
         // Pecahkan matriks dengan eliminasi gauss.
-        MatrixSolver matrixToSolve = new MatrixSolver(matrixAugmented);
-        return matrixToSolve.gaussElimination();
+        return MatrixSolver.gaussElimination(matrixAugmented);
 
     }
 

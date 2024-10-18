@@ -1,22 +1,15 @@
 package matrix;
 
 public class MatrixSolver {
-    private Matrix matrix; 
-
-    // Konstruktor objek MatrixSolver
-    public MatrixSolver(Matrix matrix) {
-        this.matrix = matrix;
-    }
-
     // Determinan matriks dengan metode eksansi kofaktor
-    public double determinant() {
+    public static double determinant(Matrix matrix) {
         if (!matrix.isSquare()) {
             throw new IllegalArgumentException("Matriks harus berbentuk persegi");
         }
         return determinantByCofactorExpansion(matrix.data);
     }
     
-    private double determinantByCofactorExpansion(double[][] matrix) {
+    private static double determinantByCofactorExpansion(double[][] matrix) {
         int n = matrix.length;
         if (n == 1) return matrix[0][0];
         if (n == 2) return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
@@ -29,7 +22,7 @@ public class MatrixSolver {
         return det;
     }
 
-    private double[][] minor(double[][] matrix, int excludingRow, int excludingCol) {
+    private static double[][] minor(double[][] matrix, int excludingRow, int excludingCol) {
         int size = matrix.length;
         double[][] result = new double[size - 1][size - 1];
         for (int i = 0, r = 0; i < size; i++) {
@@ -45,7 +38,7 @@ public class MatrixSolver {
     }
 
     // Determinan matriks dengan metode reduksi baris
-    public double determinantByRowReduction() {
+    public static double determinantByRowReduction(Matrix matrix) {
         if (!matrix.isSquare()) {
             throw new IllegalArgumentException("Matriks harus berbentuk persegi");
         }
@@ -90,7 +83,7 @@ public class MatrixSolver {
     }
 
     // Fungsi untuk menghitung adjoin matriks
-    public Matrix adjoin() {
+    public static Matrix adjoin(Matrix matrix) {
         int n = matrix.rowEff;
         Matrix adjugateMatrix = new Matrix(n, n);
 
@@ -106,10 +99,10 @@ public class MatrixSolver {
     }
     
     // Fungsi untuk menghitung balikan matriks
-    public Matrix inverseAdjoin() {
+    public static Matrix inverseAdjoin(Matrix matrix) {
         double det = determinantByCofactorExpansion(matrix.data);
         if (det == 0) throw new IllegalArgumentException("Matrix tidak dapat dibalik, determinan = 0.");
-        Matrix adjoinMatrix = adjoin();
+        Matrix adjoinMatrix = adjoin(matrix);
         int n = matrix.data.length;
         Matrix inverseMatrix = new Matrix(n, n);
 
@@ -122,7 +115,7 @@ public class MatrixSolver {
     }
 
     // Fungsi untuk menghitung invers matriks menggunakan metode Gauss-Jordan
-    public Matrix inverseGaussJordan() {
+    public static Matrix inverseGaussJordan(Matrix matrix) {
         int n = matrix.rowEff;
 
         // Mmenambah matriks identitas di sebelah kanan
@@ -180,7 +173,7 @@ public class MatrixSolver {
     }
 
     // Fungsi untuk menyelesaikan SPL dengan matriks balikan menggunakan matriks augmented
-    public double[] solveUsingInverse() {
+    public static double[] solveUsingInverse(Matrix matrix) {
         int rows = matrix.rowEff;
         int cols = matrix.colEff;
 
@@ -206,8 +199,7 @@ public class MatrixSolver {
         }
 
         // Menghitung invers matriks A
-        MatrixSolver solverA = new MatrixSolver(A);
-        Matrix inverseMatrix = solverA.inverseAdjoin();
+        Matrix inverseMatrix = inverseAdjoin(matrix);
 
         // Mengalikan matriks balikan dengan vektor B untuk mendapatkan solusi
         double[] solution = multiplyMatrixWithVector(inverseMatrix, B);
@@ -217,11 +209,11 @@ public class MatrixSolver {
 
 
     // Fungsi untuk mengisi matriks
-    public void fillMatrix(Matrix values) {
+    public static void fillMatrix(Matrix matrix, double[][] values) {
         // Mengisi matriks dengan nilai dari array 2D
         for (int i = 0; i < matrix.rowEff; i++) {
             for (int j = 0; j < matrix.colEff; j++) {
-                matrix.data[i][j] = values.data[i][j];
+                matrix.data[i][j] = values[i][j];
             }
         }
     }
@@ -241,7 +233,7 @@ public class MatrixSolver {
     }
 
     // Fungsi untuk menyelesaikan SPL dengan kaidah Cremer menggunakan matriks augmented (khusus untuk SPL dengan n peubah dan n persamaan)
-    public double[] solveUsingCramer() {
+    public static double[] solveUsingCramer(Matrix matrix) {
         int rows = matrix.rowEff;
         int cols = matrix.colEff;
 
@@ -257,8 +249,7 @@ public class MatrixSolver {
         }
 
         // Menghitung determinan A
-        MatrixSolver solverA = new MatrixSolver(A);
-        double detA = solverA.determinantByRowReduction();
+        double detA = determinantByRowReduction(matrix);
 
         if (detA == 0) {
             throw new IllegalArgumentException("SPL tidak memiliki solusi unik karena determinan matriks A = 0.");
@@ -269,8 +260,7 @@ public class MatrixSolver {
         // Menghitung solusi menggunakan kaidah Cramer
         for (int i = 0; i < rows; i++) {
             Matrix Ai = substituteColumn(A, B, i);
-            MatrixSolver solverAi = new MatrixSolver(Ai);
-            double detAi = solverAi.determinantByRowReduction();
+            double detAi = determinantByRowReduction(Ai);
             solutions[i] = Math.round((detAi / detA) * 10000.0) / 10000.0;
 
             // Ubah -0 menjadi 0
@@ -283,7 +273,7 @@ public class MatrixSolver {
     }
 
     // Fungsi untuk mengganti kolom pada matriks A dengan vektor B
-    private Matrix substituteColumn(Matrix A, double[] B, int columnIndex) {
+    private static Matrix substituteColumn(Matrix A, double[] B, int columnIndex) {
         int n = A.data.length;
         Matrix modifiedMatrix = new Matrix(n, A.data[0].length);
 
@@ -301,7 +291,7 @@ public class MatrixSolver {
     }
 
     // Fungsi untuk memotong elemen terakhir baris
-    private double[] truncateLastCol(double[] row) {
+    private static double[] truncateLastCol(double[] row) {
         double[] truncatedRow = new double[row.length - 1];
         int i;
         for (i = 0; i < truncatedRow.length; i++) {
@@ -311,7 +301,7 @@ public class MatrixSolver {
     }
 
     // Fungsi untuk mengecek apakah elemen baris adalah nol semua
-    private boolean isRowZero(double[] row) {
+    private static boolean isRowZero(double[] row) {
         boolean res = true;
         int i;
         for (i = 0; i < row.length; i++) {
@@ -321,7 +311,7 @@ public class MatrixSolver {
     }
 
     // Fungsi Eliminasi gauss
-    public double[] gaussElimination() {
+    public static double[] gaussElimination(Matrix matrix) {
         int n = matrix.rowEff;
         int m = matrix.colEff;
 
@@ -356,7 +346,7 @@ public class MatrixSolver {
             if (isRowZero(truncatedRow) && matrix.data[i][m - 1] != 0) {
                 consistent = false;
                 System.out.println("No Solution");
-                return null; // Return null in case there's no solution
+                return null; // Kembalikan null jika tidak ada solusi
             }
         }
 
@@ -376,7 +366,7 @@ public class MatrixSolver {
     }
 
     // Fungsi Eliminasi gauss jordan
-    public void gaussJordanElimination() { 
+    public static void gaussJordanElimination(Matrix matrix) {
 
         int row = matrix.data.length;
         int col = matrix.data[0].length;
