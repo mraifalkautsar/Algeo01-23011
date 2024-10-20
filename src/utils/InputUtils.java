@@ -1,6 +1,6 @@
-package Algeo01.utils;
+package utils;
 
-import Algeo01.matrix.Matrix;
+import matrix.Matrix;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class InputFunctions {
+public class InputUtils {
     private static Scanner scanner = new Scanner(System.in);
 
     public static Matrix readMatrixFromInput() {

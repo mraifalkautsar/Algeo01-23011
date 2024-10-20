@@ -1,4 +1,4 @@
-package Algeo01.matrix;
+package matrix;
 
 public class MatrixUtils {
 }

@@ -1,8 +1,8 @@
-package Algeo01.utils;
+package utils;
 
-import Algeo01.matrix.Matrix;
+import matrix.Matrix;
 
-public class OutputFunctions {
+public class OutputUtils {
 
     // Menampilkan matriks ke layar
     public static void displayMatrix(Matrix matrix) {

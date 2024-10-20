@@ -1,8 +1,8 @@
-package Algeo01.interpolation;
+package interpolation;
 
-import Algeo01.matrix.Matrix;
-import Algeo01.matrix.MatrixSolver;
-import Algeo01.utils.InputFunctions;
+import matrix.Matrix;
+import matrix.MatrixSolver;
+import utils.InputUtils;
 import java.io.IOException;
 
 public class BicubicSplineInterpolation {
@@ -11,7 +11,7 @@ public class BicubicSplineInterpolation {
         Matrix matrixX = new Matrix(16, 16);
         // membaca file matrix X
         try {
-            matrixX = InputFunctions.readMatrixFromFile("interpolation/MatrixX.txt");
+            matrixX = InputUtils.readMatrixFromFile("interpolation/MatrixX.txt");
             // btw matrix X adalah matrix konstan
         } catch (IOException err){
             System.out.println(err);

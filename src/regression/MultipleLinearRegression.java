@@ -1,7 +1,7 @@
-package Algeo01.regression;
+package regression;
 
-import Algeo01.matrix.Matrix;
-import Algeo01.matrix.MatrixSolver;
+import matrix.Matrix;
+import matrix.MatrixSolver;
 
 // BRAINSTORM ALGORITMA
 // pengisian baris paling atas

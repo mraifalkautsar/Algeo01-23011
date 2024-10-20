@@ -1,4 +1,4 @@
-package Algeo01.regression;
+package regression;
 
 public class RegressionCalculator {
 
