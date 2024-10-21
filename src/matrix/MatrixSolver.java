@@ -1,12 +1,20 @@
 package matrix;
 
 public class MatrixSolver {
+    private static final double epsilon = 1e-9; // Toleransi untuk angka yang sangat kecil
+
     // Determinan matriks dengan metode eksansi kofaktor
     public static double determinant(Matrix matrix) {
         if (!matrix.isSquare()) {
             throw new IllegalArgumentException("Matriks harus berbentuk persegi");
         }
-        return determinantByCofactorExpansion(matrix.data);
+        double det = determinantByCofactorExpansion(matrix.data);
+    
+        // Mengatur toleransi numerik untuk mendeteksi nilai mendekati nol  // Toleransi untuk angka yang sangat kecil
+        if (Math.abs(det) < epsilon) {
+            return 0;
+        }
+        return det;
     }
     
     private static double determinantByCofactorExpansion(double[][] matrix) {
@@ -116,7 +124,13 @@ public class MatrixSolver {
 
     // Fungsi untuk menghitung invers matriks menggunakan metode Gauss-Jordan
     public static Matrix inverseGaussJordan(Matrix matrix) {
-        int n = matrix.rowEff;
+        int n = matrix.rowEff;  
+
+        // cek apakah matriks memiliki determinan
+        double determinant = determinant(matrix);  // Tambahkan metode ini untuk cek determinan
+        if (determinant == 0) {
+            throw new ArithmeticException("Matrix tidak memiliki invers (singular).");
+        }
 
         // Mmenambah matriks identitas di sebelah kanan
         Matrix augmentedMatrix = new Matrix(n, 2*n);
@@ -157,6 +171,9 @@ public class MatrixSolver {
                     double factor = augmentedMatrix.data[k][i];
                     for (int j = 0; j < 2 * n; j++) {
                         augmentedMatrix.data[k][j] -= factor * augmentedMatrix.data[i][j];
+                        if (Math.abs(augmentedMatrix.data[k][j]) < epsilon) {
+                            augmentedMatrix.data[k][j] = 0;
+                        }
                     }
                 }
             }
@@ -166,7 +183,7 @@ public class MatrixSolver {
         Matrix inverseMatrix = new Matrix(n, n);
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                inverseMatrix.data[i][j] = Math.round(augmentedMatrix.data[i][j + n] * 10000.0) / 10000.0;
+                inverseMatrix.data[i][j] = augmentedMatrix.data[i][j + n];
             }
         }
         return inverseMatrix;

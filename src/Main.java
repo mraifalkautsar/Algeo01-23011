@@ -128,9 +128,9 @@ public class Main {
 
         double determinan = MatrixSolver.determinant(matrix);
         System.out.println("Determinan: " + determinan);
-    }
+        }
 
-    public static void MatriksBalikan() {
+        public static void MatriksBalikan() {
         Matrix matrix;
         System.out.println("Input dari keyboard atau file?");
         System.out.println("1. Keyboard");
@@ -140,28 +140,32 @@ public class Main {
             int choice = InputUtils.getInt("Masukkan pilihanmu: ");
 
             if ((choice <= 0) || (choice > 2)) {
-                System.out.println("Masukan salah.");
+            System.out.println("Masukan salah.");
             }
             else if (choice == 1) {
-                matrix = InputUtils.readMatrixFromInput();
-                break;
+            matrix = InputUtils.readMatrixFromInput();
+            break;
             }
             else {
-                try {
-                    matrix = InputUtils.readMatrixFromFile("interpolation/MatrixX.txt");
-                } catch (IOException e) {
-                    System.out.println("Error membaca matriks dari file: " + e.getMessage());
-                    return;
-                }
-                break;
+            try {
+                matrix = InputUtils.readMatrixFromFile("interpolation/MatrixX.txt");
+            } catch (IOException e) {
+                System.out.println("Error membaca matriks dari file: " + e.getMessage());
+                return;
+            }
+            break;
             }
         }
 
-        Matrix matrixBalikan = MatrixSolver.inverseGaussJordan(matrix);
-        OutputUtils.displayMatrix(matrixBalikan);
-    }
+        try {
+            Matrix matrixBalikan = MatrixSolver.inverseGaussJordan(matrix);
+            OutputUtils.displayMatrix(matrixBalikan);
+        } catch (Exception e) {
+            System.out.println("Error menghitung matriks balikan: " + e.getMessage());
+        }
+        }
 
-    public static void InterpolasiPolinom() {
+        public static void InterpolasiPolinom() {
 
         System.out.println("Input dari keyboard atau file?");
         System.out.println("1. Keyboard");
