@@ -264,4 +264,7 @@ public class InputUtils {
 
         return designMatrix; // Kembalikan matriks desain yang telah dibangun
     }
+
+    public static String getString(String s) {
+    }
 }

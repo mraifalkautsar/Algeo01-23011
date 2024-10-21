@@ -4,8 +4,11 @@ import matrix.MatrixSolver;
 import regression.MultipleLinearRegression;
 import utils.InputUtils;
 import utils.OutputUtils;
-
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 // MAIN MENU UNTUK PROGRAM
@@ -244,10 +247,9 @@ public class Main {
         while (true) {
             int choice = InputUtils.getInt("Masukkan pilihanmu: ");
 
-            if ((choice <= 0) || (choice > 2)) {
+            if (choice <= 0 || choice > 2) {
                 System.out.println("Masukan salah.");
-            }
-            else if (choice == 1) {
+            } else if (choice == 1) {
                 int n = InputUtils.getInt("Masukkan jumlah data: ");
                 double[][] data_array = InputUtils.getXYdata(n, "Masukkan titik-titik data: ");
                 double[] solution = PolynomialInterpolation.calculatePolynomialEquation(n, data_array);
@@ -258,20 +260,66 @@ public class Main {
 
                 System.out.print("Nilai y hasil taksiran: " + estimation);
                 break;
-            }
-            else {
+            } else if (choice == 2) {
+                // file input
+                try {
+                    String filename = InputUtils.getString("Masukkan nama file: ");
+                    File file = new File(filename);
+                    Scanner fileScanner = new Scanner(file);
 
+                    // baca titik-titik data dari file
+                    List<double[]> dataList = new ArrayList<>();
+                    double xToEstimate = 0;
+
+                    while (fileScanner.hasNextLine()) {
+                        String line = fileScanner.nextLine().trim();
+                        String[] values = line.split("\\s+");
+
+                        if (values.length == 2) {
+                            // melakukan parsing pada titik-titik data
+                            double x = Double.parseDouble(values[0]);
+                            double y = Double.parseDouble(values[1]);
+                            dataList.add(new double[]{x, y});
+                        } else if (values.length == 1) {
+                            // melakukan parsing untuk x yang ingin diperkirakan
+                            xToEstimate = Double.parseDouble(values[0]);
+                        }
+                    }
+
+                    fileScanner.close();
+
+                    // convert list ke array untuk interpolasi
+                    int n = dataList.size();
+                    double[][] data_array = new double[n][2];
+                    for (int i = 0; i < n; i++) {
+                        data_array[i] = dataList.get(i);
+                    }
+
+                    // hitung solusi
+                    double[] solution = PolynomialInterpolation.calculatePolynomialEquation(n, data_array);
+                    OutputUtils.printCoefficients(solution, true);
+
+                    // melakukan estimasi
+                    double estimation = PolynomialInterpolation.calculateY(solution, xToEstimate);
+                    System.out.println("Nilai y hasil taksiran: " + estimation);
+
+                } catch (FileNotFoundException e) {
+                    System.out.println("File tidak ditemukan. Coba lagi.");
+                } catch (Exception e) {
+                    System.out.println("Terjadi kesalahan saat membaca file.");
+                    e.printStackTrace();
+                }
+                break;
             }
         }
-
     }
+
 
     public static void InterpolasiBicubicSpline() {
 
     }
 
     public static void RegresiLinier() {
-
         System.out.println("Input dari keyboard atau file?");
         System.out.println("1. Keyboard");
         System.out.println("2. File");
