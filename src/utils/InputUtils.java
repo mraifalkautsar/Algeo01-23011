@@ -123,4 +123,145 @@ public class InputUtils {
         }
         return array;
     }
+
+    public static double[][] readAugmentedMatrixFromKeyboard(int n, int m) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            double[][] augmentedMatrix = new double[m][n + 1]; // n peubah + 1 untuk yi
+
+            System.out.println("Masukkan nilai-nilai x1, x2, ..., xn dan yi (satu baris untuk setiap sampel):");
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j <= n; j++) {
+                    augmentedMatrix[i][j] = scanner.nextDouble();
+                }
+            }
+
+            return augmentedMatrix; // Kembalikan matriks augmented yang dibaca
+        }
+    }
+
+    public static double[][] readAugmentedMatrixFromFile(String filePath, int n) {
+        double[][] augmentedMatrix = null;
+        
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int m = 0;
+    
+            // Hitung jumlah baris untuk menentukan ukuran matriks
+            while ((line = br.readLine()) != null) {
+                m++;
+            }
+    
+            augmentedMatrix = new double[m][n + 1]; // n peubah + 1 untuk yi
+            
+            // Reset BufferedReader untuk membaca ulang file
+            br.close(); // Menutup BufferedReader setelah menghitung baris
+    
+            // Membaca file lagi untuk mendapatkan data
+            try (BufferedReader br2 = new BufferedReader(new FileReader(filePath))) {
+                int rowIndex = 0;
+    
+                while ((line = br2.readLine()) != null) {
+                    String[] values = line.trim().split(" "); // Pisahkan berdasarkan spasi
+                    for (int j = 0; j <= n; j++) {
+                        augmentedMatrix[rowIndex][j] = Double.parseDouble(values[j]);
+                    }
+                    rowIndex++;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+        return augmentedMatrix; // Kembalikan matriks augmented yang dibaca
+    }
+    
+    public static double[][] readMatrixFromKeyboard() {
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.print("Masukkan ukuran matriks (n x n): ");
+            int n = scanner.nextInt();
+            double[][] matrix = new double[n][n];
+   
+            System.out.println("Masukkan elemen matriks (pisahkan dengan spasi): ");
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    matrix[i][j] = scanner.nextDouble();
+                }
+            }
+            
+            return matrix;
+        }
+    }
+
+    public static double[][] readMatrixFromFile2(String filePath)  {
+        double[][] matrix = null;
+    
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int n = 0;
+    
+            // Hitung jumlah baris untuk menentukan ukuran matriks
+            while ((line = br.readLine()) != null) {
+                n++;
+            }
+    
+            matrix = new double[n][n]; // Matriks n x n
+    
+            // Reset BufferedReader untuk membaca ulang file
+            br.close();
+            
+            try (BufferedReader br2 = new BufferedReader(new FileReader(filePath))) {
+                int rowIndex = 0;
+    
+                while ((line = br2.readLine()) != null) {
+                    String[] values = line.trim().split(" "); // Pisahkan berdasarkan spasi
+                    for (int j = 0; j < n; j++) {
+                        matrix[rowIndex][j] = Double.parseDouble(values[j]);
+                    }
+                    rowIndex++;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    
+        return matrix; // Kembalikan matriks yang dibaca
+    }    
+
+    public static double[][] readAugmentedMatrix(double[][] augmentedMatrix) {
+        int n = augmentedMatrix[0].length - 1; // Jumlah peubah
+        int m = augmentedMatrix.length; // Jumlah observasi
+
+        // Periksa apakah jumlah kolom sesuai dengan struktur yang diharapkan
+        if (n < 1) {
+            throw new IllegalArgumentException("Matriks tidak sesuai dengan struktur yang diharapkan.");
+        }
+
+        double[][] designMatrix = new double[m][1 + n * 2 + n * (n - 1)];
+
+        for (int i = 0; i < m; i++) {
+            int columnIndex = 0;
+
+            // Kolom 1: Konstanta
+            designMatrix[i][columnIndex++] = 1.0;
+
+            // Kolom 2 - N+1: Variabel linier (u1, u2, ..., un)
+            for (int j = 0; j < n; j++) {
+                designMatrix[i][columnIndex++] = augmentedMatrix[i][j];
+            }
+
+            // Kolom N+2 - 2N+1: Variabel kuadrat (u1^2, u2^2, ..., un^2)
+            for (int j = 0; j < n; j++) {
+                designMatrix[i][columnIndex++] = augmentedMatrix[i][j] * augmentedMatrix[i][j];
+            }
+
+            // Kolom berikutnya: Variabel interaksi (u1*u2, u1*u3, ..., un*un)
+            for (int j = 0; j < n; j++) {
+                for (int k = j + 1; k < n; k++) {
+                    designMatrix[i][columnIndex++] = augmentedMatrix[i][j] * augmentedMatrix[i][k];
+                }
+            }
+        }
+
+        return designMatrix; // Kembalikan matriks desain yang telah dibangun
+    }
 }
