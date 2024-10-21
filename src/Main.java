@@ -8,7 +8,7 @@ import utils.OutputUtils;
 import java.io.IOException;
 import java.util.Scanner;
 
-// File main menerapkan prinsip "clean main, clean life"
+// MAIN MENU UNTUK PROGRAM
 
 public class Main {
     public static void main(String[] args) {
@@ -65,6 +65,8 @@ public class Main {
         }
     }
 
+    // FUNGSI-FUNGSI UNTUK TIAP PILIHAN
+
     public static void SistemPersamaanLinier() {
         System.out.println("Input dari keyboard atau file?");
         System.out.println("1. Keyboard");
@@ -93,7 +95,37 @@ public class Main {
             }
         }
 
-        double[] solution = MatrixSolver.gaussElimination(matrixAugmented);
+        System.out.println("Metode yang ingin digunakan?");
+        System.out.println("1. Eliminasi Gauss");
+        System.out.println("2. Eliminasi Gauss-Jordan");
+        System.out.println("3. Invers Matriks");
+        System.out.println("4. Cramer");
+
+        double[] solution;
+
+        while (true) {
+            int choice = InputUtils.getInt("Masukkan pilihanmu: ");
+
+            if ((choice <= 0) || (choice > 4)) {
+                System.out.println("Masukan salah.");
+            }
+            else if (choice == 1) {
+                solution = MatrixSolver.gaussElimination(matrixAugmented);
+                break;
+            }
+            else if (choice == 2) {
+                solution = MatrixSolver.gaussJordanElimination(matrixAugmented);
+                break;
+            }
+            else if (choice == 3) {
+                solution = MatrixSolver.solveUsingInverse(matrixAugmented);
+                break;
+            }
+            else {
+                solution = MatrixSolver.solveUsingCramer(matrixAugmented);
+                break;
+            }
+        }
         OutputUtils.printCoefficients(solution, true);
     }
 

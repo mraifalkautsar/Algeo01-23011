@@ -332,6 +332,7 @@ public class MatrixSolver {
 
             // membuat menjadi nol semua elemen dibawah pivot
             for (k = i + 1; k < n; k++) {
+                if (matrix.data[i][i] == 0) continue; // skip if pivot is zero
                 double factor = matrix.data[k][i] / matrix.data[i][i];
                 for (j = i; j <= n; j++) {
                     matrix.data[k][j] -= factor * matrix.data[i][j];
@@ -346,99 +347,123 @@ public class MatrixSolver {
             if (isRowZero(truncatedRow) && matrix.data[i][m - 1] != 0) {
                 consistent = false;
                 System.out.println("No Solution");
-                return null; // Return null in case there's no solution
+                return null; // mengembalikan null jika tidak ada solusi
             }
         }
 
-        if (consistent) {
-            // Back substitution untuk mencari solusi
-            double[] solution = new double[n];
-            for (i = n - 1; i >= 0; i--) {
-                solution[i] = matrix.data[i][n] / matrix.data[i][i];
-                for (k = i - 1; k >= 0; k--) {
-                    matrix.data[k][n] -= matrix.data[k][i] * solution[i];
-                }
+        // penyulihan balik
+        double[] solution = new double[n];
+        boolean[] isFreeVariable = new boolean[n];  // melacak variabel bebas
+
+        for (i = n - 1; i >= 0; i--) {
+            if (matrix.data[i][i] == 0) {
+                solution[i] = Double.NaN; // menandai sebagai variabel bebas.
+                isFreeVariable[i] = true;
+                continue;
             }
-            return solution; // Return the solution array
+
+            solution[i] = matrix.data[i][n] / matrix.data[i][i];
+            for (k = i - 1; k >= 0; k--) {
+                matrix.data[k][n] -= matrix.data[k][i] * solution[i];
+            }
         }
 
-        return null; // Return null if the system is inconsistent
+        // Menangani variabel bebas
+        for (i = 0; i < n; i++) {
+            if (isFreeVariable[i]) {
+                System.out.println("Variabel x" + i + " adalah variabel bebas atau solusi parametrik .");
+            }
+        }
+
+        return solution; // mengembalikan solusi
     }
 
-    // Fungsi Eliminasi gauss jordan
-    public static void gaussJordanElimination(Matrix matrix) {
 
+    // Fungsi Eliminasi gauss jordan
+    public static double[] gaussJordanElimination(Matrix matrix) {
         int row = matrix.data.length;
         int col = matrix.data[0].length;
         int i, j, k, colEff;
         double koefisien, divider;
 
-        for (k = 0; k < row; k++) { // k adalah basis row 
-            if (!isRowZero(matrix.data[k])) {
+        // array buat nyimpen solusi
+        double[] solution = new double[col - 1]; // kolom terakhir adalah konstanta
+        boolean[] foundSol = new boolean[col - 1]; // ngecek variabel yang udah ketemu solusinya
 
+        // inisialisasi array solusi dengan nan buat variabel bebas
+        for (i = 0; i < col - 1; i++) {
+            solution[i] = Double.NaN; // anggap awalnya semua variabel bebas
+        }
+
+        // eliminasi maju buat dapetin bentuk rref
+        for (k = 0; k < row; k++) { // k adalah baris pivot
+            if (!isRowZero(matrix.data[k])) {
+                // cari kolom pivot
                 colEff = k;
                 divider = matrix.data[k][k];
-                for (j = 0; j < col; j++) { // mencari divider
+                for (j = 0; j < col; j++) {
                     if (matrix.data[k][j] != 0) {
                         divider = matrix.data[k][j];
                         colEff = j;
                         break;
                     }
                 }
+
+                // bagi baris pivot sama elemen terdepannya biar jadi 1
                 for (i = 0; i < col; i++) {
-                    matrix.data[k][i] /= divider ; // generate angka 1 
+                    matrix.data[k][i] /= divider;
                 }
 
-                for (i = 0; i < row; i++) { // generate angka 0
-                    if (i == k) {continue;}
+                // bikin semua elemen di kolom pivot jadi 0 kecuali yang di pivot
+                for (i = 0; i < row; i++) {
+                    if (i == k) continue; // lewatin baris pivot
                     koefisien = matrix.data[i][colEff];
                     for (j = 0; j < col; j++) {
-                        matrix.data[i][j] -= koefisien*matrix.data[k][j];
+                        matrix.data[i][j] -= koefisien * matrix.data[k][j];
                     }
                 }
             }
         }
 
-        // cek inkonsistensi
-        boolean konsisten = true;
+        // cek apakah ada yang inkonsisten
+        boolean consistent = true;
         for (i = 0; i < row; i++) {
             double[] truncatedRow = truncateLastCol(matrix.data[i]);
             if (isRowZero(truncatedRow) && matrix.data[i][col - 1] != 0) {
-                konsisten = false;
-                System.out.println("Tidak ada Solusi");
+                consistent = false;
+                System.out.println("nggak ada solusi (sistem inkonsisten).");
+                return null; // balik null kalau sistem inkonsisten
             }
         }
-        // hitung SPL
-        boolean[] foundedSol = new boolean[col - 1];  // array yang menyimpan index solusi2 yg sudah ketemu
-        if (konsisten) {
-            boolean found = false;
+
+        // kalau konsisten, cari solusinya (unik atau parametrik)
+        if (consistent) {
+            boolean found;
             for (i = 0; i < row; i++) {
-                for (j = 0; j < col -1; j++) {
-                    if (matrix.data[i][j] == 1  && !found) {
-                        System.out.print("X" + (i+1) + " = " + matrix.data[i][col - 1]);
-                        foundedSol[j] = true;
+                found = false;
+                for (j = 0; j < col - 1; j++) {
+                    if (matrix.data[i][j] == 1 && !found) { // ketemu leading 1 (solusi unik)
+                        solution[j] = matrix.data[i][col - 1];
+                        foundSol[j] = true;
                         found = true;
-                    } else if (found && matrix.data[i][j] != 0) {
-                        if (matrix.data[i][j] < 0) {
-                            System.out.print(" + ");
-                        } else {System.out.print(" - ");}
-                        if (Math.abs(matrix.data[i][j]) == 1) {  // handling output solusi parameter jika koefisiennya 1
-                            System.out.print("X"+(j+1));
-                        } else {System.out.print(Math.abs(matrix.data[i][j])+"X"+(j+1));}
-                        
+                    } else if (found && matrix.data[i][j] != 0) { // solusi parametrik
+                        // tandai variabel sebagai variabel bebas
+                        solution[j] = Double.NaN; // variabel bebas (bisa ganti placeholder)
                     }
                 }
-                found = false;
-                System.out.println();
             }
-            for (i = 0; i < foundedSol.length; i++) {
-                if (!foundedSol[i]) {
-                    System.out.println("X"+(i+1)+" = free");
+
+            // tandai variabel bebas (kalau ada)
+            for (i = 0; i < foundSol.length; i++) {
+                if (!foundSol[i]) {
+                    solution[i] = Double.NaN; // variabel bebas (solusi parametrik)
                 }
             }
         }
 
+        return solution; // balikin array solusi
     }
+
 
 }
 
