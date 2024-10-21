@@ -158,7 +158,28 @@ public class Main {
             }
         }
 
-        double determinan = MatrixSolver.determinant(matrix);
+        System.out.println("Metode yang ingin digunakan?");
+        System.out.println("1. Ekspansi kofaktor");
+        System.out.println("2. Reduksi baris");
+
+        double determinan;
+
+        while (true) {
+            int choice = InputUtils.getInt("Masukkan pilihanmu: ");
+
+            if ((choice <= 0) || (choice > 2)) {
+                System.out.println("Masukan salah.");
+            }
+            else if (choice == 1) {
+                determinan = MatrixSolver.determinantByRowReduction(matrix);
+                break;
+            }
+            else {
+                determinan = MatrixSolver.determinant(matrix);
+                break;
+            }
+        }
+
         System.out.println("Determinan: " + determinan);
     }
 
@@ -189,8 +210,29 @@ public class Main {
             }
         }
 
-        Matrix matrixBalikan = MatrixSolver.inverseGaussJordan(matrix);
-        OutputUtils.displayMatrix(matrixBalikan);
+        System.out.println("Metode yang ingin digunakan?");
+        System.out.println("1. Invers Gauss-Jordan");
+        System.out.println("2. Invers Adjoin");
+
+        Matrix matriksBalikan = null;
+
+        while (true) {
+            int choice = InputUtils.getInt("Masukkan pilihanmu: ");
+
+            if ((choice <= 0) || (choice > 2)) {
+                System.out.println("Masukan salah.");
+            }
+            else if (choice == 1) {
+                matriksBalikan = MatrixSolver.inverseGaussJordan(matriksBalikan);
+                break;
+            }
+            else {
+                matriksBalikan = MatrixSolver.inverseAdjoin(matriksBalikan);
+                break;
+            }
+        }
+
+        OutputUtils.displayMatrix(matriksBalikan);
     }
 
     public static void InterpolasiPolinom() {
