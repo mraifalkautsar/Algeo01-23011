@@ -1,4 +1,5 @@
 import interpolation.PolynomialInterpolation;
+import interpolation.BicubicSplineInterpolation;
 import matrix.Matrix;
 import matrix.MatrixSolver;
 import regression.MultipleLinearRegression;
@@ -316,7 +317,43 @@ public class Main {
 
 
     public static void InterpolasiBicubicSpline() {
+        
+        System.out.println("Input dari keyboard atau file?");
+        System.out.println("1. Keyboard");
+        System.out.println("2. File");
 
+        while (true) {
+            int choice = InputUtils.getInt("Masukkan pilihanmu: ");
+
+            if (choice <= 0 || choice > 2) {
+                System.out.println("Masukan salah.");
+
+            } else if (choice == 1) {
+                Matrix vectorY = InputUtils.readMatrixFromInput();
+                double a = InputUtils.getDouble("Masukkan nilai a : ");
+                double b = InputUtils.getDouble("Masukkan nilai b : ");
+
+                double res = BicubicSplineInterpolation.calculate(vectorY, a, b);
+                System.out.println("Hasil interpolasi : " + res);
+                break;
+
+            } else {
+                Object[] file = InputUtils.readVectorAndABfromFile("../test/TC1BS.txt");
+                double[] vector = (double[]) file[0];
+                double a = (double) file[1];
+                double b = (double) file[2];
+
+                // convert array ke ADT matrix
+                Matrix vectorY = new Matrix(16, 1);
+                for (int i = 0; i < 16; i++) {
+                    vectorY.setElement(i, 0, vector[i]);
+                }
+
+                double res = BicubicSplineInterpolation.calculate(vectorY, a, b);
+                System.out.println("Hasil interpolasi : " + res);
+                break;
+            }
+        }
     }
 
     public static void RegresiLinier() {
