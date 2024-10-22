@@ -67,6 +67,33 @@ public class InputUtils {
         }
     }
 
+    public static Object[] readVectorAndABfromFile(String filename) {
+        double[] vector = new double[16];
+        double a = 0, b = 0;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            // membaca array
+            int idx = 0;
+            for (int i = 0; i < 4; i++) {
+                String[] rowValues = br.readLine().split(" ");
+                for (int j = 0; j < 4; j++) {
+                    vector[idx++] = Double.parseDouble(rowValues[j]);
+                }
+            }
+
+            // membaca baris kelima
+            String[] lastLine = br.readLine().split(" ");
+            a = Double.parseDouble(lastLine[0]);
+            b = Double.parseDouble(lastLine[1]);
+        
+        } catch (IOException e) {
+            System.out.println(" Error reading file : " + e.getMessage());
+        }
+
+        // return value
+        return new Object[]{vector, a, b};
+    }
+
     // Metode untuk meminta integer dari pengguna
     public static int getInt(String prompt) {
         System.out.print(prompt);
@@ -266,5 +293,6 @@ public class InputUtils {
     }
 
     public static String getString(String s) {
+        return s; // ini method siapa jir belum ada isinya
     }
 }
