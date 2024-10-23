@@ -4,11 +4,11 @@ import matrix.Matrix;
 
 public class OutputUtils {
 
-    // Menampilkan matriks ke layar
+    // Menampilkan matriks ke layar dengan pembulatan empat angka belakang koma
     public static void displayMatrix(Matrix matrix) {
         for (int i = 0; i < matrix.rowEff; i++) {
             for (int j = 0; j < matrix.colEff; j++) {
-                System.out.print(matrix.data[i][j]);
+                System.out.printf("%.4f", matrix.data[i][j]);
                 if (j < matrix.colEff - 1) {
                     System.out.print(" ");
                 }
