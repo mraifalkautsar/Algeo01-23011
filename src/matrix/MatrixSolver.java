@@ -116,7 +116,7 @@ public class MatrixSolver {
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                inverseMatrix.data[i][j] = Math.round(adjoinMatrix.data[i][j] / det * 10000.0) / 10000.0;
+                inverseMatrix.data[i][j] = adjoinMatrix.data[i][j] / det;
             }
         }
         return inverseMatrix;
