@@ -117,22 +117,25 @@ public class Main {
             }
             else if (choice == 1) {
                 solution = MatrixSolver.gaussElimination(matrixAugmented);
+                OutputUtils.printCoefficients(solution, true);
                 break;
             }
             else if (choice == 2) {
-                solution = MatrixSolver.gaussJordanElimination(matrixAugmented);
+                MatrixSolver.gaussJordanEliminationForMain(matrixAugmented);
                 break;
             }
             else if (choice == 3) {
                 solution = MatrixSolver.solveUsingInverse(matrixAugmented);
+                OutputUtils.printCoefficients(solution, true);
                 break;
             }
             else {
                 solution = MatrixSolver.solveUsingCramer(matrixAugmented);
+                OutputUtils.printCoefficients(solution, true);
                 break;
             }
         }
-        OutputUtils.printCoefficients(solution, true);
+        
     }
 
 

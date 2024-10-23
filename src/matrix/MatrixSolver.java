@@ -481,6 +481,73 @@ public class MatrixSolver {
         return solution; // balikin array solusi
     }
 
+// Fungsi Eliminasi gauss jordan
+    public static void gaussJordanEliminationForMain(Matrix matrix) { 
+        int row = matrix.rowEff;
+        int col = matrix.colEff;
+        int i, j, k, colEff;
+        double koefisien, divider;
+        for (k = 0; k < row; k++) { // k adalah basis row 
+            if (!isRowZero(matrix.data[k])) {
+                colEff = k;
+                divider = matrix.data[k][k];
+                for (j = 0; j < col; j++) { // mencari divider
+                    if (matrix.data[k][j] != 0) {
+                        divider = matrix.data[k][j];
+                        colEff = j;
+                        break;
+                    }
+                }
+                for (i = 0; i < col; i++) {
+                    matrix.data[k][i] /= divider ; // generate angka 1 
+                }
+                for (i = 0; i < row; i++) { // generate angka 0
+                    if (i == k) {continue;}
+                    koefisien = matrix.data[i][colEff];
+                    for (j = 0; j < col; j++) {
+                        matrix.data[i][j] -= koefisien*matrix.data[k][j];
+                    }
+                }
+            }
+        }
+        // cek inkonsistensi
+        boolean konsisten = true;
+        for (i = 0; i < row; i++) {
+            double[] truncatedRow = truncateLastCol(matrix.data[i]);
+            if (isRowZero(truncatedRow) && matrix.data[i][col - 1] != 0) {
+                konsisten = false;
+                System.out.println("Tidak ada Solusi");
+            }
+        }
+        // hitung SPL
+        boolean[] foundedSol = new boolean[col - 1];  // array yang menyimpan index solusi2 yg sudah ketemu
+        if (konsisten) {
+            boolean found = false;
+            for (i = 0; i < row; i++) {
+                for (j = 0; j < col -1; j++) {
+                    if (matrix.data[i][j] == 1  && !found) {
+                        System.out.print("X" + (i+1) + " = " + matrix.data[i][col - 1]);
+                        foundedSol[j] = true;
+                        found = true;
+                    } else if (found && matrix.data[i][j] != 0) {
+                        if (matrix.data[i][j] < 0) {
+                            System.out.print(" + ");
+                        } else {System.out.print(" - ");}
+                        if (Math.abs(matrix.data[i][j]) == 1) {  // handling output solusi parameter jika koefisiennya 1
+                            System.out.print("X"+(j+1));
+                        } else {System.out.print(Math.abs(matrix.data[i][j])+"X"+(j+1));}
+                    }
+                }
+                found = false;
+                System.out.println();
+            }
+            for (i = 0; i < foundedSol.length; i++) {
+                if (!foundedSol[i]) {
+                    System.out.println("X"+(i+1)+" = free");
+                }
+            }
+        }
+    }
 
 }
 
