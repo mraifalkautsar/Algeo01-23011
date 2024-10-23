@@ -148,8 +148,8 @@ public class Main {
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
             try {
-                OutputUtils.SaveSistemPersamaanLinier(solution, "spl/output/" + outputFileName + ".txt");
-                System.out.println("Hasil berhasil disimpan ke dalam file: spl/output/" + outputFileName + ".txt");
+                OutputUtils.SaveSistemPersamaanLinier(solution, "test/spl/output/" + outputFileName + ".txt");
+                System.out.println("Hasil berhasil disimpan ke dalam file: test/spl/output/" + outputFileName + ".txt");
             } catch (IOException e) {
                 System.out.println("Terjadi kesalahan saat menyimpan file: " + e.getMessage());
             }
@@ -179,7 +179,7 @@ public class Main {
             } else {
                 String fileName = InputUtils.getString("Masukkan nama file: ");
                 try {
-                    matrix = InputUtils.readMatrixFromFile("interpolasi", fileName);
+                    matrix = InputUtils.readMatrixFromFile("determinan", fileName);
                 } catch (IOException e) {
                     System.out.println("Error membaca matriks dari file: " + e.getMessage());
                     return;
@@ -232,8 +232,8 @@ public class Main {
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
             try {
-                OutputUtils.SaveDeterminant(determinan, "determinant/output/" + outputFileName + ".txt");
-                System.out.println("Hasil berhasil disimpan ke dalam file: determinant/output/" + outputFileName + ".txt");
+                OutputUtils.SaveDeterminant(determinan, "test/determinan/output/" + outputFileName + ".txt");
+                System.out.println("Hasil berhasil disimpan ke dalam file: test/determinan/output/" + outputFileName + ".txt");
             } catch (IOException e) {
                 System.out.println("Terjadi kesalahan saat menyimpan file: " + e.getMessage());
             }
@@ -306,8 +306,8 @@ public class Main {
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
             try {
-                OutputUtils.SaveInverseMatrix(matriksBalikan, "inverse/output/" + outputFileName + ".txt");
-                System.out.println("Hasil matriks balikan berhasil disimpan ke dalam file: inverse/output/" + outputFileName + ".txt");
+                OutputUtils.SaveInverseMatrix(matriksBalikan, "test/inverse/output/" + outputFileName + ".txt");
+                System.out.println("Hasil matriks balikan berhasil disimpan ke dalam file: test/inverse/output/" + outputFileName + ".txt");
             } catch (IOException e) {
                 System.out.println("Terjadi kesalahan saat menyimpan file: " + e.getMessage());
             }
@@ -643,7 +643,7 @@ public class Main {
             int[][][] scaledImage = scaleImage(image, newLength, newHeight);
 
             // Menyimpan hasil gambar setelah proses skala
-            String outputFileName = "src/image_resizing/output/" + filename + "_resized.jpg";
+            String outputFileName = "test/image_resizing/output/" + filename + "_resized.jpg";
             saveImage(scaledImage, outputFileName);
 
             System.out.println("Gambar berhasil diproses dan disimpan sebagai: " + outputFileName);

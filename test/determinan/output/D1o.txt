@@ -1,0 +1,2 @@
+Hasil Determinan Matriks:
+Determinan = -2.0
