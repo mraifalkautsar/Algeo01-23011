@@ -2,6 +2,7 @@ package utils;
 
 import matrix.Matrix;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +12,34 @@ import java.util.Scanner;
 public class InputUtils {
     private static Scanner scanner = new Scanner(System.in);
 
+    // BASIC UTILITIES
+    // Metode untuk meminta integer dari pengguna
+    public static int getInt(String prompt) {
+        System.out.print(prompt);
+        while (!scanner.hasNextInt()) {
+            System.out.println("Input tidak valid, masukkan integer.");
+            scanner.next();
+        }
+        return scanner.nextInt();
+    }
+
+    // Metode untuk meminta double dari pengguna
+    public static double getDouble(String prompt) {
+        System.out.print(prompt);
+        while (!scanner.hasNextDouble()) {
+            System.out.println("Input tidak valid, masukkan double.");
+            scanner.next();
+        }
+        return scanner.nextDouble();
+    }
+
+    public static String getString(String prompt) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print(prompt);
+        return scanner.nextLine();
+    }
+
+    // COMPLEX UTILITIES
     public static Matrix readMatrixFromInput() {
         System.out.print("Masukkan jumlah baris: ");
         int rows = scanner.nextInt();
@@ -28,23 +57,26 @@ public class InputUtils {
     }
 
     // Membaca matriks dari file
-    public static Matrix readMatrixFromFile(String filename) throws IOException {
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+    public static Matrix readMatrixFromFile(String folder, String filename) throws IOException {
+        // mengonstruksi path penuh ke file
+        String filePath = "test/" + folder + "/input/" + filename;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             int rowCount = 0;
-            int colCount = -1; // Inisialisasi dengan -1 untuk memeriksa kolom pertama
+            int colCount = -1;
             List<double[]> rows = new ArrayList<>();
 
-            // Baca setiap baris dan periksa jumlah kolom
+            // baca tiap line dan hitung jumlah kolom
             while ((line = br.readLine()) != null) {
                 String[] elements = line.split(" ");
                 if (colCount == -1) {
-                    colCount = elements.length; // Inisialisasi kolom dari baris pertama
+                    colCount = elements.length; // Initialize columns from the first row
                 } else if (elements.length != colCount) {
                     throw new IOException("Jumlah elemen dalam baris berbeda-beda, file matriks tidak valid.");
                 }
 
-                // Konversi elemen-elemen string menjadi double dan tambahkan ke list rows
+                // ubah elemen string menjadi double dan tambahkan ke rows list
                 double[] row = new double[elements.length];
                 for (int i = 0; i < elements.length; i++) {
                     row[i] = Double.parseDouble(elements[i]);
@@ -53,10 +85,10 @@ public class InputUtils {
                 rowCount++;
             }
 
-            // Buat matriks dengan ukuran yang sudah ditentukan
+            // buat sebuah matriks dengan ukuran tertentu
             Matrix matrix = new Matrix(rowCount, colCount);
 
-            // Masukkan elemen dari list rows ke dalam objek matriks
+            // masukkan elements dari rows list ke matrix.
             for (int i = 0; i < rowCount; i++) {
                 for (int j = 0; j < colCount; j++) {
                     matrix.setElement(i, j, rows.get(i)[j]);
@@ -64,8 +96,56 @@ public class InputUtils {
             }
 
             return matrix;
+        } catch (FileNotFoundException e) {
+            throw new IOException("File tidak ditemukan: " + filePath);
         }
     }
+
+    public static Matrix readMatrixFromFileForBicubic(String filepath) throws IOException {
+        // mengonstruksi path penuh ke file
+        String filePath = filepath;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            int rowCount = 0;
+            int colCount = -1;
+            List<double[]> rows = new ArrayList<>();
+
+            // baca tiap line dan hitung jumlah kolom
+            while ((line = br.readLine()) != null) {
+                String[] elements = line.split(" ");
+                if (colCount == -1) {
+                    colCount = elements.length; // Initialize columns from the first row
+                } else if (elements.length != colCount) {
+                    throw new IOException("Jumlah elemen dalam baris berbeda-beda, file matriks tidak valid.");
+                }
+
+                // ubah elemen string menjadi double dan tambahkan ke rows list
+                double[] row = new double[elements.length];
+                for (int i = 0; i < elements.length; i++) {
+                    row[i] = Double.parseDouble(elements[i]);
+                }
+                rows.add(row);
+                rowCount++;
+            }
+
+            // buat sebuah matriks dengan ukuran tertentu
+            Matrix matrix = new Matrix(rowCount, colCount);
+
+            // masukkan elements dari rows list ke matrix.
+            for (int i = 0; i < rowCount; i++) {
+                for (int j = 0; j < colCount; j++) {
+                    matrix.setElement(i, j, rows.get(i)[j]);
+                }
+            }
+
+            return matrix;
+        } catch (FileNotFoundException e) {
+            throw new IOException("File tidak ditemukan: " + filePath);
+        }
+    }
+
+
 
     public static Object[] readVectorAndABfromFile(String filename) {
         double[] vector = new double[16];
@@ -92,26 +172,6 @@ public class InputUtils {
 
         // return value
         return new Object[]{vector, a, b};
-    }
-
-    // Metode untuk meminta integer dari pengguna
-    public static int getInt(String prompt) {
-        System.out.print(prompt);
-        while (!scanner.hasNextInt()) {
-            System.out.println("Input tidak valid, masukkan integer.");
-            scanner.next();
-        }
-        return scanner.nextInt();
-    }
-
-    // Metode untuk meminta double dari pengguna
-    public static double getDouble(String prompt) {
-        System.out.print(prompt);
-        while (!scanner.hasNextDouble()) {
-            System.out.println("Input tidak valid, masukkan double.");
-            scanner.next();
-        }
-        return scanner.nextDouble();
     }
 
     // Metode untuk meminta matriks dari pengguna
@@ -208,42 +268,42 @@ public class InputUtils {
     
         return augmentedMatrix; // Kembalikan matriks augmented yang dibaca
     }
-    
+
     public static double[][] readMatrixFromKeyboard() {
             System.out.print("Masukkan ukuran matriks (n x n): ");
             int n = scanner.nextInt();
             double[][] matrix = new double[n][n];
-   
+
             System.out.println("Masukkan elemen matriks (pisahkan dengan spasi): ");
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     matrix[i][j] = scanner.nextDouble();
                 }
             }
-            
+
             return matrix;
     }
 
     public static double[][] readMatrixFromFile2(String filePath)  {
         double[][] matrix = null;
-    
+
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             int n = 0;
-    
+
             // Hitung jumlah baris untuk menentukan ukuran matriks
             while ((line = br.readLine()) != null) {
                 n++;
             }
-    
+
             matrix = new double[n][n]; // Matriks n x n
-    
+
             // Reset BufferedReader untuk membaca ulang file
             br.close();
-            
+
             try (BufferedReader br2 = new BufferedReader(new FileReader(filePath))) {
                 int rowIndex = 0;
-    
+
                 while ((line = br2.readLine()) != null) {
                     String[] values = line.trim().split(" "); // Pisahkan berdasarkan spasi
                     for (int j = 0; j < n; j++) {
@@ -255,9 +315,9 @@ public class InputUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    
+
         return matrix; // Kembalikan matriks yang dibaca
-    }    
+    }
 
     public static double[][] readAugmentedMatrix(double[][] augmentedMatrix) {
         int n = augmentedMatrix[0].length - 1; // Jumlah peubah
@@ -297,7 +357,4 @@ public class InputUtils {
         return designMatrix; // Kembalikan matriks desain yang telah dibangun
     }
 
-    public static String getString(String s) {
-        return s; // ini method siapa jir belum ada isinya
-    }
 }

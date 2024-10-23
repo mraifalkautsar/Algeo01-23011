@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
 import static interpolation.BicubicSplineInterpolation.*;
 
 // MAIN MENU UNTUK PROGRAM
@@ -33,7 +32,7 @@ public class Main {
             System.out.println("6. Regresi Linier");
             System.out.println("7. Regresi Kuadratik Berganda");
             System.out.println("8. Interpolasi Gambar");
-            System.out.println("9. Ngemaling helm-nya reza");
+            System.out.println("9. Keluar");
 
             // meminta pilihan dari pengguna
             System.out.print("Masukkan pilihanmu: ");
@@ -87,18 +86,17 @@ public class Main {
 
             if ((choice <= 0) || (choice > 2)) {
                 System.out.println("Masukan salah.");
-            }
-            else if (choice == 1) {
+            } else if (choice == 1) {
                 matrixAugmented = InputUtils.readMatrixFromInput();
                 break;
-            }
-            else {
+            } else {
+                String fileName = InputUtils.getString("Masukkan nama file: ");
                 try {
-                    matrixAugmented = InputUtils.readMatrixFromFile("interpolation/MatrixX.txt");
+                    matrixAugmented = InputUtils.readMatrixFromFile("spl", fileName);
                 } catch (IOException e) {
                     System.out.println("Error membaca matriks dari file: " + e.getMessage());
                     return;
-                    }
+                }
                 break;
             }
         }
@@ -106,39 +104,53 @@ public class Main {
         System.out.println("Metode yang ingin digunakan?");
         System.out.println("1. Eliminasi Gauss");
         System.out.println("2. Eliminasi Gauss-Jordan");
-        System.out.println("3. Invers Matriks");
+        System.out.println("3. Matriks Balikan");
         System.out.println("4. Cramer");
 
-        double[] solution;
+        double[] solution = null;
 
         while (true) {
             int choice = InputUtils.getInt("Masukkan pilihanmu: ");
 
             if ((choice <= 0) || (choice > 4)) {
                 System.out.println("Masukan salah.");
-            }
-            else if (choice == 1) {
+            } else if (choice == 1) {
                 solution = MatrixSolver.gaussElimination(matrixAugmented);
-                OutputUtils.printCoefficients(solution, true);
                 break;
-            }
-            else if (choice == 2) {
+            } else if (choice == 2) {
                 MatrixSolver.gaussJordanEliminationForMain(matrixAugmented);
-                break;
-            }
-            else if (choice == 3) {
+                return;
+            } else if (choice == 3) {
                 solution = MatrixSolver.solveUsingInverse(matrixAugmented);
-                OutputUtils.printCoefficients(solution, true);
                 break;
-            }
-            else {
+            } else {
                 solution = MatrixSolver.solveUsingCramer(matrixAugmented);
-                OutputUtils.printCoefficients(solution, true);
                 break;
             }
         }
-        
+
+        OutputUtils.printCoefficients(solution, true);
+
+        // Opsi untuk menyimpan solusi ke file
+        System.out.println("Apakah Anda ingin menyimpan hasil ke dalam file?");
+        System.out.println("1. Ya");
+        System.out.println("2. Tidak");
+
+        int saveChoice = InputUtils.getInt("Masukkan pilihanmu: ");
+
+        if (saveChoice == 1) {
+            String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
+            try {
+                OutputUtils.SaveSistemPersamaanLinier(solution, "spl/output/" + outputFileName + ".txt");
+                System.out.println("Hasil berhasil disimpan ke dalam file: spl/output/" + outputFileName + ".txt");
+            } catch (IOException e) {
+                System.out.println("Terjadi kesalahan saat menyimpan file: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Hasil tidak disimpan ke dalam file.");
+        }
     }
+
 
 
     public static void Determinan() {
@@ -153,14 +165,13 @@ public class Main {
 
             if ((choice <= 0) || (choice > 2)) {
                 System.out.println("Masukan salah.");
-            }
-            else if (choice == 1) {
+            } else if (choice == 1) {
                 matrix = InputUtils.readMatrixFromInput();
                 break;
-            }
-            else {
+            } else {
+                String fileName = InputUtils.getString("Masukkan nama file: ");
                 try {
-                    matrix = InputUtils.readMatrixFromFile("interpolation/MatrixX.txt");
+                    matrix = InputUtils.readMatrixFromFile("interpolasi", fileName);
                 } catch (IOException e) {
                     System.out.println("Error membaca matriks dari file: " + e.getMessage());
                     return;
@@ -180,18 +191,35 @@ public class Main {
 
             if ((choice <= 0) || (choice > 2)) {
                 System.out.println("Masukan salah.");
-            }
-            else if (choice == 1) {
+            } else if (choice == 1) {
                 determinan = MatrixSolver.determinantByRowReduction(matrix);
                 break;
-            }
-            else {
+            } else {
                 determinan = MatrixSolver.determinant(matrix);
                 break;
             }
         }
 
         System.out.println("Determinan: " + determinan);
+
+        // Opsi untuk menyimpan solusi ke file
+        System.out.println("Apakah Anda ingin menyimpan hasil ke dalam file?");
+        System.out.println("1. Ya");
+        System.out.println("2. Tidak");
+
+        int saveChoice = InputUtils.getInt("Masukkan pilihanmu: ");
+
+        if (saveChoice == 1) {
+            String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
+            try {
+                OutputUtils.SaveDeterminant(determinan, "determinant/output/" + outputFileName + ".txt");
+                System.out.println("Hasil berhasil disimpan ke dalam file: determinant/output/" + outputFileName + ".txt");
+            } catch (IOException e) {
+                System.out.println("Terjadi kesalahan saat menyimpan file: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Hasil tidak disimpan ke dalam file.");
+        }
     }
 
     public static void MatriksBalikan() {
@@ -205,14 +233,13 @@ public class Main {
 
             if ((choice <= 0) || (choice > 2)) {
                 System.out.println("Masukan salah.");
-            }
-            else if (choice == 1) {
+            } else if (choice == 1) {
                 matrix = InputUtils.readMatrixFromInput();
                 break;
-            }
-            else {
+            } else {
+                String fileName = InputUtils.getString("Masukkan nama file: ");
                 try {
-                    matrix = InputUtils.readMatrixFromFile("interpolation/MatrixX.txt");
+                    matrix = InputUtils.readMatrixFromFile("inverse", fileName);
                 } catch (IOException e) {
                     System.out.println("Error membaca matriks dari file: " + e.getMessage());
                     return;
@@ -232,18 +259,35 @@ public class Main {
 
             if ((choice <= 0) || (choice > 2)) {
                 System.out.println("Masukan salah.");
-            }
-            else if (choice == 1) {
-                matriksBalikan = MatrixSolver.inverseGaussJordan(matriksBalikan);
+            } else if (choice == 1) {
+                matriksBalikan = MatrixSolver.inverseGaussJordan(matrix); // Corrected from matriksBalikan to matrix
                 break;
-            }
-            else {
-                matriksBalikan = MatrixSolver.inverseAdjoin(matriksBalikan);
+            } else {
+                matriksBalikan = MatrixSolver.inverseAdjoin(matrix); // Corrected from matriksBalikan to matrix
                 break;
             }
         }
 
         OutputUtils.displayMatrix(matriksBalikan);
+
+        // Opsi untuk menyimpan solusi ke file
+        System.out.println("Apakah Anda ingin menyimpan hasil ke dalam file?");
+        System.out.println("1. Ya");
+        System.out.println("2. Tidak");
+
+        int saveChoice = InputUtils.getInt("Masukkan pilihanmu: ");
+
+        if (saveChoice == 1) {
+            String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
+            try {
+                OutputUtils.SaveInverseMatrix(matriksBalikan, "inverse/output/" + outputFileName + ".txt");
+                System.out.println("Hasil matriks balikan berhasil disimpan ke dalam file: inverse/output/" + outputFileName + ".txt");
+            } catch (IOException e) {
+                System.out.println("Terjadi kesalahan saat menyimpan file: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Hasil tidak disimpan ke dalam file.");
+        }
     }
 
     public static void InterpolasiPolinom() {
@@ -258,6 +302,7 @@ public class Main {
             if (choice <= 0 || choice > 2) {
                 System.out.println("Masukan salah.");
             } else if (choice == 1) {
+                // Input lewat keyboard
                 int n = InputUtils.getInt("Masukkan jumlah data: ");
                 double[][] data_array = InputUtils.getXYdata(n, "Masukkan titik-titik data: ");
                 double[] solution = PolynomialInterpolation.calculatePolynomialEquation(n, data_array);
@@ -266,16 +311,26 @@ public class Main {
                 double x = InputUtils.getDouble("Nilai x yang ingin ditaksir: ");
                 double estimation = PolynomialInterpolation.calculateY(solution, x);
 
-                System.out.print("Nilai y hasil taksiran: " + estimation);
+                System.out.println("Nilai y hasil taksiran: " + estimation);
+
+                // Opsi untuk menyimpan solusi ke file
+                OutputUtils.SaveInterpolasiPolinom(solution, estimation);
                 break;
+
             } else if (choice == 2) {
-                // file input
+                // Input lewat file
                 try {
-                    String filename = InputUtils.getString("Masukkan nama file: ");
-                    File file = new File(filename);
+                    // Minta nama file dari user
+                    String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
+
+                    // Buat path lengkapnya
+                    String filePath = "test/interpolasi_polinom/input/" + filename;
+
+                    // Baca file-nya
+                    File file = new File(filePath);
                     Scanner fileScanner = new Scanner(file);
 
-                    // baca titik-titik data dari file
+                    // Baca titik-titik data dari file
                     List<double[]> dataList = new ArrayList<>();
                     double xToEstimate = 0;
 
@@ -284,47 +339,50 @@ public class Main {
                         String[] values = line.split("\\s+");
 
                         if (values.length == 2) {
-                            // melakukan parsing pada titik-titik data
+                            // Parsing titik-titik data
                             double x = Double.parseDouble(values[0]);
                             double y = Double.parseDouble(values[1]);
                             dataList.add(new double[]{x, y});
                         } else if (values.length == 1) {
-                            // melakukan parsing untuk x yang ingin diperkirakan
+                            // Parsing x yang mau diestimasi
                             xToEstimate = Double.parseDouble(values[0]);
                         }
                     }
 
                     fileScanner.close();
 
-                    // convert list ke array untuk interpolasi
+                    // Convert list jadi array buat interpolasi
                     int n = dataList.size();
                     double[][] data_array = new double[n][2];
                     for (int i = 0; i < n; i++) {
                         data_array[i] = dataList.get(i);
                     }
 
-                    // hitung solusi
+                    // Hitung solusi interpolasi polinomial
                     double[] solution = PolynomialInterpolation.calculatePolynomialEquation(n, data_array);
                     OutputUtils.printCoefficients(solution, true);
 
-                    // melakukan estimasi
+                    // Estimasi nilai y untuk x yang diberikan
                     double estimation = PolynomialInterpolation.calculateY(solution, xToEstimate);
                     System.out.println("Nilai y hasil taksiran: " + estimation);
 
+                    // Opsi untuk menyimpan solusi ke file
+                    OutputUtils.SaveInterpolasiPolinom(solution, estimation);
+
                 } catch (FileNotFoundException e) {
-                    System.out.println("File tidak ditemukan. Coba lagi.");
+                    System.out.println("File tidak ditemukan di path: test/interpolasi_polinom/input/" + e.getMessage());
                 } catch (Exception e) {
-                    System.out.println("Terjadi kesalahan saat membaca file.");
+                    System.out.println("Ada kesalahan saat pembacaan file.");
                     e.printStackTrace();
                 }
+
                 break;
             }
         }
     }
 
-
     public static void InterpolasiBicubicSpline() {
-        
+
         System.out.println("Input dari keyboard atau file?");
         System.out.println("1. Keyboard");
         System.out.println("2. File");
@@ -336,16 +394,22 @@ public class Main {
                 System.out.println("Masukan salah.");
 
             } else if (choice == 1) {
+                // Input melalui keyboard
                 Matrix vectorY = InputUtils.readMatrixFromInput();
                 double a = InputUtils.getDouble("Masukkan nilai a : ");
                 double b = InputUtils.getDouble("Masukkan nilai b : ");
 
                 double res = BicubicSplineInterpolation.calculate(vectorY, a, b, false);
                 System.out.println("Hasil interpolasi : " + res);
+
+                // Option to save the result to a file
+                OutputUtils.SaveBicubicSpline(res);
                 break;
 
             } else {
-                Object[] file = InputUtils.readVectorAndABfromFile("../test/TC1BS.txt");
+                // Input melalui file
+                String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
+                Object[] file = InputUtils.readVectorAndABfromFile("../test/interpolasi_bicubic/input/" + filename);
                 double[] vector = (double[]) file[0];
                 double a = (double) file[1];
                 double b = (double) file[2];
@@ -358,6 +422,9 @@ public class Main {
 
                 double res = BicubicSplineInterpolation.calculate(vectorY, a, b, false);
                 System.out.println("Hasil interpolasi : " + res);
+
+                // Opsi untuk menyimpan solusi ke file
+                OutputUtils.SaveBicubicSpline(res);
                 break;
             }
         }
@@ -368,34 +435,90 @@ public class Main {
         System.out.println("1. Keyboard");
         System.out.println("2. File");
 
-        Matrix matrixAugmented;
-
         while (true) {
             int choice = InputUtils.getInt("Masukkan pilihanmu: ");
 
             if ((choice <= 0) || (choice > 2)) {
                 System.out.println("Masukan salah.");
-            }
-            else if (choice == 1) {
+            } else if (choice == 1) {
+                // Input dari keyboard
                 int m = InputUtils.getInt("Masukkan jumlah data: ");
                 int n = InputUtils.getInt("Masukkan banyak peubah: ");
-                double[][] data_array = InputUtils.getMatrix(m, n+1, "Masukkan titik-titik data.");
+                double[][] data_array = InputUtils.getMatrix(m, n + 1, "Masukkan titik-titik data:");
 
                 double[] solution = MultipleLinearRegression.calculateRegressionEquation(data_array, m, n);
                 OutputUtils.printCoefficients(solution, true);
 
-                double[] x_array = InputUtils.getArray(m, "Masukkan data yang ingin ditaksir: ");
+                double[] x_array = InputUtils.getArray(n, "Masukkan data yang ingin ditaksir:");
                 double estimation = MultipleLinearRegression.calculateY(solution, x_array);
 
-                System.out.print("Nilai y hasil taksiran: " + estimation);
-            }
-            else {
+                System.out.println("Nilai y hasil taksiran: " + estimation);
+
+                // Opsi untuk menyimpan solusi ke file
+                OutputUtils.SaveRegresiLinier(solution, estimation);
+                break;
+
+            } else if (choice == 2) {
+                // Input dari file menggunakan Scanner
+                String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
+
                 try {
-                    matrixAugmented = InputUtils.readMatrixFromFile("interpolation/MatrixX.txt");
-                } catch (IOException e) {
-                    System.out.println("Error reading matrix from file: " + e.getMessage());
-                    return;
+                    String filePath = "test/regresi_linier/input/" + filename;
+                    File file = new File(filePath);
+                    Scanner scanner = new Scanner(file);
+
+                    List<double[]> dataList = new ArrayList<>();
+                    double[] xToEstimate = null;
+
+                    while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine().trim();
+                        String[] values = line.split("\\s+");
+
+                        double[] row = new double[values.length];
+                        for (int i = 0; i < values.length; i++) {
+                            row[i] = Double.parseDouble(values[i]);
+                        }
+
+                        if (values.length == 1) {
+                            // Nilai x yang ingin ditaksir
+                            xToEstimate = row;
+                        } else {
+                            // Menambahkan titik data x1, x2, ..., xn, y
+                            dataList.add(row);
+                        }
+                    }
+
+                    scanner.close();
+
+                    // Proses data menjadi array 2D untuk regresi
+                    int m = dataList.size();
+                    int n = dataList.get(0).length - 1; // Jumlah peubah (n) = jumlah kolom - 1 (kolom y)
+                    double[][] data_array = new double[m][n + 1];
+                    for (int i = 0; i < m; i++) {
+                        data_array[i] = dataList.get(i);
+                    }
+
+                    // Hitung solusi regresi
+                    double[] solution = MultipleLinearRegression.calculateRegressionEquation(data_array, m, n);
+                    OutputUtils.printCoefficients(solution, true);
+
+                    if (xToEstimate != null) {
+                        double estimation = MultipleLinearRegression.calculateY(solution, xToEstimate);
+                        System.out.println("Nilai y hasil taksiran: " + estimation);
+
+                        // Opsi untuk menyimpan hasil ke file
+                        OutputUtils.SaveRegresiLinier(solution, estimation);
+                    } else {
+                        System.out.println("Tidak ada nilai x untuk ditaksir di file.");
+                    }
+
+                } catch (FileNotFoundException e) {
+                    System.out.println("File tidak ditemukan: " + e.getMessage());
+                } catch (Exception e) {
+                    System.out.println("Terjadi kesalahan saat membaca file.");
+                    e.printStackTrace();
                 }
+
                 break;
             }
         }
@@ -414,39 +537,94 @@ public class Main {
 
             if ((choice <= 0) || (choice > 2)) {
                 System.out.println("Masukan salah.");
-            }
-            else if (choice == 1) {
+            } else if (choice == 1) {
+                // Input dari keyboard
                 m = InputUtils.getInt("Masukkan jumlah data: ");
                 n = InputUtils.getInt("Masukkan banyak peubah: ");
                 data_array = InputUtils.readAugmentedMatrixFromKeyboard(m, n);
+            } else if (choice == 2) {
+                // Input dari file menggunakan Scanner
+                String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
+
+                try {
+                    String filePath = "test/regresi_kuadratik/input/" + filename;
+                    File file = new File(filePath);
+                    Scanner scanner = new Scanner(file);
+
+                    List<double[]> dataList = new ArrayList<>();
+
+                    while (scanner.hasNextLine()) {
+                        String line = scanner.nextLine().trim();
+                        String[] values = line.split("\\s+");
+
+                        double[] row = new double[values.length];
+                        for (int i = 0; i < values.length; i++) {
+                            row[i] = Double.parseDouble(values[i]);
+                        }
+
+                        dataList.add(row);
+                    }
+
+                    scanner.close();
+
+                    // Proses data menjadi array 2D untuk regresi
+                    m = dataList.size();
+                    n = dataList.get(0).length - 1; // Jumlah peubah (n) = jumlah kolom - 1 (kolom y)
+                    data_array = new double[m][n + 1];
+                    for (int i = 0; i < m; i++) {
+                        data_array[i] = dataList.get(i);
+                    }
+
+                } catch (FileNotFoundException e) {
+                    System.out.println("File tidak ditemukan: " + e.getMessage());
+                    return;
+                } catch (Exception e) {
+                    System.out.println("Terjadi kesalahan saat membaca file.");
+                    e.printStackTrace();
+                    return;
+                }
             }
-            
+
+            // Jika data sudah siap, jalankan regresi
             Matrix coefficients = MultipleQuadraticRegression.trainQuadraticModel(data_array, n);
 
             // Prediksi dengan observasi baru
             double[][] observation = MultipleQuadraticRegression.inputObservation(n);
 
             // Lakukan prediksi
-            MultipleQuadraticRegression.predictQuadratic(coefficients, observation);
+            double prediction = MultipleQuadraticRegression.predictQuadratic(coefficients, observation);
+            System.out.println("Hasil prediksi: " + prediction);
+
+            // Opsi untuk menyimpan hasil ke file
+            OutputUtils.SaveRegresiKuadratikBerganda(coefficients, observation, prediction);
             break;
         }
     }
-    
+
+
     public static void ImageResizing() {
         try {
-            // Memuat gambar .jpg
-            int[][][] image = loadImage("src/input_image.jpg");
+            // Minta input nama file tanpa path atau .jpg
+            String filename = InputUtils.getString("Masukkan nama file (tanpa path dan .jpg): ");
+            int[][][] image = loadImage("src/image_resizing/input/" + filename + ".jpg");
 
-            // Menskalakan gambar (misalnya skala 2x)
-            int[][][] scaledImage = scaleImage(image, image.length * 2, image[0].length * 2);
+            // Meminta faktor skala panjang dan tinggi
+            double lengthScale = InputUtils.getDouble("Masukkan faktor skala panjang (contoh: 1.5 untuk 150%): ");
+            double heightScale = InputUtils.getDouble("Masukkan faktor skala tinggi (contoh: 1.5 untuk 150%): ");
 
-            // Menyimpan hasil gambar setelah interpolasi
-            saveImage(scaledImage, "output_image.jpg");
+            int newLength = (int) (image.length * lengthScale);
+            int newHeight = (int) (image[0].length * heightScale);
+            int[][][] scaledImage = scaleImage(image, newLength, newHeight);
 
-            System.out.println("Gambar berhasil diproses dan disimpan.");
+            // Menyimpan hasil gambar setelah proses skala
+            String outputFileName = "src/image_resizing/output/" + filename + "_resized.jpg";
+            saveImage(scaledImage, outputFileName);
+
+            System.out.println("Gambar berhasil diproses dan disimpan sebagai: " + outputFileName);
         } catch (IOException e) {
             System.out.println("Terjadi kesalahan saat memproses gambar: " + e.getMessage());
         }
     }
+
 }
 
