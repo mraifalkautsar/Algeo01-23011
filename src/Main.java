@@ -3,6 +3,7 @@ import interpolation.BicubicSplineInterpolation;
 import matrix.Matrix;
 import matrix.MatrixSolver;
 import regression.MultipleLinearRegression;
+import regression.MultipleQuadraticRegression;
 import utils.InputUtils;
 import utils.OutputUtils;
 import java.io.File;
@@ -56,7 +57,8 @@ public class Main {
                     RegresiLinier();
                     break;
                 case 7:
-//                    RegresiKuadratikBerganda()
+                    RegresiKuadratikBerganda();
+                    break;
                 case 8:
 //                    InterpolasiGambar(scanner);
                 case 9:
@@ -391,6 +393,37 @@ public class Main {
                 }
                 break;
             }
+        }
+    }
+
+    public static void RegresiKuadratikBerganda() {
+        System.out.println("Input dari keyboard atau file?");
+        System.out.println("1. Keyboard");
+        System.out.println("2. File");
+
+        while (true) {
+            int choice = InputUtils.getInt("Masukkan pilihanmu: ");
+
+            int m = 0, n = 0;
+            double[][] data_array = null;
+
+            if ((choice <= 0) || (choice > 2)) {
+                System.out.println("Masukan salah.");
+            }
+            else if (choice == 1) {
+                m = InputUtils.getInt("Masukkan jumlah data: ");
+                n = InputUtils.getInt("Masukkan banyak peubah: ");
+                data_array = InputUtils.readAugmentedMatrixFromKeyboard(m, n);
+            }
+            
+            Matrix coefficients = MultipleQuadraticRegression.trainQuadraticModel(data_array, n);
+
+            // Prediksi dengan observasi baru
+            double[][] observation = MultipleQuadraticRegression.inputObservation(n);
+
+            // Lakukan prediksi
+            MultipleQuadraticRegression.predictQuadratic(coefficients, observation);
+            break;
         }
     }
 }
