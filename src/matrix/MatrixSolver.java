@@ -1,13 +1,10 @@
 package matrix;
 
 public class MatrixSolver {
-    private static final double epsilon = 1e-9; // Toleransi untuk angka yang sangat kecil
+    private static final double epsilon = 1e-10; // Toleransi untuk angka yang sangat kecil
 
     // Determinan matriks dengan metode eksansi kofaktor
     public static double determinant(Matrix matrix) {
-        if (matrix == null || matrix.data == null || matrix.data.length == 0) {
-            throw new IllegalArgumentException("Matriks tidak boleh kosong");
-        }
         if (!matrix.isSquare()) {
             throw new IllegalArgumentException("Matriks harus berbentuk persegi");
         }
@@ -52,9 +49,6 @@ public class MatrixSolver {
     public static double determinantByRowReduction(Matrix matrix) {
         if (!matrix.isSquare()) {
             throw new IllegalArgumentException("Matriks harus berbentuk persegi");
-        }
-        if (matrix == null || matrix.data == null || matrix.data.length == 0) {
-            throw new IllegalArgumentException("Matriks tidak boleh kosong");
         }
         
         Matrix matrixCopy = new Matrix(matrix.rowEff, matrix.colEff);
@@ -118,15 +112,33 @@ public class MatrixSolver {
     
     // Fungsi untuk menghitung balikan matriks
     public static Matrix inverseAdjoin(Matrix matrix) {
-        double det = determinantByCofactorExpansion(matrix.data);
-        if (det == 0) throw new IllegalArgumentException("Matrix tidak dapat dibalik, determinan = 0.");
-        Matrix adjoinMatrix = adjoin(matrix);
-        int n = matrix.data.length;
-        Matrix inverseMatrix = new Matrix(n, n);
+        if (!matrix.isSquare()) {
+            throw new IllegalArgumentException("Matriks harus berbentuk persegi");
+        }
 
+        int n = matrix.data.length;
+
+        // Tangani kasus matriks 1x1
+        if (n == 1) {
+            if (matrix.data[0][0] == 0) {
+                throw new ArithmeticException("Matrix tidak memiliki invers (singular).");
+            }
+            Matrix inverseMatrix = new Matrix(1, 1);
+            inverseMatrix.data[0][0] = 1 / matrix.data[0][0];
+            return inverseMatrix;
+        }
+
+        double det = determinant(matrix);
+        if (det == 0) throw new IllegalArgumentException("Matrix tidak dapat dibalik, determinan = 0.");
+
+        Matrix adjoinMatrix = adjoin(matrix);
+        Matrix inverseMatrix = new Matrix(n, n);
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                inverseMatrix.data[i][j] = adjoinMatrix.data[i][j] / det;
+            inverseMatrix.data[i][j] = adjoinMatrix.data[i][j] / det;
+            if (Math.abs(inverseMatrix.data[i][j]) < epsilon) {
+                inverseMatrix.data[i][j] = 0;
+            }
             }
         }
         return inverseMatrix;
@@ -134,7 +146,21 @@ public class MatrixSolver {
 
     // Fungsi untuk menghitung invers matriks menggunakan metode Gauss-Jordan
     public static Matrix inverseGaussJordan(Matrix matrix) {
-        int n = matrix.rowEff;  
+        if (!matrix.isSquare()) {
+            throw new IllegalArgumentException("Matriks harus berbentuk persegi");
+        }
+
+        int n = matrix.rowEff;
+
+        // Tangani kasus matriks 1x1
+        if (n == 1) {
+            if (matrix.data[0][0] == 0) {
+                throw new ArithmeticException("Matrix tidak memiliki invers (singular).");
+            }
+            Matrix inverseMatrix = new Matrix(1, 1);
+            inverseMatrix.data[0][0] = 1 / matrix.data[0][0];
+            return inverseMatrix;
+        }
 
         // cek apakah matriks memiliki determinan
         double determinant = determinant(matrix);  // Tambahkan metode ini untuk cek determinan
@@ -142,14 +168,14 @@ public class MatrixSolver {
             throw new ArithmeticException("Matrix tidak memiliki invers (singular).");
         }
 
-        // Mmenambah matriks identitas di sebelah kanan
-        Matrix augmentedMatrix = new Matrix(n, 2*n);
+        // Menambah matriks identitas di sebelah kanan
+        Matrix augmentedMatrix = new Matrix(n, 2 * n);
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 augmentedMatrix.data[i][j] = matrix.data[i][j];
             }
             for (int j = n; j < 2 * n; j++) {
-                augmentedMatrix.data[i][j] = (i == j - n) ? 1.0 : 0.0 ;
+                augmentedMatrix.data[i][j] = (i == j - n) ? 1.0 : 0.0;
             }
         }
 

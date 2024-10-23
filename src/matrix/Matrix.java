@@ -116,11 +116,11 @@ public class Matrix {
         }
     }
 
-    // Menampilkan matriks ke layar
+    // Menampilkan matriks ke layar dengan pembulatan 4 angka di belakang koma
     public void displayMatrix() {
         for (int i = 0; i < rowEff; i++) {
             for (int j = 0; j < colEff; j++) {
-                System.out.print(data[i][j]);
+                System.out.printf("%.4f", data[i][j]);
                 if (j < colEff - 1) {
                     System.out.print(" ");
                 }
