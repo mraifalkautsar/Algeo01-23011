@@ -210,8 +210,15 @@ public class InputUtils {
     }
         
     public static Matrix readMatrixFromKeyboard() {
-        System.out.print("Masukkan ukuran matriks (n x n): ");
-        int n = scanner.nextInt();
+        int n;
+        do {
+            System.out.print("Masukkan ukuran matriks (n x n): ");
+            n = scanner.nextInt();
+            if (n <= 0) {
+            System.out.println("Ukuran matriks harus lebih besar dari 0. Silakan coba lagi.");
+            }
+        } while (n <= 0);
+        
         Matrix matrix = new Matrix(n, n);
         scanner.nextLine();
 
