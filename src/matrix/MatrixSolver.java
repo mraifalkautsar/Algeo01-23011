@@ -5,12 +5,15 @@ public class MatrixSolver {
 
     // Determinan matriks dengan metode eksansi kofaktor
     public static double determinant(Matrix matrix) {
+        if (matrix == null || matrix.data == null || matrix.data.length == 0) {
+            throw new IllegalArgumentException("Matriks tidak boleh kosong");
+        }
         if (!matrix.isSquare()) {
             throw new IllegalArgumentException("Matriks harus berbentuk persegi");
         }
         double det = determinantByCofactorExpansion(matrix.data);
-    
-        // Mengatur toleransi numerik untuk mendeteksi nilai mendekati nol  // Toleransi untuk angka yang sangat kecil
+        
+        // Mengatur toleransi numerik untuk mendeteksi nilai mendekati nol
         if (Math.abs(det) < epsilon) {
             return 0;
         }
@@ -50,6 +53,9 @@ public class MatrixSolver {
         if (!matrix.isSquare()) {
             throw new IllegalArgumentException("Matriks harus berbentuk persegi");
         }
+        if (matrix == null || matrix.data == null || matrix.data.length == 0) {
+            throw new IllegalArgumentException("Matriks tidak boleh kosong");
+        }
         
         Matrix matrixCopy = new Matrix(matrix.rowEff, matrix.colEff);
         matrixCopy.copyMatrix(matrix); 
@@ -86,8 +92,12 @@ public class MatrixSolver {
                 matrixCopy.addMultipleOfRow(j, i, factor); 
             }
         }
+
+        if (Math.abs(determinant) < epsilon) {
+            return 0;
+        }
     
-        return determinant;
+        return Math.round(determinant * 10000.0) / 10000.0;
     }
 
     // Fungsi untuk menghitung adjoin matriks
