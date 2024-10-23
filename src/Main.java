@@ -150,7 +150,7 @@ public class Main {
                 System.out.println("Masukan salah.");
             }
             else if (choice == 1) {
-                matrix = InputUtils.readMatrixFromInput();
+                matrix = InputUtils.readMatrixFromKeyboard();
                 break;
             }
             else {
@@ -176,12 +176,22 @@ public class Main {
             if ((choice <= 0) || (choice > 2)) {
                 System.out.println("Masukan salah.");
             }
-            else if (choice == 1) {
-                determinan = MatrixSolver.determinantByRowReduction(matrix);
+            else if (choice == 2) {
+                try {
+                    determinan = MatrixSolver.determinantByRowReduction(matrix);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    return;
+                }
                 break;
             }
             else {
-                determinan = MatrixSolver.determinant(matrix);
+                try {
+                    determinan = MatrixSolver.determinant(matrix);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    return;
+                }
                 break;
             }
         }
