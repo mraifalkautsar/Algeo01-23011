@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static interpolation.BicubicSplineInterpolation.*;
+
 // MAIN MENU UNTUK PROGRAM
 
 public class Main {
@@ -60,7 +62,7 @@ public class Main {
                     RegresiKuadratikBerganda();
                     break;
                 case 8:
-//                    InterpolasiGambar(scanner);
+                    ImageResizing();
                 case 9:
                     System.out.println("Keluar dari program.");
                     scanner.close();
@@ -117,22 +119,25 @@ public class Main {
             }
             else if (choice == 1) {
                 solution = MatrixSolver.gaussElimination(matrixAugmented);
+                OutputUtils.printCoefficients(solution, true);
                 break;
             }
             else if (choice == 2) {
-                solution = MatrixSolver.gaussJordanElimination(matrixAugmented);
+                MatrixSolver.gaussJordanEliminationForMain(matrixAugmented);
                 break;
             }
             else if (choice == 3) {
                 solution = MatrixSolver.solveUsingInverse(matrixAugmented);
+                OutputUtils.printCoefficients(solution, true);
                 break;
             }
             else {
                 solution = MatrixSolver.solveUsingCramer(matrixAugmented);
+                OutputUtils.printCoefficients(solution, true);
                 break;
             }
         }
-        OutputUtils.printCoefficients(solution, true);
+        
     }
 
 
@@ -345,7 +350,7 @@ public class Main {
                 double a = InputUtils.getDouble("Masukkan nilai a : ");
                 double b = InputUtils.getDouble("Masukkan nilai b : ");
 
-                double res = BicubicSplineInterpolation.calculate(vectorY, a, b);
+                double res = BicubicSplineInterpolation.calculate(vectorY, a, b, false);
                 System.out.println("Hasil interpolasi : " + res);
                 break;
 
@@ -361,7 +366,7 @@ public class Main {
                     vectorY.setElement(i, 0, vector[i]);
                 }
 
-                double res = BicubicSplineInterpolation.calculate(vectorY, a, b);
+                double res = BicubicSplineInterpolation.calculate(vectorY, a, b, false);
                 System.out.println("Hasil interpolasi : " + res);
                 break;
             }
@@ -434,6 +439,23 @@ public class Main {
             // Lakukan prediksi
             MultipleQuadraticRegression.predictQuadratic(coefficients, observation);
             break;
+        }
+    }
+    
+    public static void ImageResizing() {
+        try {
+            // Memuat gambar .jpg
+            int[][][] image = loadImage("src/input_image.jpg");
+
+            // Menskalakan gambar (misalnya skala 2x)
+            int[][][] scaledImage = scaleImage(image, image.length * 2, image[0].length * 2);
+
+            // Menyimpan hasil gambar setelah interpolasi
+            saveImage(scaledImage, "output_image.jpg");
+
+            System.out.println("Gambar berhasil diproses dan disimpan.");
+        } catch (IOException e) {
+            System.out.println("Terjadi kesalahan saat memproses gambar: " + e.getMessage());
         }
     }
 }
