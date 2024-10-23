@@ -317,7 +317,7 @@ public class MatrixSolver {
             solutions[i] = Math.round((detAi / detA) * 10000.0) / 10000.0;
 
             // Ubah -0 menjadi 0
-            if (Math.abs(solutions[i]) < 1e-10) {
+            if (Math.abs(solutions[i]) < epsilon) {
                 solutions[i] = 0; 
             }
         }
@@ -389,6 +389,9 @@ public class MatrixSolver {
                 double factor = matrix.data[k][i] / matrix.data[i][i];
                 for (j = i; j <= n; j++) {
                     matrix.data[k][j] -= factor * matrix.data[i][j];
+                    if (Math.abs(matrix.data[k][j]) < epsilon) {
+                        matrix.data[k][j] = 0;
+                    }
                 }
             }
         }
@@ -399,7 +402,6 @@ public class MatrixSolver {
             double[] truncatedRow = truncateLastCol(matrix.data[i]);
             if (isRowZero(truncatedRow) && matrix.data[i][m - 1] != 0) {
                 consistent = false;
-                System.out.println("No Solution");
                 return null; // mengembalikan null jika tidak ada solusi
             }
         }
@@ -473,6 +475,9 @@ public class MatrixSolver {
                     koefisien = matrix.data[i][colEff];
                     for (j = 0; j < col; j++) {
                         matrix.data[i][j] -= koefisien * matrix.data[k][j];
+                        if (Math.abs(matrix.data[k][j]) < epsilon) {
+                            matrix.data[k][j] = 0;
+                        }
                     }
                 }
             }
@@ -542,6 +547,9 @@ public class MatrixSolver {
                     koefisien = matrix.data[i][colEff];
                     for (j = 0; j < col; j++) {
                         matrix.data[i][j] -= koefisien*matrix.data[k][j];
+                        if (Math.abs(matrix.data[k][j]) < epsilon) {
+                            matrix.data[k][j] = 0;
+                        }
                     }
                 }
             }

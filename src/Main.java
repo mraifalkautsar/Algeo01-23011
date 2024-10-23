@@ -113,30 +113,31 @@ public class Main {
 
         while (true) {
             int choice = InputUtils.getInt("Masukkan pilihanmu: ");
-
+        
             if ((choice <= 0) || (choice > 4)) {
                 System.out.println("Masukan salah.");
-            }
-            else if (choice == 1) {
-                solution = MatrixSolver.gaussElimination(matrixAugmented);
-                OutputUtils.printCoefficients(solution, true);
-                break;
-            }
-            else if (choice == 2) {
-                MatrixSolver.gaussJordanEliminationForMain(matrixAugmented);
-                break;
-            }
-            else if (choice == 3) {
-                solution = MatrixSolver.solveUsingInverse(matrixAugmented);
-                OutputUtils.printCoefficients(solution, true);
-                break;
-            }
-            else {
-                solution = MatrixSolver.solveUsingCramer(matrixAugmented);
-                OutputUtils.printCoefficients(solution, true);
-                break;
+            } else {
+                try {
+                    if (choice == 1) {
+                        solution = MatrixSolver.gaussElimination(matrixAugmented);
+                        OutputUtils.printCoefficients(solution, true);
+                    } else if (choice == 2) {
+                        MatrixSolver.gaussJordanEliminationForMain(matrixAugmented);
+                    } else if (choice == 3) {
+                        solution = MatrixSolver.solveUsingInverse(matrixAugmented);
+                        OutputUtils.printCoefficients(solution, true);
+                    } else {
+                        solution = MatrixSolver.solveUsingCramer(matrixAugmented);
+                        OutputUtils.printCoefficients(solution, true);
+                    }
+                    break; // Keluar dari loop jika tidak ada exception
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    // Bisa tambahkan logging untuk info lebih detail jika diperlukan
+                }
             }
         }
+        
         
     }
 
