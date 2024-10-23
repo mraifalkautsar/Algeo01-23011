@@ -151,11 +151,19 @@ public class InputUtils {
         return array;
     }
 
-    public static double[][] readAugmentedMatrixFromKeyboard(int n, int m) {
-        try (Scanner scanner = new Scanner(System.in)) {
+    public static double[][] readAugmentedMatrixFromKeyboard(int m, int n) {
             double[][] augmentedMatrix = new double[m][n + 1]; // n peubah + 1 untuk yi
 
-            System.out.println("Masukkan nilai-nilai x1, x2, ..., xn dan yi (satu baris untuk setiap sampel):");
+            // Membangun pesan untuk menunjukkan peubah x1, x2, ..., xn
+            StringBuilder variables = new StringBuilder();
+            for (int i = 1; i <= n; i++) {
+                variables.append("x").append(i);
+                if (i < n) {
+                    variables.append(", "); // Menambahkan koma jika bukan peubah terakhir
+                }
+            }
+
+            System.out.println("Masukkan nilai-nilai " + variables + " dan yi (satu baris untuk setiap sampel):");
             for (int i = 0; i < m; i++) {
                 for (int j = 0; j <= n; j++) {
                     augmentedMatrix[i][j] = scanner.nextDouble();
@@ -163,7 +171,6 @@ public class InputUtils {
             }
 
             return augmentedMatrix; // Kembalikan matriks augmented yang dibaca
-        }
     }
 
     public static double[][] readAugmentedMatrixFromFile(String filePath, int n) {
@@ -203,7 +210,6 @@ public class InputUtils {
     }
     
     public static double[][] readMatrixFromKeyboard() {
-        try (Scanner scanner = new Scanner(System.in)) {
             System.out.print("Masukkan ukuran matriks (n x n): ");
             int n = scanner.nextInt();
             double[][] matrix = new double[n][n];
@@ -216,7 +222,6 @@ public class InputUtils {
             }
             
             return matrix;
-        }
     }
 
     public static double[][] readMatrixFromFile2(String filePath)  {
