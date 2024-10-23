@@ -2,9 +2,12 @@ package regression;
 
 import matrix.Matrix;
 import matrix.MatrixSolver;
+import java.util.Scanner;
 
 public class MultipleQuadraticRegression {
-    public Matrix buildQuadraticDesignMatrix(double[][] X) {
+    public static Scanner scanner = new Scanner(System.in);
+
+    public static Matrix buildQuadraticDesignMatrix(double[][] X) {
         int n = X.length; // Jumlah observasi
         int N = X[0].length; // Jumlah variabel
 
@@ -38,7 +41,7 @@ public class MultipleQuadraticRegression {
         return Quadratic;
     }
 
-    public Matrix calculateBetaQuadraticRegression(Matrix Quadratic,double[][] Y) {
+    public static Matrix calculateBetaQuadraticRegression(Matrix Quadratic,double[][] Y) {
         Matrix Xt = Quadratic.transpose();
         Matrix XtX = Xt.multiplyMatrix(Quadratic);
 
@@ -66,53 +69,90 @@ public class MultipleQuadraticRegression {
         return beta;
     }
 
-    public double predictQuadraticRegression(Matrix coefficients, Matrix observation) {
-        double prediction = coefficients.data[0][0]; // Intercept
-
-        //  Istilah linear
-        for (int i = 0; i < observation.rowEff; i++) {
-            prediction += coefficients.data[i + 1][0] * observation.data[0][i+1];
-        }
-
-        // Istilah kuadrat
-        for (int i = 0; i < observation.rowEff; i++) {
-            prediction += coefficients.data[i + 1 + observation.rowEff][0] * Math.pow(observation.data[0][i+1], 2);
-        }
-
-        // Istilah interaksi
-        int interactionStartIndex = 1 + 2 * observation.rowEff;
-        for (int i = 0; i < observation.rowEff; i++) {
-            for (int j = i + 1; j < observation.rowEff; j++) {
-                prediction += coefficients.data[interactionStartIndex++][0] * observation.data[0][i+1] * observation.data[0][j+1];
-            }
-        }
-
-        return prediction;
-    }
-
     // Fungsi untuk mencetak persamaan regresi kuadratik
-    public void printQuadraticEquation(Matrix coefficients, int numFeatures) {
+    public static void printQuadraticEquation(Matrix coefficients, int numFeatures) {
         StringBuilder equation = new StringBuilder();
-        equation.append("y = ").append(coefficients.data[0][0]);
+        equation.append("y = ").append(String.format("%.4f", coefficients.data[0][0]));
 
         // Tambah istilah linear
         for (int i = 0; i < numFeatures; i++) {
-            equation.append(" + ").append(coefficients.data[i + 1][0]).append(" * x").append(i + 1);
+            equation.append(" + ").append(String.format("%.4f",coefficients.data[i + 1][0])).append(" * x").append(i + 1);
         }
 
         // Tambah istilah kuadrat
         for (int i = 0; i < numFeatures; i++) {
-            equation.append(" + ").append(coefficients.data[i + 1 + numFeatures][0]).append(" * x").append(i + 1).append("^2");
+            equation.append(" + ").append(String.format("%.4f", coefficients.data[i + 1 + numFeatures][0])).append(" * x").append(i + 1).append("^2");
         }
 
         // Tambah istilah interaksi
         int idx = 1 + 2 * numFeatures;
         for (int i = 0; i < numFeatures; i++) {
             for (int j = i + 1; j < numFeatures; j++) {
-                equation.append(" + ").append(coefficients.data[idx++][0]).append(" * x").append(i + 1).append(" * x").append(j + 1);
+                equation.append(" + ").append(String.format("%.4f", coefficients.data[idx++][0])).append(" * x").append(i + 1).append(" * x").append(j + 1);
             }
         }
 
         System.out.println(equation.toString());
     }
+    
+    public static double predictQuadraticRegression(Matrix coefficients, Matrix observation) {
+        // Intercept
+        double prediction = coefficients.data[0][0];
+        for (int i = 1; i < coefficients.rowEff; i++) {
+             prediction += coefficients.data[i][0] * observation.data[0][i];
+        }
+        return prediction;
+    }
+
+    // Melatih model regresi kuadratik
+    public static Matrix trainQuadraticModel(double[][] data_array, int n) {
+        // Membentuk matriks X dan Y
+        double[][] X = new double[data_array.length][n];
+        double[][] Y = new double[data_array.length][1];
+        
+        Matrix.splitAugmentedMatrix(data_array, X, Y);
+
+        // Membangun matriks desain kuadratik
+        Matrix designMatrix = MultipleQuadraticRegression.buildQuadraticDesignMatrix(X);
+    
+        // Menghitung koefisien regresi kuadratik
+        Matrix coefficients = MultipleQuadraticRegression.calculateBetaQuadraticRegression(designMatrix, Y);
+        
+        // Mencetak fungsi regresi
+        MultipleQuadraticRegression.printQuadraticEquation(coefficients, X[0].length);
+    
+        return coefficients;
+    }
+
+    public static double[][] inputObservation(int n) {
+        double[][] observation = new double[1][n];
+        System.out.println("Masukkan nilai untuk observasi baru:");
+    
+        for (int i = 0; i < n; i++) {
+            System.out.print("Nilai untuk variabel x" + (i + 1) + ": ");
+            observation[0][i] = scanner.nextDouble();
+        }
+        
+        return observation;
+    }    
+        
+    public static double predictQuadratic(Matrix coefficients, double[][] observation) {
+        // Membangun matriks desain kuadratik dari observasi baru
+        Matrix obsMatrix = MultipleQuadraticRegression.buildQuadraticDesignMatrix(observation);
+    
+        // Melakukan prediksi
+        double predictedValue = MultipleQuadraticRegression.predictQuadraticRegression(coefficients, obsMatrix);
+        
+        // Menampilkan observasi dan hasil prediksi
+        StringBuilder observationStr = new StringBuilder();
+        for (int i = 0; i < observation[0].length; i++) {
+            observationStr.append(observation[0][i]);
+            if (i < observation[0].length - 1) {
+                observationStr.append(", ");
+            }
+        }
+        System.out.println("Prediksi nilai untuk observasi [" + observationStr.toString() + "] adalah: " + String.format("%.4f", predictedValue));
+    
+        return predictedValue;
+    }    
 }
