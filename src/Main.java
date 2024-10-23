@@ -111,21 +111,28 @@ public class Main {
 
         while (true) {
             int choice = InputUtils.getInt("Masukkan pilihanmu: ");
-
+        
             if ((choice <= 0) || (choice > 4)) {
                 System.out.println("Masukan salah.");
-            } else if (choice == 1) {
-                solution = MatrixSolver.gaussElimination(matrixAugmented);
-                break;
-            } else if (choice == 2) {
-                MatrixSolver.gaussJordanEliminationForMain(matrixAugmented);
-                return;
-            } else if (choice == 3) {
-                solution = MatrixSolver.solveUsingInverse(matrixAugmented);
-                break;
             } else {
-                solution = MatrixSolver.solveUsingCramer(matrixAugmented);
-                break;
+                try {
+                    if (choice == 1) {
+                        solution = MatrixSolver.gaussElimination(matrixAugmented);
+                        OutputUtils.printCoefficients(solution, true);
+                    } else if (choice == 2) {
+                        MatrixSolver.gaussJordanEliminationForMain(matrixAugmented);
+                    } else if (choice == 3) {
+                        solution = MatrixSolver.solveUsingInverse(matrixAugmented);
+                        OutputUtils.printCoefficients(solution, true);
+                    } else {
+                        solution = MatrixSolver.solveUsingCramer(matrixAugmented);
+                        OutputUtils.printCoefficients(solution, true);
+                    }
+                    break; // Keluar dari loop jika tidak ada exception
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    // Bisa tambahkan logging untuk info lebih detail jika diperlukan
+                }
             }
         }
 
@@ -165,8 +172,9 @@ public class Main {
 
             if ((choice <= 0) || (choice > 2)) {
                 System.out.println("Masukan salah.");
-            } else if (choice == 1) {
-                matrix = InputUtils.readMatrixFromInput();
+            }
+            else if (choice == 1) {
+                matrix = InputUtils.readMatrixFromKeyboard();
                 break;
             } else {
                 String fileName = InputUtils.getString("Masukkan nama file: ");
@@ -191,11 +199,23 @@ public class Main {
 
             if ((choice <= 0) || (choice > 2)) {
                 System.out.println("Masukan salah.");
-            } else if (choice == 1) {
-                determinan = MatrixSolver.determinantByRowReduction(matrix);
+            }
+            else if (choice == 2) {
+                try {
+                    determinan = MatrixSolver.determinantByRowReduction(matrix);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    return;
+                }
                 break;
-            } else {
-                determinan = MatrixSolver.determinant(matrix);
+            }
+            else {
+                try {
+                    determinan = MatrixSolver.determinant(matrix);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    return;
+                }
                 break;
             }
         }
@@ -223,18 +243,19 @@ public class Main {
     }
 
     public static void MatriksBalikan() {
-        Matrix matrix;
         System.out.println("Input dari keyboard atau file?");
         System.out.println("1. Keyboard");
         System.out.println("2. File");
-
+        
+        Matrix matrix;
         while (true) {
             int choice = InputUtils.getInt("Masukkan pilihanmu: ");
 
             if ((choice <= 0) || (choice > 2)) {
                 System.out.println("Masukan salah.");
-            } else if (choice == 1) {
-                matrix = InputUtils.readMatrixFromInput();
+            }
+            else if (choice == 1) {
+                matrix = InputUtils.readMatrixFromKeyboard();
                 break;
             } else {
                 String fileName = InputUtils.getString("Masukkan nama file: ");
@@ -253,18 +274,23 @@ public class Main {
         System.out.println("2. Invers Adjoin");
 
         Matrix matriksBalikan = null;
-
         while (true) {
             int choice = InputUtils.getInt("Masukkan pilihanmu: ");
 
             if ((choice <= 0) || (choice > 2)) {
-                System.out.println("Masukan salah.");
-            } else if (choice == 1) {
-                matriksBalikan = MatrixSolver.inverseGaussJordan(matrix); // Corrected from matriksBalikan to matrix
-                break;
+            System.out.println("Masukan salah.");
             } else {
-                matriksBalikan = MatrixSolver.inverseAdjoin(matrix); // Corrected from matriksBalikan to matrix
+            try {
+                if (choice == 1) {
+                matriksBalikan = MatrixSolver.inverseGaussJordan(matrix);
+                } else {
+                matriksBalikan = MatrixSolver.inverseAdjoin(matrix);
+                }
                 break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return;
+            }
             }
         }
 

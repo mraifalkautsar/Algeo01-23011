@@ -1,7 +1,7 @@
 package matrix;
 
 public class MatrixSolver {
-    private static final double epsilon = 1e-9; // Toleransi untuk angka yang sangat kecil
+    private static final double epsilon = 1e-10; // Toleransi untuk angka yang sangat kecil
 
     // Determinan matriks dengan metode eksansi kofaktor
     public static double determinant(Matrix matrix) {
@@ -9,8 +9,8 @@ public class MatrixSolver {
             throw new IllegalArgumentException("Matriks harus berbentuk persegi");
         }
         double det = determinantByCofactorExpansion(matrix.data);
-    
-        // Mengatur toleransi numerik untuk mendeteksi nilai mendekati nol  // Toleransi untuk angka yang sangat kecil
+        
+        // Mengatur toleransi numerik untuk mendeteksi nilai mendekati nol
         if (Math.abs(det) < epsilon) {
             return 0;
         }
@@ -86,8 +86,12 @@ public class MatrixSolver {
                 matrixCopy.addMultipleOfRow(j, i, factor); 
             }
         }
+
+        if (Math.abs(determinant) < epsilon) {
+            return 0;
+        }
     
-        return determinant;
+        return Math.round(determinant * 10000.0) / 10000.0;
     }
 
     // Fungsi untuk menghitung adjoin matriks
@@ -108,15 +112,33 @@ public class MatrixSolver {
     
     // Fungsi untuk menghitung balikan matriks
     public static Matrix inverseAdjoin(Matrix matrix) {
-        double det = determinantByCofactorExpansion(matrix.data);
-        if (det == 0) throw new IllegalArgumentException("Matrix tidak dapat dibalik, determinan = 0.");
-        Matrix adjoinMatrix = adjoin(matrix);
-        int n = matrix.data.length;
-        Matrix inverseMatrix = new Matrix(n, n);
+        if (!matrix.isSquare()) {
+            throw new IllegalArgumentException("Matriks harus berbentuk persegi");
+        }
 
+        int n = matrix.data.length;
+
+        // Tangani kasus matriks 1x1
+        if (n == 1) {
+            if (matrix.data[0][0] == 0) {
+                throw new ArithmeticException("Matrix tidak memiliki invers (singular).");
+            }
+            Matrix inverseMatrix = new Matrix(1, 1);
+            inverseMatrix.data[0][0] = 1 / matrix.data[0][0];
+            return inverseMatrix;
+        }
+
+        double det = determinant(matrix);
+        if (det == 0) throw new IllegalArgumentException("Matrix tidak dapat dibalik, determinan = 0.");
+
+        Matrix adjoinMatrix = adjoin(matrix);
+        Matrix inverseMatrix = new Matrix(n, n);
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                inverseMatrix.data[i][j] = adjoinMatrix.data[i][j] / det;
+            inverseMatrix.data[i][j] = adjoinMatrix.data[i][j] / det;
+            if (Math.abs(inverseMatrix.data[i][j]) < epsilon) {
+                inverseMatrix.data[i][j] = 0;
+            }
             }
         }
         return inverseMatrix;
@@ -124,7 +146,21 @@ public class MatrixSolver {
 
     // Fungsi untuk menghitung invers matriks menggunakan metode Gauss-Jordan
     public static Matrix inverseGaussJordan(Matrix matrix) {
-        int n = matrix.rowEff;  
+        if (!matrix.isSquare()) {
+            throw new IllegalArgumentException("Matriks harus berbentuk persegi");
+        }
+
+        int n = matrix.rowEff;
+
+        // Tangani kasus matriks 1x1
+        if (n == 1) {
+            if (matrix.data[0][0] == 0) {
+                throw new ArithmeticException("Matrix tidak memiliki invers (singular).");
+            }
+            Matrix inverseMatrix = new Matrix(1, 1);
+            inverseMatrix.data[0][0] = 1 / matrix.data[0][0];
+            return inverseMatrix;
+        }
 
         // cek apakah matriks memiliki determinan
         double determinant = determinant(matrix);  // Tambahkan metode ini untuk cek determinan
@@ -132,14 +168,14 @@ public class MatrixSolver {
             throw new ArithmeticException("Matrix tidak memiliki invers (singular).");
         }
 
-        // Mmenambah matriks identitas di sebelah kanan
-        Matrix augmentedMatrix = new Matrix(n, 2*n);
+        // Menambah matriks identitas di sebelah kanan
+        Matrix augmentedMatrix = new Matrix(n, 2 * n);
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 augmentedMatrix.data[i][j] = matrix.data[i][j];
             }
             for (int j = n; j < 2 * n; j++) {
-                augmentedMatrix.data[i][j] = (i == j - n) ? 1.0 : 0.0 ;
+                augmentedMatrix.data[i][j] = (i == j - n) ? 1.0 : 0.0;
             }
         }
 
@@ -281,7 +317,7 @@ public class MatrixSolver {
             solutions[i] = Math.round((detAi / detA) * 10000.0) / 10000.0;
 
             // Ubah -0 menjadi 0
-            if (Math.abs(solutions[i]) < 1e-10) {
+            if (Math.abs(solutions[i]) < epsilon) {
                 solutions[i] = 0; 
             }
         }
@@ -353,6 +389,9 @@ public class MatrixSolver {
                 double factor = matrix.data[k][i] / matrix.data[i][i];
                 for (j = i; j <= n; j++) {
                     matrix.data[k][j] -= factor * matrix.data[i][j];
+                    if (Math.abs(matrix.data[k][j]) < epsilon) {
+                        matrix.data[k][j] = 0;
+                    }
                 }
             }
         }
@@ -363,7 +402,6 @@ public class MatrixSolver {
             double[] truncatedRow = truncateLastCol(matrix.data[i]);
             if (isRowZero(truncatedRow) && matrix.data[i][m - 1] != 0) {
                 consistent = false;
-                System.out.println("No Solution");
                 return null; // mengembalikan null jika tidak ada solusi
             }
         }
@@ -437,6 +475,9 @@ public class MatrixSolver {
                     koefisien = matrix.data[i][colEff];
                     for (j = 0; j < col; j++) {
                         matrix.data[i][j] -= koefisien * matrix.data[k][j];
+                        if (Math.abs(matrix.data[k][j]) < epsilon) {
+                            matrix.data[k][j] = 0;
+                        }
                     }
                 }
             }
@@ -506,6 +547,9 @@ public class MatrixSolver {
                     koefisien = matrix.data[i][colEff];
                     for (j = 0; j < col; j++) {
                         matrix.data[i][j] -= koefisien*matrix.data[k][j];
+                        if (Math.abs(matrix.data[k][j]) < epsilon) {
+                            matrix.data[k][j] = 0;
+                        }
                     }
                 }
             }

@@ -268,20 +268,50 @@ public class InputUtils {
     
         return augmentedMatrix; // Kembalikan matriks augmented yang dibaca
     }
-
-    public static double[][] readMatrixFromKeyboard() {
+        
+    public static Matrix readMatrixFromKeyboard() {
+        int n;
+        do {
             System.out.print("Masukkan ukuran matriks (n x n): ");
-            int n = scanner.nextInt();
-            double[][] matrix = new double[n][n];
+            n = scanner.nextInt();
+            if (n <= 0) {
+            System.out.println("Ukuran matriks harus lebih besar dari 0. Silakan coba lagi.");
+            }
+        } while (n <= 0);
+        
+        Matrix matrix = new Matrix(n, n);
+        scanner.nextLine();
 
-            System.out.println("Masukkan elemen matriks (pisahkan dengan spasi): ");
-            for (int i = 0; i < n; i++) {
+        System.out.println("Masukkan elemen matriks (pisahkan dengan spasi): ");
+        for (int i = 0; i < n; i++) {
+            while (true) {
+                String input = scanner.nextLine();
+                String[] rowValues = input.trim().split(" ");
+
+                // Validasi jumlah elemen dalam baris
+                if (rowValues.length != n) {
+                    System.out.println("Jumlah elemen dalam baris tidak sesuai. Silakan masukkan ulang baris ke-" + (i + 1));
+                    continue; // Ulangi input untuk baris ini
+                }
+
+                boolean validRow = true; // Penanda untuk validasi baris
                 for (int j = 0; j < n; j++) {
-                    matrix[i][j] = scanner.nextDouble();
+                    try {
+                        matrix.data[i][j] = Double.parseDouble(rowValues[j]);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Input tidak valid untuk elemen baris ke-[" + (i + 1) + "] kolom ke-[" + (j + 1) + "]. Silakan masukkan ulang baris ke-" + (i + 1));
+                        validRow = false; // Tandai baris tidak valid
+                        break; // Keluar dari loop validasi
+                    }
+                }
+
+                if (validRow) {
+                    break; // Jika baris valid, keluar dari loop
                 }
             }
+        }
 
-            return matrix;
+        return matrix;
     }
 
     public static double[][] readMatrixFromFile2(String filePath)  {
