@@ -310,4 +310,19 @@ public class Matrix {
             System.out.println("Indeks baris tidak valid.");
         }
     }
+
+    // Fungsi untuk memisahkan matriks augmented menjadi X dan Y
+    public static void splitAugmentedMatrix(double[][] augmentedMatrix, double[][] X, double[][] Y) {
+        int rows = augmentedMatrix.length;       
+        int cols = augmentedMatrix[0].length;
+
+        for (int i = 0; i < rows; i++) {
+            // Copy kolom-kolom X dari augmentedMatrix ke X
+            for (int j = 0; j < cols - 1; j++) { 
+                X[i][j] = augmentedMatrix[i][j];
+            }
+            // Copy kolom terakhir dari augmentedMatrix ke Y
+            Y[i][0] = augmentedMatrix[i][cols - 1];
+        }
+    }
 }
