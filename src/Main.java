@@ -205,11 +205,11 @@ public class Main {
     }
 
     public static void MatriksBalikan() {
-        Matrix matrix;
         System.out.println("Input dari keyboard atau file?");
         System.out.println("1. Keyboard");
         System.out.println("2. File");
-
+        
+        Matrix matrix;
         while (true) {
             int choice = InputUtils.getInt("Masukkan pilihanmu: ");
 
@@ -217,7 +217,7 @@ public class Main {
                 System.out.println("Masukan salah.");
             }
             else if (choice == 1) {
-                matrix = InputUtils.readMatrixFromInput();
+                matrix = InputUtils.readMatrixFromKeyboard();
                 break;
             }
             else {
@@ -236,20 +236,23 @@ public class Main {
         System.out.println("2. Invers Adjoin");
 
         Matrix matriksBalikan = null;
-
         while (true) {
             int choice = InputUtils.getInt("Masukkan pilihanmu: ");
 
             if ((choice <= 0) || (choice > 2)) {
-                System.out.println("Masukan salah.");
-            }
-            else if (choice == 1) {
-                matriksBalikan = MatrixSolver.inverseGaussJordan(matriksBalikan);
+            System.out.println("Masukan salah.");
+            } else {
+            try {
+                if (choice == 1) {
+                matriksBalikan = MatrixSolver.inverseGaussJordan(matrix);
+                } else {
+                matriksBalikan = MatrixSolver.inverseAdjoin(matrix);
+                }
                 break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return;
             }
-            else {
-                matriksBalikan = MatrixSolver.inverseAdjoin(matriksBalikan);
-                break;
             }
         }
 
