@@ -14,13 +14,16 @@ public class InputUtils {
 
     // BASIC UTILITIES
     // Metode untuk meminta integer dari pengguna
+// Metode untuk meminta integer dari pengguna
     public static int getInt(String prompt) {
         System.out.print(prompt);
         while (!scanner.hasNextInt()) {
             System.out.println("Input tidak valid, masukkan integer.");
-            scanner.next();
+            scanner.next(); // Clear the invalid input
         }
-        return scanner.nextInt();
+        int value = scanner.nextInt();
+        scanner.nextLine(); // Consume the remaining newline
+        return value;
     }
 
     // Metode untuk meminta double dari pengguna
@@ -28,17 +31,19 @@ public class InputUtils {
         System.out.print(prompt);
         while (!scanner.hasNextDouble()) {
             System.out.println("Input tidak valid, masukkan double.");
-            scanner.next();
+            scanner.next(); // Clear the invalid input
         }
-        return scanner.nextDouble();
+        double value = scanner.nextDouble();
+        scanner.nextLine(); // Consume the remaining newline
+        return value;
     }
 
+    // Metode untuk meminta string dari pengguna
     public static String getString(String prompt) {
-        try (Scanner scanner = new Scanner(System.in)) {
-            System.out.print(prompt);
-            return scanner.nextLine();
-        }
+        System.out.print(prompt);
+        return scanner.nextLine(); // Use the existing scanner instance
     }
+
 
     // COMPLEX UTILITIES
     public static Matrix readMatrixFromInput() {

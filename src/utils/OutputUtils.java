@@ -103,18 +103,15 @@ public class OutputUtils {
         }
     }
 
-    public static void saveInterpolasiPolinom(double[] solution, double estimation) {
+    public static void saveInterpolasiPolinom(String equation, String estimation_output) {
         int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak) ");
 
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output: ");
             String filePath = "../test/interpolasi_polinom/output/" + outputFileName + ".txt";
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                writer.write("Koefisien polinomial:\n");
-                for (int i = 0; i < solution.length; i++) {
-                    writer.write("a" + (i + 1) + " = " + solution[i] + "\n");
-                }
-                writer.write("\nNilai y hasil taksiran: " + estimation);
+                writer.write(equation + "\n");
+                writer.write(estimation_output + "\n");
                 System.out.println("Hasil berhasil disimpan di " + filePath);
             } catch (IOException e) {
                 System.out.println("Gagal menyimpan hasil ke file: " + e.getMessage());
