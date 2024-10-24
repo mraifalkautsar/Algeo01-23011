@@ -162,7 +162,7 @@ public class Main {
         int saveChoice = InputUtils.getInt("Masukkan pilihanmu: ");
 
         if (saveChoice == 1) {
-            String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
+            String outputFileName = InputUtils.getString("Masukkan nama file output: ");
             try {
                 if (gauss) {
                     OutputUtils.saveSistemPersamaanLinierGauss(solution_string, "../test/spl/output/" + outputFileName + ".txt");
@@ -252,7 +252,7 @@ public class Main {
         int saveChoice = InputUtils.getInt("Masukkan pilihanmu: ");
 
         if (saveChoice == 1) {
-            String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
+            String outputFileName = InputUtils.getString("Masukkan nama file output: ");
             try {
                 OutputUtils.saveDeterminant(determinan, "../test/determinan/output/" + outputFileName + ".txt");
                 System.out.println("Hasil berhasil disimpan ke dalam file: ../test/determinan/output/" + outputFileName + ".txt");
@@ -327,7 +327,7 @@ public class Main {
         int saveChoice = InputUtils.getInt("Masukkan pilihanmu: ");
 
         if (saveChoice == 1) {
-            String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
+            String outputFileName = InputUtils.getString("Masukkan nama file output: ");
             try {
                 OutputUtils.saveInverseMatrix(matriksBalikan, "../test/inverse/output/" + outputFileName + ".txt");
                 System.out.println("Hasil matriks balikan berhasil disimpan ke dalam file: ../test/inverse/output/" + outputFileName + ".txt");
@@ -372,7 +372,7 @@ public class Main {
                 // Input lewat file
                 try {
                     // Minta nama file dari user
-                    String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
+                    String filename = InputUtils.getString("Masukkan nama file: ");
 
                     // Buat path lengkapnya
                     String filePath = "../test/interpolasi_polinom/input/" + filename + ".txt";
@@ -461,7 +461,7 @@ public class Main {
 
             } else {
                 // Input melalui file
-                String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
+                String filename = InputUtils.getString("Masukkan nama file: ");
                 Object[] file = InputUtils.readVectorAndABfromFile("../test/interpolasi_bicubic/input/" + filename + ".txt");
                 double[] vector = (double[]) file[0];
                 double a = (double) file[1];
@@ -524,7 +524,7 @@ public class Main {
 
             } else if (choice == 2) {
                 // Input from file using Scanner
-                String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
+                String filename = InputUtils.getString("Masukkan nama file: ");
 
                 try {
                     String filePath = "../test/regresi_linier/input/" + filename + ".txt";
@@ -571,7 +571,7 @@ public class Main {
                     // Calculate regression solution
                     double[] solution = MultipleLinearRegression.calculateRegressionEquation(data_array, m, n);
                     String equation = MultipleLinearRegression.getLinearRegressionEquation(solution, n);
-                    OutputUtils.printCoefficients(solution);
+                    System.out.println(equation);
 
                     if (xToEstimate != null) {
                         double estimation = MultipleLinearRegression.calculateY(solution, xToEstimate);
@@ -630,7 +630,7 @@ public class Main {
                 data_array = InputUtils.readAugmentedMatrixFromKeyboard(m, n);
             } else if (choice == 2) {
                 // Input dari file menggunakan Scanner
-                String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
+                String filename = InputUtils.getString("Masukkan nama file : ");
 
                 try {
                     String filePath = "../test/regresi_kuadratik/input/" + filename + ".txt";
@@ -716,8 +716,8 @@ public class Main {
         System.out.println("\n== IMAGE RESIZING ==");
         try {
             // Minta input nama file tanpa path atau .jpg
-            String filename = InputUtils.getString("Masukkan nama file (tanpa path dan .jpg): ");
-            int[][][] image = loadImage("src/image_resizing/input/" + filename + ".jpg");
+            String filename = InputUtils.getString("Masukkan nama file: ");
+            int[][][] image = loadImage("../test/image_resizing/input/" + filename + ".jpg");
 
             // Meminta faktor skala panjang dan tinggi
             double lengthScale = InputUtils.getDouble("Masukkan faktor skala panjang (contoh: 1.5 untuk 150%): ");

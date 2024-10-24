@@ -18,11 +18,11 @@ public class BicubicSplineInterpolation {
         // membaca matriks dari file
         try {
             if (imageResizing) {
-                Matrix inversedMatrixX = InputUtils.readMatrixFromFileForBicubic("interpolation/ImageResizingMatrix.txt");
+                Matrix inversedMatrixX = InputUtils.readMatrixFromFileForBicubic("../src/interpolation/ImageResizingMatrix.txt");
                 vectorA = inversedMatrixX.multiplyMatrix(vectorY);
             }
             else {
-                matrixX = InputUtils.readMatrixFromFileForBicubic("interpolation/MatrixX.txt");
+                matrixX = InputUtils.readMatrixFromFileForBicubic("../src/interpolation/MatrixX.txt");
                 // inversi matriks dan pemecahan
                 Matrix inversedMatrixX = MatrixSolver.inverseAdjoin(matrixX);
                 vectorA = inversedMatrixX.multiplyMatrix(vectorY);
