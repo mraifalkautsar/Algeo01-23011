@@ -104,11 +104,11 @@ public class OutputUtils {
     }
 
     public static void saveInterpolasiPolinom(double[] solution, double estimation) {
-        int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
+        int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak) ");
 
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output: ");
-            String filePath = "test/interpolasi_polinom/output/" + outputFileName + ".txt";
+            String filePath = "../test/interpolasi_polinom/output/" + outputFileName + ".txt";
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 writer.write("Koefisien polinomial:\n");
                 for (int i = 0; i < solution.length; i++) {
@@ -125,11 +125,11 @@ public class OutputUtils {
     }
 
     public static void saveBicubicSpline(double res) {
-        int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
+        int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak) ");
 
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output (dengan ekstensi .txt): ");
-            String filePath = "test/interpolasi_bicubic/output/" + outputFileName;
+            String filePath = "../test/interpolasi_bicubic/output/" + outputFileName;
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 writer.write("Hasil Interpolasi Bicubic Spline:\n");
                 writer.write("Hasil interpolasi: " + res + "\n");
@@ -143,11 +143,11 @@ public class OutputUtils {
     }
 
     public static void saveRegresiLinier(String equation, String estimationOutput) {
-        int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
+        int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak) ");
 
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output: ");
-            String filePath = "test/regresi_linier/output/" + outputFileName + ".txt";
+            String filePath = "../test/regresi_linier/output/" + outputFileName + ".txt";
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 writer.write(equation);
                 writer.write(estimationOutput);
@@ -162,11 +162,11 @@ public class OutputUtils {
 
 
     public static void saveRegresiKuadratikBerganda(String equation, double[][] observation, double prediction) {
-        int saveChoice = InputUtils.getInt("\nApakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
+        int saveChoice = InputUtils.getInt("\nApakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak) ");
     
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output: ");
-            String filePath = "test/regresi_kuadratik/output/" + outputFileName + ".txt";
+            String filePath = "../test/regresi_kuadratik/output/" + outputFileName + ".txt";
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 writer.write("Hasil Regresi Kuadratik Berganda:\n");
                 writer.write("Persamaan:\n");

@@ -34,9 +34,10 @@ public class InputUtils {
     }
 
     public static String getString(String prompt) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print(prompt);
-        return scanner.nextLine();
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.print(prompt);
+            return scanner.nextLine();
+        }
     }
 
     // COMPLEX UTILITIES
@@ -82,7 +83,7 @@ public class InputUtils {
     // Membaca matriks dari file
     public static Matrix readMatrixFromFile(String folder, String filename) throws IOException {
         // mengonstruksi path penuh ke file
-        String filePath = "test/" + folder + "/input/" + filename + ".txt";
+        String filePath = "../test/" + folder + "/input/" + filename + ".txt";
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -125,10 +126,7 @@ public class InputUtils {
     }
 
     public static Matrix readMatrixFromFileForBicubic(String filepath) throws IOException {
-        // mengonstruksi path penuh ke file
-        String filePath = filepath;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
             String line;
             int rowCount = 0;
             int colCount = -1;
@@ -164,7 +162,7 @@ public class InputUtils {
 
             return matrix;
         } catch (FileNotFoundException e) {
-            throw new IOException("File tidak ditemukan: " + filePath);
+            throw new IOException("File tidak ditemukan: " + filepath);
         }
     }
 
