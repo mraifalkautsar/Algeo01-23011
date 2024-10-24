@@ -41,6 +41,7 @@ public class Main {
             System.out.println("7. Regresi Kuadratik Berganda");
             System.out.println("8. Interpolasi Gambar");
             System.out.println("9. Keluar");
+            System.out.println("NOTE: Apabila program meminta masukan nama file, tidak perlu meng-include extension dari file.");
 
             // meminta pilihan dari pengguna
             System.out.print("Masukkan pilihan Anda: ");
@@ -176,7 +177,6 @@ public class Main {
             System.out.println("Hasil tidak disimpan ke dalam file.");
         }
 
-        InputUtils.pressAnyKeyToProceed();
     }
 
 
@@ -262,8 +262,6 @@ public class Main {
         } else {
             System.out.println("Hasil tidak disimpan ke dalam file.");
         }
-
-        InputUtils.pressAnyKeyToProceed();
     }
 
     public static void MatriksBalikan() {
@@ -340,7 +338,6 @@ public class Main {
             System.out.println("Hasil tidak disimpan ke dalam file.");
         }
 
-        InputUtils.pressAnyKeyToProceed();
     }
 
     public static void InterpolasiPolinom() {
@@ -359,15 +356,16 @@ public class Main {
                 int n = InputUtils.getInt("Masukkan jumlah data: ");
                 double[][] data_array = InputUtils.getXYdata(n, "Masukkan titik-titik data: ");
                 double[] solution = PolynomialInterpolation.calculatePolynomialEquation(n, data_array);
-                OutputUtils.printCoefficients(solution);
+                String equation = PolynomialInterpolation.getPolynomialEquation(solution, n);
+                System.out.println(equation);
 
                 double x = InputUtils.getDouble("Nilai x yang ingin ditaksir: ");
                 double estimation = PolynomialInterpolation.calculateY(solution, x);
-
-                System.out.println("Nilai y hasil taksiran: " + estimation);
+                String estimation_output = ("Nilai y hasil taksiran: " + estimation);
+                System.out.println(estimation_output);
 
                 // Opsi untuk menyimpan solusi ke file
-                OutputUtils.saveInterpolasiPolinom(solution, estimation);
+                OutputUtils.saveInterpolasiPolinom(equation, estimation_output);
                 break;
 
             } else if (choice == 2) {
@@ -413,14 +411,16 @@ public class Main {
 
                     // Hitung solusi interpolasi polinomial
                     double[] solution = PolynomialInterpolation.calculatePolynomialEquation(n, data_array);
-                    OutputUtils.printCoefficients(solution);
+                    String equation = PolynomialInterpolation.getPolynomialEquation(solution, n);
 
+                    System.out.println(equation);
                     // Estimasi nilai y untuk x yang diberikan
                     double estimation = PolynomialInterpolation.calculateY(solution, xToEstimate);
-                    System.out.println("Nilai y hasil taksiran: " + estimation);
+                    String estimation_output = ("f(" + xToEstimate + ") =" + estimation);
+                    System.out.println(estimation_output);
 
                     // Opsi untuk menyimpan solusi ke file
-                    OutputUtils.saveInterpolasiPolinom(solution, estimation);
+                    OutputUtils.saveInterpolasiPolinom(equation, estimation_output);
 
                 } catch (FileNotFoundException e) {
                     System.out.println("File tidak ditemukan di path: ../test/interpolasi_polinom/input/" + e.getMessage());
@@ -432,7 +432,6 @@ public class Main {
                 break;
             }
         }
-        InputUtils.pressAnyKeyToProceed();
     }
 
     public static void InterpolasiBicubicSpline() {
@@ -482,7 +481,6 @@ public class Main {
                 break;
             }
         }
-        InputUtils.pressAnyKeyToProceed();
     }
 
     public static void RegresiLinier() {
@@ -606,7 +604,6 @@ public class Main {
                 break;
             }
         }
-        InputUtils.pressAnyKeyToProceed();
     }
 
 
@@ -708,7 +705,6 @@ public class Main {
             }
             break;
         }
-        InputUtils.pressAnyKeyToProceed();
     }
 
 
@@ -735,7 +731,6 @@ public class Main {
         } catch (IOException e) {
             System.out.println("Terjadi kesalahan saat memproses gambar: " + e.getMessage());
         }
-        InputUtils.pressAnyKeyToProceed();
     }
 
 }
