@@ -387,4 +387,9 @@ public class InputUtils {
         return designMatrix; // Kembalikan matriks desain yang telah dibangun
     }
 
+    public static void pressAnyKeyToProceed() {
+        System.out.println("\nTekan tombol apapun untuk kembali ke main menu.");
+        scanner.nextLine();  // Wait for user to press Enter
+    }
+
 }
