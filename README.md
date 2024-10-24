@@ -1,12 +1,10 @@
 # Algeo01-23011
 
 NAMA KELOMPOK
+Misil Sadang Serang
+"Siap meluncur!"
 
-╔╦╗┬┌─┐┬┬    ╔═╗┌─┐┌┬┐┌─┐┌┐┌┌─┐  ╔═╗┌─┐┬─┐┌─┐┌┐┌┌─┐<br/>
-║║║│└─┐││    ╚═╗├─┤ ││├─┤││││ ┬  ╚═╗├┤ ├┬┘├─┤││││ ┬<br/>
-╩ ╩┴└─┘┴┴─┘  ╚═╝┴ ┴─┴┘┴ ┴┘└┘└─┘  ╚═╝└─┘┴└─┴ ┴┘└┘└─┘<br/>
-
-
+Anggota:
 Muhammad Ra'if Alkautsar (13523011)<br/>
 Fityatul Haq Rosyidi (13523116)<br/>
 Reza Ahmad Syarif (13523119)<br/>
