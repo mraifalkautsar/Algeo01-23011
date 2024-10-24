@@ -48,7 +48,7 @@ public class MultipleQuadraticRegression {
         // Invers XtX
         Matrix XtXInverseMatrix = null;
         try {
-            XtXInverseMatrix = MatrixSolver.inverseAdjoin(XtX);
+            XtXInverseMatrix = MatrixSolver.inverseGaussJordan(XtX);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Matriks XtX tidak dapat di-invers, regresi tidak dapat dilanjutkan.");
         }
@@ -101,7 +101,7 @@ public class MultipleQuadraticRegression {
         for (int i = 1; i < coefficients.rowEff; i++) {
              prediction += coefficients.data[i][0] * observation.data[0][i];
         }
-        return prediction;
+        return Math.round(prediction * 10000.0) / 10000.0;
     }
 
     // Melatih model regresi kuadratik
