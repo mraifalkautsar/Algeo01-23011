@@ -686,20 +686,24 @@ public class Main {
                 String equation = MultipleQuadraticRegression.getQuadraticEquation(coefficients, n);
 
                 double prediction = 0;
-                double[][] observation = null;
+                double[][] observation = new double[1][n];
 
                 if (isObservation) {
                     prediction = MultipleQuadraticRegression.predictQuadratic(coefficients, observationfromfile);
+
+                    // Opsi untuk menyimpan hasil ke file
+                    OutputUtils.saveRegresiKuadratikBerganda(equation, observationfromfile, prediction);
                 } else {
                     // Prediksi dengan observasi baru
                     observation = MultipleQuadraticRegression.inputObservation(n);
     
                     // Lakukan prediksi
                     prediction = MultipleQuadraticRegression.predictQuadratic(coefficients, observation);
+                    
+                    // Opsi untuk menyimpan hasil ke file
+                    OutputUtils.saveRegresiKuadratikBerganda(equation, observation, prediction);
                 }
 
-                // Opsi untuk menyimpan hasil ke file
-                OutputUtils.saveRegresiKuadratikBerganda(equation, observation, prediction);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
