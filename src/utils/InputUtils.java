@@ -34,9 +34,10 @@ public class InputUtils {
     }
 
     public static String getString(String prompt) {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print(prompt);
-        return scanner.nextLine();
+        try (Scanner scanner = new Scanner(System.in)) {
+            System.out.print(prompt);
+            return scanner.nextLine();
+        }
     }
 
     // COMPLEX UTILITIES
@@ -47,10 +48,33 @@ public class InputUtils {
         int cols = scanner.nextInt();
 
         Matrix matrix = new Matrix(rows, cols);
+        scanner.nextLine(); // Consume newline character
         System.out.println("Masukkan elemen matriks:");
         for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                matrix.setElement(i, j, scanner.nextDouble());
+            while (true) {
+                String input = scanner.nextLine();
+                String[] rowValues = input.trim().split(" ");
+
+                // Validasi jumlah elemen dalam baris
+                if (rowValues.length != cols) {
+                    System.out.println("Jumlah elemen dalam baris tidak sesuai. Silakan masukkan ulang baris ke-" + (i + 1));
+                    continue; // Ulangi input untuk baris ini
+                }
+
+                boolean validRow = true; // Penanda untuk validasi baris
+                for (int j = 0; j < cols; j++) {
+                    try {
+                        matrix.data[i][j] = Double.parseDouble(rowValues[j]);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Input tidak valid untuk elemen baris ke-[" + (i + 1) + "] kolom ke-[" + (j + 1) + "]. Silakan masukkan ulang baris ke-" + (i + 1));
+                        validRow = false; // Tandai baris tidak valid
+                        break; // Keluar dari loop validasi
+                    }
+                }
+
+                if (validRow) {
+                    break; // Jika baris valid, keluar dari loop
+                }
             }
         }
         return matrix;
@@ -59,7 +83,7 @@ public class InputUtils {
     // Membaca matriks dari file
     public static Matrix readMatrixFromFile(String folder, String filename) throws IOException {
         // mengonstruksi path penuh ke file
-        String filePath = "test/" + folder + "/input/" + filename + ".txt";
+        String filePath = "../test/" + folder + "/input/" + filename + ".txt";
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -102,10 +126,7 @@ public class InputUtils {
     }
 
     public static Matrix readMatrixFromFileForBicubic(String filepath) throws IOException {
-        // mengonstruksi path penuh ke file
-        String filePath = filepath;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filepath))) {
             String line;
             int rowCount = 0;
             int colCount = -1;
@@ -141,7 +162,7 @@ public class InputUtils {
 
             return matrix;
         } catch (FileNotFoundException e) {
-            throw new IOException("File tidak ditemukan: " + filePath);
+            throw new IOException("File tidak ditemukan: " + filepath);
         }
     }
 
