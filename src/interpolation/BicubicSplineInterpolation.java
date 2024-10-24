@@ -3,12 +3,10 @@ package interpolation;
 import matrix.Matrix;
 import matrix.MatrixSolver;
 import utils.InputUtils;
-import utils.OutputUtils;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 
 public class BicubicSplineInterpolation {
 
