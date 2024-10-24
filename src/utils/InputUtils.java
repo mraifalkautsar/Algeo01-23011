@@ -59,7 +59,7 @@ public class InputUtils {
     // Membaca matriks dari file
     public static Matrix readMatrixFromFile(String folder, String filename) throws IOException {
         // mengonstruksi path penuh ke file
-        String filePath = "test/" + folder + "/input/" + filename;
+        String filePath = "test/" + folder + "/input/" + filename + ".txt";
 
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;

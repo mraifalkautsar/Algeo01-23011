@@ -107,8 +107,8 @@ public class OutputUtils {
         int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
 
         if (saveChoice == 1) {
-            String outputFileName = InputUtils.getString("Masukkan nama file output (dengan ekstensi .txt): ");
-            String filePath = "test/interpolasi_polinom/output/" + outputFileName;
+            String outputFileName = InputUtils.getString("Masukkan nama file output: ");
+            String filePath = "test/interpolasi_polinom/output/" + outputFileName + ".txt";
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 writer.write("Koefisien polinomial:\n");
                 for (int i = 0; i < solution.length; i++) {
@@ -146,8 +146,8 @@ public class OutputUtils {
         int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
 
         if (saveChoice == 1) {
-            String outputFileName = InputUtils.getString("Masukkan nama file output (dengan ekstensi .txt): ");
-            String filePath = "test/regresi_linier/output/" + outputFileName;
+            String outputFileName = InputUtils.getString("Masukkan nama file output: ");
+            String filePath = "test/regresi_linier/output/" + outputFileName + ".txt";
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 writer.write("Hasil Regresi Linier:\n");
                 for (int i = 0; i < solution.length; i++) {
@@ -167,8 +167,8 @@ public class OutputUtils {
         int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
     
         if (saveChoice == 1) {
-            String outputFileName = InputUtils.getString("Masukkan nama file output (dengan ekstensi .txt): ");
-            String filePath = "test/regresi_kuadratik/output/" + outputFileName;
+            String outputFileName = InputUtils.getString("Masukkan nama file output: ");
+            String filePath = "test/regresi_kuadratik/output/" + outputFileName + ".txt";
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 writer.write("Hasil Regresi Kuadratik Berganda:\n");
                 writer.write("Persamaan:\n");

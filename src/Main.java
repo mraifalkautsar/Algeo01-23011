@@ -347,7 +347,7 @@ public class Main {
                     String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
 
                     // Buat path lengkapnya
-                    String filePath = "test/interpolasi_polinom/input/" + filename;
+                    String filePath = "test/interpolasi_polinom/input/" + filename + ".txt";
 
                     // Baca file-nya
                     File file = new File(filePath);
@@ -432,7 +432,7 @@ public class Main {
             } else {
                 // Input melalui file
                 String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
-                Object[] file = InputUtils.readVectorAndABfromFile("../test/interpolasi_bicubic/input/" + filename);
+                Object[] file = InputUtils.readVectorAndABfromFile("../test/interpolasi_bicubic/input/" + filename + ".txt");
                 double[] vector = (double[]) file[0];
                 double a = (double) file[1];
                 double b = (double) file[2];
@@ -486,23 +486,29 @@ public class Main {
                 String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
 
                 try {
-                    String filePath = "test/regresi_linier/input/" + filename;
+                    String filePath = "test/regresi_linier/input/" + filename + ".txt";
                     File file = new File(filePath);
                     Scanner scanner = new Scanner(file);
 
                     List<double[]> dataList = new ArrayList<>();
                     double[] xToEstimate = null;
+                    int n = -1;
 
                     while (scanner.hasNextLine()) {
                         String line = scanner.nextLine().trim();
                         String[] values = line.split("\\s+");
+
+                        if (n == -1) {
+                            // Initialize number of variables from the first data line (number of variables = number of columns - 1)
+                            n = values.length - 1;
+                        }
 
                         double[] row = new double[values.length];
                         for (int i = 0; i < values.length; i++) {
                             row[i] = Double.parseDouble(values[i]);
                         }
 
-                        if (values.length == 1) {
+                        if (values.length == n) {
                             // Nilai x yang ingin ditaksir
                             xToEstimate = row;
                         } else {
@@ -515,7 +521,7 @@ public class Main {
 
                     // Proses data menjadi array 2D untuk regresi
                     int m = dataList.size();
-                    int n = dataList.get(0).length - 1; // Jumlah peubah (n) = jumlah kolom - 1 (kolom y)
+                    n = dataList.get(0).length - 1; // Jumlah peubah (n) = jumlah kolom - 1 (kolom y)
                     double[][] data_array = new double[m][n + 1];
                     for (int i = 0; i < m; i++) {
                         data_array[i] = dataList.get(i);
