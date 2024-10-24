@@ -71,7 +71,7 @@ public class OutputUtils {
         }
     }
 
-    public static void SaveSistemPersamaanLinier(double[] solution, String filePath) throws IOException {
+    public static void saveSistemPersamaanLinier(double[] solution, String filePath) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write("Hasil Penyelesaian SPL:\n");
             for (int i = 0; i < solution.length; i++) {
@@ -80,21 +80,21 @@ public class OutputUtils {
         }
     }
 
-    public static void SaveSistemPersamaanLinierGauss(String solution, String filePath) throws IOException {
+    public static void saveSistemPersamaanLinierGauss(String solution, String filePath) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write("Hasil Penyelesaian SPL:\n");
             writer.write(solution);
         }
     }
 
-    public static void SaveDeterminant(double determinant, String filePath) throws IOException {
+    public static void saveDeterminant(double determinant, String filePath) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write("Hasil Determinan Matriks:\n");
             writer.write("Determinan = " + determinant + "\n");
         }
     }
 
-    public static void SaveInverseMatrix    (Matrix matrix, String filePath) throws IOException {
+    public static void saveInverseMatrix(Matrix matrix, String filePath) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write("Hasil Matriks Balikan:\n");
             for (int i = 0; i < matrix.rowEff; i++) {
@@ -109,7 +109,7 @@ public class OutputUtils {
         }
     }
 
-    public static void SaveInterpolasiPolinom(double[] solution, double estimation) {
+    public static void saveInterpolasiPolinom(double[] solution, double estimation) {
         int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
 
         if (saveChoice == 1) {
@@ -130,7 +130,7 @@ public class OutputUtils {
         }
     }
 
-    public static void SaveBicubicSpline(double res) {
+    public static void saveBicubicSpline(double res) {
         int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
 
         if (saveChoice == 1) {
@@ -148,7 +148,7 @@ public class OutputUtils {
         }
     }
 
-    public static void SaveRegresiLinier(double[] solution, double estimation) {
+    public static void saveRegresiLinier(double[] solution, double estimation) {
         int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
 
         if (saveChoice == 1) {
@@ -169,7 +169,7 @@ public class OutputUtils {
         }
     }
 
-    public static void SaveRegresiKuadratikBerganda(String equation, double[][] observation, double prediction) {
+    public static void saveRegresiKuadratikBerganda(String equation, double[][] observation, double prediction) {
         int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
     
         if (saveChoice == 1) {

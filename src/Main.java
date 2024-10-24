@@ -159,9 +159,9 @@ public class Main {
             String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
             try {
                 if (gauss) {
-                    OutputUtils.SaveSistemPersamaanLinierGauss(sol, "test/spl/output/" + outputFileName + ".txt");
+                    OutputUtils.saveSistemPersamaanLinierGauss(sol, "test/spl/output/" + outputFileName + ".txt");
                 } else {
-                    OutputUtils.SaveSistemPersamaanLinier(solution, "test/spl/output/" + outputFileName + ".txt");
+                    OutputUtils.saveSistemPersamaanLinier(solution, "test/spl/output/" + outputFileName + ".txt");
                 }
                 System.out.println("Hasil berhasil disimpan ke dalam file: test/spl/output/" + outputFileName + ".txt");
             } catch (IOException e) {
@@ -249,7 +249,7 @@ public class Main {
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
             try {
-                OutputUtils.SaveDeterminant(determinan, "test/determinan/output/" + outputFileName + ".txt");
+                OutputUtils.saveDeterminant(determinan, "test/determinan/output/" + outputFileName + ".txt");
                 System.out.println("Hasil berhasil disimpan ke dalam file: test/determinan/output/" + outputFileName + ".txt");
             } catch (IOException e) {
                 System.out.println("Terjadi kesalahan saat menyimpan file: " + e.getMessage());
@@ -326,7 +326,7 @@ public class Main {
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
             try {
-                OutputUtils.SaveInverseMatrix(matriksBalikan, "test/inverse/output/" + outputFileName + ".txt");
+                OutputUtils.saveInverseMatrix(matriksBalikan, "test/inverse/output/" + outputFileName + ".txt");
                 System.out.println("Hasil matriks balikan berhasil disimpan ke dalam file: test/inverse/output/" + outputFileName + ".txt");
             } catch (IOException e) {
                 System.out.println("Terjadi kesalahan saat menyimpan file: " + e.getMessage());
@@ -362,7 +362,7 @@ public class Main {
                 System.out.println("Nilai y hasil taksiran: " + estimation);
 
                 // Opsi untuk menyimpan solusi ke file
-                OutputUtils.SaveInterpolasiPolinom(solution, estimation);
+                OutputUtils.saveInterpolasiPolinom(solution, estimation);
                 break;
 
             } else if (choice == 2) {
@@ -415,7 +415,7 @@ public class Main {
                     System.out.println("Nilai y hasil taksiran: " + estimation);
 
                     // Opsi untuk menyimpan solusi ke file
-                    OutputUtils.SaveInterpolasiPolinom(solution, estimation);
+                    OutputUtils.saveInterpolasiPolinom(solution, estimation);
 
                 } catch (FileNotFoundException e) {
                     System.out.println("File tidak ditemukan di path: test/interpolasi_polinom/input/" + e.getMessage());
@@ -452,7 +452,7 @@ public class Main {
                 System.out.println("Hasil interpolasi : " + res);
 
                 // Option to save the result to a file
-                OutputUtils.SaveBicubicSpline(res);
+                OutputUtils.saveBicubicSpline(res);
                 break;
 
             } else {
@@ -473,7 +473,7 @@ public class Main {
                 System.out.println("Hasil interpolasi : " + res);
 
                 // Opsi untuk menyimpan solusi ke file
-                OutputUtils.SaveBicubicSpline(res);
+                OutputUtils.saveBicubicSpline(res);
                 break;
             }
         }
@@ -506,7 +506,7 @@ public class Main {
                 System.out.println("Nilai y hasil taksiran: " + estimation);
 
                 // Opsi untuk menyimpan solusi ke file
-                OutputUtils.SaveRegresiLinier(solution, estimation);
+                OutputUtils.saveRegresiLinier(solution, estimation);
                 break;
 
             } else if (choice == 2) {
@@ -564,7 +564,7 @@ public class Main {
                         System.out.println("Nilai y hasil taksiran: " + estimation);
 
                         // Opsi untuk menyimpan hasil ke file
-                        OutputUtils.SaveRegresiLinier(solution, estimation);
+                        OutputUtils.saveRegresiLinier(solution, estimation);
                     } else {
                         System.out.println("Tidak ada nilai x untuk ditaksir di file.");
                     }
@@ -657,7 +657,7 @@ public class Main {
                 System.out.println("Hasil prediksi: " + prediction);
 
                 // Opsi untuk menyimpan hasil ke file
-                OutputUtils.SaveRegresiKuadratikBerganda(equation, observation, prediction);
+                OutputUtils.saveRegresiKuadratikBerganda(equation, observation, prediction);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
