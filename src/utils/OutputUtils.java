@@ -39,11 +39,11 @@ public class OutputUtils {
             System.out.println("Solution:");
             if (alpha) {
                 for (int i = 0; i < solution.length; i++) {
-                    System.out.println("a" + (i + 1) + " = " + solution[i]);
+                    System.out.printf("a%d = %.4f%n", (i + 1), solution[i]);
                 }
             } else {
                 for (int i = 0; i < solution.length; i++) {
-                    System.out.println("b" + (i + 1) + " = " + solution[i]);
+                    System.out.printf("b%d = %.4f%n", (i + 1), solution[i]);
                 }
             }
         }
