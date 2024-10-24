@@ -163,11 +163,11 @@ public class Main {
             String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
             try {
                 if (gauss) {
-                    OutputUtils.saveSistemPersamaanLinierGauss(solution_string, "test/spl/output/" + outputFileName + ".txt");
+                    OutputUtils.saveSistemPersamaanLinierGauss(solution_string, "../test/spl/output/" + outputFileName + ".txt");
                 } else {
-                    OutputUtils.saveSistemPersamaanLinier(solution_double, "test/spl/output/" + outputFileName + ".txt");
+                    OutputUtils.saveSistemPersamaanLinier(solution_double, "../test/spl/output/" + outputFileName + ".txt");
                 }
-                System.out.println("Hasil berhasil disimpan ke dalam file: test/spl/output/" + outputFileName + ".txt");
+                System.out.println("Hasil berhasil disimpan ke dalam file: ../test/spl/output/" + outputFileName + ".txt");
             } catch (IOException e) {
                 System.out.println("Terjadi kesalahan saat menyimpan file: " + e.getMessage());
             }
@@ -253,8 +253,8 @@ public class Main {
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
             try {
-                OutputUtils.saveDeterminant(determinan, "test/determinan/output/" + outputFileName + ".txt");
-                System.out.println("Hasil berhasil disimpan ke dalam file: test/determinan/output/" + outputFileName + ".txt");
+                OutputUtils.saveDeterminant(determinan, "../test/determinan/output/" + outputFileName + ".txt");
+                System.out.println("Hasil berhasil disimpan ke dalam file: ../test/determinan/output/" + outputFileName + ".txt");
             } catch (IOException e) {
                 System.out.println("Terjadi kesalahan saat menyimpan file: " + e.getMessage());
             }
@@ -330,8 +330,8 @@ public class Main {
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
             try {
-                OutputUtils.saveInverseMatrix(matriksBalikan, "test/inverse/output/" + outputFileName + ".txt");
-                System.out.println("Hasil matriks balikan berhasil disimpan ke dalam file: test/inverse/output/" + outputFileName + ".txt");
+                OutputUtils.saveInverseMatrix(matriksBalikan, "../test/inverse/output/" + outputFileName + ".txt");
+                System.out.println("Hasil matriks balikan berhasil disimpan ke dalam file: ../test/inverse/output/" + outputFileName + ".txt");
             } catch (IOException e) {
                 System.out.println("Terjadi kesalahan saat menyimpan file: " + e.getMessage());
             }
@@ -376,7 +376,7 @@ public class Main {
                     String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
 
                     // Buat path lengkapnya
-                    String filePath = "test/interpolasi_polinom/input/" + filename + ".txt";
+                    String filePath = "../test/interpolasi_polinom/input/" + filename + ".txt";
 
                     // Baca file-nya
                     File file = new File(filePath);
@@ -422,7 +422,7 @@ public class Main {
                     OutputUtils.saveInterpolasiPolinom(solution, estimation);
 
                 } catch (FileNotFoundException e) {
-                    System.out.println("File tidak ditemukan di path: test/interpolasi_polinom/input/" + e.getMessage());
+                    System.out.println("File tidak ditemukan di path: ../test/interpolasi_polinom/input/" + e.getMessage());
                 } catch (Exception e) {
                     System.out.println("Ada kesalahan saat pembacaan file.");
                     e.printStackTrace();
@@ -528,7 +528,7 @@ public class Main {
                 String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
 
                 try {
-                    String filePath = "test/regresi_linier/input/" + filename + ".txt";
+                    String filePath = "../test/regresi_linier/input/" + filename + ".txt";
                     File file = new File(filePath);
                     Scanner scanner = new Scanner(file);
 
@@ -633,7 +633,7 @@ public class Main {
                 String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
 
                 try {
-                    String filePath = "test/regresi_kuadratik/input/" + filename;
+                    String filePath = "../test/regresi_kuadratik/input/" + filename;
                     File file = new File(filePath);
                     Scanner scanner = new Scanner(file);
 
@@ -710,7 +710,7 @@ public class Main {
             int[][][] scaledImage = scaleImage(image, newLength, newHeight);
 
             // Menyimpan hasil gambar setelah proses skala
-            String outputFileName = "test/image_resizing/output/" + filename + "_resized.jpg";
+            String outputFileName = "../test/image_resizing/output/" + filename + "_resized.jpg";
             saveImage(scaledImage, outputFileName);
 
             System.out.println("Gambar berhasil diproses dan disimpan sebagai: " + outputFileName);
