@@ -163,17 +163,17 @@ public class OutputUtils {
         }
     }
 
-    public static void SaveRegresiKuadratikBerganda(Matrix coefficients, double[][] observation, double prediction) {
+    public static void SaveRegresiKuadratikBerganda(String equation, double[][] observation, double prediction) {
         int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
-
+    
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output (dengan ekstensi .txt): ");
             String filePath = "test/regresi_kuadratik/output/" + outputFileName;
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 writer.write("Hasil Regresi Kuadratik Berganda:\n");
-                writer.write("Koefisien Model:\n");
-                OutputUtils.saveMatrixToFile(coefficients, filePath);
-
+                writer.write("Persamaan:\n");
+                writer.write(equation + "\n");  // Menulis koefisien yang berbentuk String
+    
                 writer.write("\nObservasi baru:\n");
                 for (int i = 0; i < observation.length; i++) {
                     for (int j = 0; j < observation[i].length; j++) {
@@ -181,7 +181,7 @@ public class OutputUtils {
                     }
                     writer.write("\n");
                 }
-
+    
                 writer.write("\nHasil prediksi: " + prediction + "\n");
                 System.out.println("Hasil berhasil disimpan di " + filePath);
             } catch (IOException e) {
@@ -191,4 +191,5 @@ public class OutputUtils {
             System.out.println("Hasil tidak disimpan.");
         }
     }
+    
 }
