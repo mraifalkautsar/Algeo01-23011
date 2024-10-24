@@ -388,8 +388,11 @@ public class InputUtils {
     }
 
     public static void pressAnyKeyToProceed() {
-        System.out.println("\nTekan tombol apapun untuk kembali ke main menu.");
-        scanner.nextLine();  // Wait for user to press Enter
+        System.out.println("\nTekan ENTER untuk kembali ke Main Menu.");
+        if (scanner.hasNextLine()) {  // Clear out any leftover input
+            scanner.nextLine();
+        }
+        scanner.nextLine();  // Now wait for the user to press Enter
     }
 
 }

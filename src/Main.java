@@ -20,10 +20,17 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        System.out.print("███████  █████  ██████   █████  ███    ██  ██████  ███████ ███████ ██████   █████  ███    ██  ██████       ██████  ██████     \n" +
+                         "██      ██   ██ ██   ██ ██   ██ ████   ██ ██       ██      ██      ██   ██ ██   ██ ████   ██ ██           ██      ██    ██    \n" +
+                         "███████ ███████ ██   ██ ███████ ██ ██  ██ ██   ███ ███████ █████   ██████  ███████ ██ ██  ██ ██   ███     ██      ██    ██    \n" +
+                         "     ██ ██   ██ ██   ██ ██   ██ ██  ██ ██ ██    ██      ██ ██      ██   ██ ██   ██ ██  ██ ██ ██    ██     ██      ██    ██    \n" +
+                         "███████ ██   ██ ██████  ██   ██ ██   ████  ██████  ███████ ███████ ██   ██ ██   ██ ██   ████  ██████       ██████  ██████  ██ \n" +
+                         "                               mempersembahkan IRC (Interpolator and Regression Calculator) v1.0" +
+                         "\n");
+
         while (true) {
             // pilihan ditampilkan kepada pengguna
-            System.out.println("Hak cipta sepenuhnya dimiliki oleh SadangSerang Co.");
-            System.out.println("Selamat datang di program pemecah persamaan dan penghitung regresi!");
+            System.out.println("\n== MAIN MENU ==");
             System.out.println("1. Sistem Persamaan Linier");
             System.out.println("2. Determinan");
             System.out.println("3. Matriks Balikan");
@@ -35,7 +42,7 @@ public class Main {
             System.out.println("9. Keluar");
 
             // meminta pilihan dari pengguna
-            System.out.print("Masukkan pilihanmu: ");
+            System.out.print("Masukkan pilihan Anda: ");
             int choice = scanner.nextInt();
 
             switch (choice) {
@@ -75,6 +82,7 @@ public class Main {
     // FUNGSI-FUNGSI UNTUK TIAP PILIHAN
 
     public static void SistemPersamaanLinier() {
+        System.out.println("\n== SISTEM PERSAMAAN LINIER ==");
         System.out.println("Input dari keyboard atau file?");
         System.out.println("1. Keyboard");
         System.out.println("2. File");
@@ -169,6 +177,7 @@ public class Main {
 
 
     public static void Determinan() {
+        System.out.println("\n== DETERMINAN ==");
         System.out.println("Input dari keyboard atau file?");
         System.out.println("1. Keyboard");
         System.out.println("2. File");
@@ -253,6 +262,7 @@ public class Main {
     }
 
     public static void MatriksBalikan() {
+        System.out.println("\n== INVERS ATAU MATRIKS BALIKAN ==");
         System.out.println("Input dari keyboard atau file?");
         System.out.println("1. Keyboard");
         System.out.println("2. File");
@@ -329,7 +339,7 @@ public class Main {
     }
 
     public static void InterpolasiPolinom() {
-
+        System.out.println("\n== INTERPOLASI POLINOM ==");
         System.out.println("Input dari keyboard atau file?");
         System.out.println("1. Keyboard");
         System.out.println("2. File");
@@ -421,7 +431,7 @@ public class Main {
     }
 
     public static void InterpolasiBicubicSpline() {
-
+        System.out.println("\n== INTERPOLASI BICUBIC SPLINE ==");
         System.out.println("Input dari keyboard atau file?");
         System.out.println("1. Keyboard");
         System.out.println("2. File");
@@ -471,6 +481,7 @@ public class Main {
     }
 
     public static void RegresiLinier() {
+        System.out.println("\n== REGRESI LINIER BERGANDA ==");
         System.out.println("Input dari keyboard atau file?");
         System.out.println("1. Keyboard");
         System.out.println("2. File");
@@ -572,6 +583,7 @@ public class Main {
     }
 
     public static void RegresiKuadratikBerganda() {
+        System.out.println("\n== REGRESI KUADRATIK BERGANDA ==");
         System.out.println("Input dari keyboard atau file?");
         System.out.println("1. Keyboard");
         System.out.println("2. File");
@@ -656,6 +668,7 @@ public class Main {
 
 
     public static void ImageResizing() {
+        System.out.println("\n== IMAGE RESIZING ==");
         try {
             // Minta input nama file tanpa path atau .jpg
             String filename = InputUtils.getString("Masukkan nama file (tanpa path dan .jpg): ");
