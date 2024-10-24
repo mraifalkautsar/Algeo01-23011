@@ -611,6 +611,7 @@ public class Main {
             try {
                 // Jika data sudah siap, jalankan regresi
                 Matrix coefficients = MultipleQuadraticRegression.trainQuadraticModel(data_array, n);
+                String equation = MultipleQuadraticRegression.getQuadraticEquation(coefficients, n);
 
                 // Prediksi dengan observasi baru
                 double[][] observation = MultipleQuadraticRegression.inputObservation(n);
@@ -620,7 +621,7 @@ public class Main {
                 System.out.println("Hasil prediksi: " + prediction);
 
                 // Opsi untuk menyimpan hasil ke file
-                OutputUtils.SaveRegresiKuadratikBerganda(coefficients, observation, prediction);
+                OutputUtils.SaveRegresiKuadratikBerganda(equation, observation, prediction);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
