@@ -2,20 +2,20 @@
 
 NAMA KELOMPOK
 
-╔╦╗┬┌─┐┬┬    ╔═╗┌─┐┌┬┐┌─┐┌┐┌┌─┐  ╔═╗┌─┐┬─┐┌─┐┌┐┌┌─┐
-║║║│└─┐││    ╚═╗├─┤ ││├─┤││││ ┬  ╚═╗├┤ ├┬┘├─┤││││ ┬
-╩ ╩┴└─┘┴┴─┘  ╚═╝┴ ┴─┴┘┴ ┴┘└┘└─┘  ╚═╝└─┘┴└─┴ ┴┘└┘└─┘
+╔╦╗┬┌─┐┬┬    ╔═╗┌─┐┌┬┐┌─┐┌┐┌┌─┐  ╔═╗┌─┐┬─┐┌─┐┌┐┌┌─┐<br/>
+║║║│└─┐││    ╚═╗├─┤ ││├─┤││││ ┬  ╚═╗├┤ ├┬┘├─┤││││ ┬<br/>
+╩ ╩┴└─┘┴┴─┘  ╚═╝┴ ┴─┴┘┴ ┴┘└┘└─┘  ╚═╝└─┘┴└─┴ ┴┘└┘└─┘<br/>
 
 
-Muhammad Ra'if Alkautsar (13523011)
-Fityatul Haq Rosyidi (13523116)
-Reza Ahmad Syarif (13523119)
+Muhammad Ra'if Alkautsar (13523011)<br/>
+Fityatul Haq Rosyidi (13523116)<br/>
+Reza Ahmad Syarif (13523119)<br/>
 
-CARA RUN PROGRAM VIA JAR
+CARA RUN PROGRAM VIA JAR<br/>
 
-Buka terminal di folder /bin lalu masukkan 'java -jar Algeo01-23011.
+Buka terminal di folder /bin lalu masukkan 'java -jar Algeo01-23011.<br/>
 
-STRUKTUR SOURCE PROGRAM
+STRUKTUR SOURCE PROGRAM<br/>
 
 <pre>
 src/<br />
