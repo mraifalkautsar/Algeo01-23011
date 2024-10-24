@@ -177,7 +177,6 @@ public class Main {
             System.out.println("Hasil tidak disimpan ke dalam file.");
         }
 
-        InputUtils.pressAnyKeyToProceed();
     }
 
 
@@ -263,8 +262,6 @@ public class Main {
         } else {
             System.out.println("Hasil tidak disimpan ke dalam file.");
         }
-
-        InputUtils.pressAnyKeyToProceed();
     }
 
     public static void MatriksBalikan() {
@@ -341,7 +338,6 @@ public class Main {
             System.out.println("Hasil tidak disimpan ke dalam file.");
         }
 
-        InputUtils.pressAnyKeyToProceed();
     }
 
     public static void InterpolasiPolinom() {
@@ -436,7 +432,6 @@ public class Main {
                 break;
             }
         }
-        InputUtils.pressAnyKeyToProceed();
     }
 
     public static void InterpolasiBicubicSpline() {
@@ -486,7 +481,6 @@ public class Main {
                 break;
             }
         }
-        InputUtils.pressAnyKeyToProceed();
     }
 
     public static void RegresiLinier() {
@@ -610,7 +604,6 @@ public class Main {
                 break;
             }
         }
-        InputUtils.pressAnyKeyToProceed();
     }
 
 
@@ -695,7 +688,6 @@ public class Main {
             }
             break;
         }
-        InputUtils.pressAnyKeyToProceed();
     }
 
 
@@ -722,7 +714,6 @@ public class Main {
         } catch (IOException e) {
             System.out.println("Terjadi kesalahan saat memproses gambar: " + e.getMessage());
         }
-        InputUtils.pressAnyKeyToProceed();
     }
 
 }
