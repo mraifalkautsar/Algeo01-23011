@@ -9,6 +9,8 @@ Muhammad Ra'if Alkautsar (13523011)<br/>
 Fityatul Haq Rosyidi (13523116)<br/>
 Reza Ahmad Syarif (13523119)<br/>
 
+Program untuk menyelesaikan masalah matriks seperti determinan dan invers. Selain itu, program ini juga dapat menyelaikan SPL menggunakan beberapa metode seperti eliminasi gauss, <br/>
+eliminasi gauss Jordan, invers, dan cramer. Program ini juga dapat menyelesaikan interpolasi dan regrsi.<br/> 
 CARA RUN PROGRAM VIA JAR<br/>
 
 Buka terminal di folder /bin lalu masukkan 'java -jar Algeo01-23011.<br/>
