@@ -118,15 +118,12 @@ public class Main {
                 try {
                     if (choice == 1) {
                         solution = MatrixSolver.gaussElimination(matrixAugmented);
-                        OutputUtils.printCoefficients(solution, true);
                     } else if (choice == 2) {
                         MatrixSolver.gaussJordanEliminationForMain(matrixAugmented);
                     } else if (choice == 3) {
                         solution = MatrixSolver.solveUsingInverse(matrixAugmented);
-                        OutputUtils.printCoefficients(solution, true);
                     } else {
                         solution = MatrixSolver.solveUsingCramer(matrixAugmented);
-                        OutputUtils.printCoefficients(solution, true);
                     }
                     break; // Keluar dari loop jika tidak ada exception
                 } catch (Exception e) {
