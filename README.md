@@ -1,6 +1,22 @@
 # Algeo01-23011
 
-Struktur Program
+NAMA KELOMPOK
+
+╔╦╗┬┌─┐┬┬    ╔═╗┌─┐┌┬┐┌─┐┌┐┌┌─┐  ╔═╗┌─┐┬─┐┌─┐┌┐┌┌─┐
+║║║│└─┐││    ╚═╗├─┤ ││├─┤││││ ┬  ╚═╗├┤ ├┬┘├─┤││││ ┬
+╩ ╩┴└─┘┴┴─┘  ╚═╝┴ ┴─┴┘┴ ┴┘└┘└─┘  ╚═╝└─┘┴└─┴ ┴┘└┘└─┘
+
+
+Muhammad Ra'if Alkautsar (13523011)
+Fityatul Haq Rosyidi (13523116)
+Reza Ahmad Syarif (13523119)
+
+CARA RUN PROGRAM VIA JAR
+
+Buka terminal di folder /bin lalu masukkan 'java -jar Algeo01-23011.
+
+STRUKTUR SOURCE PROGRAM
+
 <pre>
 src/<br />
 ├── Main.java<br />
