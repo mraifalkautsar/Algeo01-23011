@@ -103,18 +103,19 @@ public class OutputUtils {
         }
     }
 
-    public static void SaveInterpolasiPolinom (double[] solution, double estimation) {
+    public static void SaveInterpolasiPolinom(double[] solution, double estimation) {
         int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
 
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output (dengan ekstensi .txt): ");
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName))) {
+            String filePath = "test/interpolasi_polinom/output/" + outputFileName;
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 writer.write("Koefisien polinomial:\n");
                 for (int i = 0; i < solution.length; i++) {
                     writer.write("a" + (i + 1) + " = " + solution[i] + "\n");
                 }
                 writer.write("\nNilai y hasil taksiran: " + estimation);
-                System.out.println("Hasil berhasil disimpan di " + outputFileName);
+                System.out.println("Hasil berhasil disimpan di " + filePath);
             } catch (IOException e) {
                 System.out.println("Gagal menyimpan hasil ke file: " + e.getMessage());
             }
@@ -128,10 +129,11 @@ public class OutputUtils {
 
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output (dengan ekstensi .txt): ");
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName))) {
+            String filePath = "test/interpolasi_bicubic/output/" + outputFileName;
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 writer.write("Hasil Interpolasi Bicubic Spline:\n");
                 writer.write("Hasil interpolasi: " + res + "\n");
-                System.out.println("Hasil berhasil disimpan di " + outputFileName);
+                System.out.println("Hasil berhasil disimpan di " + filePath);
             } catch (IOException e) {
                 System.out.println("Gagal menyimpan hasil ke file: " + e.getMessage());
             }
@@ -145,13 +147,14 @@ public class OutputUtils {
 
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output (dengan ekstensi .txt): ");
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName))) {
+            String filePath = "test/regresi_linier/output/" + outputFileName;
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 writer.write("Hasil Regresi Linier:\n");
                 for (int i = 0; i < solution.length; i++) {
                     writer.write("x" + (i + 1) + " = " + solution[i] + "\n");
                 }
                 writer.write("Nilai y hasil taksiran: " + estimation + "\n");
-                System.out.println("Hasil berhasil disimpan di " + outputFileName);
+                System.out.println("Hasil berhasil disimpan di " + filePath);
             } catch (IOException e) {
                 System.out.println("Gagal menyimpan hasil ke file: " + e.getMessage());
             }
@@ -165,10 +168,11 @@ public class OutputUtils {
 
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output (dengan ekstensi .txt): ");
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFileName))) {
+            String filePath = "test/regresi_kuadratik/output/" + outputFileName;
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
                 writer.write("Hasil Regresi Kuadratik Berganda:\n");
                 writer.write("Koefisien Model:\n");
-                OutputUtils.saveMatrixToFile(coefficients, outputFileName);
+                OutputUtils.saveMatrixToFile(coefficients, filePath);
 
                 writer.write("\nObservasi baru:\n");
                 for (int i = 0; i < observation.length; i++) {
@@ -179,7 +183,7 @@ public class OutputUtils {
                 }
 
                 writer.write("\nHasil prediksi: " + prediction + "\n");
-                System.out.println("Hasil berhasil disimpan di " + outputFileName);
+                System.out.println("Hasil berhasil disimpan di " + filePath);
             } catch (IOException e) {
                 System.out.println("Gagal menyimpan hasil ke file: " + e.getMessage());
             }
