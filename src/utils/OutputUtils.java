@@ -170,7 +170,7 @@ public class OutputUtils {
     }
 
     public static void saveRegresiKuadratikBerganda(String equation, double[][] observation, double prediction) {
-        int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
+        int saveChoice = InputUtils.getInt("\nApakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
     
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output: ");

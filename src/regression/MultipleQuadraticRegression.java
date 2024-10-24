@@ -153,7 +153,7 @@ public class MultipleQuadraticRegression {
 
     public static double[][] inputObservation(int n) {
         double[][] observation = new double[1][n];
-        System.out.println("Masukkan nilai untuk observasi baru:");
+        System.out.println("\nMasukkan nilai untuk observasi baru:");
     
         for (int i = 0; i < n; i++) {
             System.out.print("Nilai untuk variabel x" + (i + 1) + ": ");

@@ -20,6 +20,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println();
         System.out.print("███████  █████  ██████   █████  ███    ██  ██████  ███████ ███████ ██████   █████  ███    ██  ██████       ██████  ██████     \n" +
                          "██      ██   ██ ██   ██ ██   ██ ████   ██ ██       ██      ██      ██   ██ ██   ██ ████   ██ ██           ██      ██    ██    \n" +
                          "███████ ███████ ██   ██ ███████ ██ ██  ██ ██   ███ ███████ █████   ██████  ███████ ██ ██  ██ ██   ███     ██      ██    ██    \n" +
@@ -74,7 +75,7 @@ public class Main {
                     scanner.close();
                     System.exit(0);
                 default:
-                    System.out.println("Yang bener lah.");
+                    System.out.println("Yang bener aja lah.");
             }
         }
     }
@@ -109,7 +110,7 @@ public class Main {
             }
         }
 
-        System.out.println("Metode yang ingin digunakan?");
+        System.out.println("\nMetode yang ingin digunakan?");
         System.out.println("1. Eliminasi Gauss");
         System.out.println("2. Eliminasi Gauss-Jordan");
         System.out.println("3. Matriks Balikan");
@@ -121,7 +122,7 @@ public class Main {
 
         while (true) {
             int choice = InputUtils.getInt("Masukkan pilihanmu: ");
-        
+            
             if ((choice <= 0) || (choice > 4)) {
                 System.out.println("Masukan salah.");
             } else {
@@ -137,8 +138,10 @@ public class Main {
                         gauss = true;
                     } else if (choice == 3) {
                         solution = MatrixSolver.solveUsingInverse(matrixAugmented);
+                        OutputUtils.printCoefficients(solution, true);
                     } else {
                         solution = MatrixSolver.solveUsingCramer(matrixAugmented);
+                        OutputUtils.printCoefficients(solution, true);
                     }
                     break; // Keluar dari loop jika tidak ada exception
                 } catch (Exception e) {
@@ -149,7 +152,7 @@ public class Main {
         }
 
         // Opsi untuk menyimpan solusi ke file
-        System.out.println("Apakah Anda ingin menyimpan hasil ke dalam file?");
+        System.out.println("\nApakah Anda ingin menyimpan hasil ke dalam file?");
         System.out.println("1. Ya");
         System.out.println("2. Tidak");
 
@@ -205,7 +208,7 @@ public class Main {
             }
         }
 
-        System.out.println("Metode yang ingin digunakan?");
+        System.out.println("\nMetode yang ingin digunakan?");
         System.out.println("1. Ekspansi kofaktor");
         System.out.println("2. Reduksi baris");
 
@@ -240,7 +243,7 @@ public class Main {
         System.out.println("Determinan: " + determinan);
 
         // Opsi untuk menyimpan solusi ke file
-        System.out.println("Apakah Anda ingin menyimpan hasil ke dalam file?");
+        System.out.println("\nApakah Anda ingin menyimpan hasil ke dalam file?");
         System.out.println("1. Ya");
         System.out.println("2. Tidak");
 
@@ -289,7 +292,7 @@ public class Main {
             }
         }
 
-        System.out.println("Metode yang ingin digunakan?");
+        System.out.println("\nMetode yang ingin digunakan?");
         System.out.println("1. Invers Gauss-Jordan");
         System.out.println("2. Invers Adjoin");
 
@@ -317,7 +320,7 @@ public class Main {
         OutputUtils.displayMatrix(matriksBalikan);
 
         // Opsi untuk menyimpan solusi ke file
-        System.out.println("Apakah Anda ingin menyimpan hasil ke dalam file?");
+        System.out.println("\nApakah Anda ingin menyimpan hasil ke dalam file?");
         System.out.println("1. Ya");
         System.out.println("2. Tidak");
 
@@ -646,6 +649,7 @@ public class Main {
 
             try {
                 // Jika data sudah siap, jalankan regresi
+                System.out.println("\nPersamaan regresi kuadratik: ");
                 Matrix coefficients = MultipleQuadraticRegression.trainQuadraticModel(data_array, n);
                 String equation = MultipleQuadraticRegression.getQuadraticEquation(coefficients, n);
 
@@ -654,7 +658,6 @@ public class Main {
 
                 // Lakukan prediksi
                 double prediction = MultipleQuadraticRegression.predictQuadratic(coefficients, observation);
-                System.out.println("Hasil prediksi: " + prediction);
 
                 // Opsi untuk menyimpan hasil ke file
                 OutputUtils.saveRegresiKuadratikBerganda(equation, observation, prediction);

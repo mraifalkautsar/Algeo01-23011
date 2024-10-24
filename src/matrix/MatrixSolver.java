@@ -248,7 +248,7 @@ public class MatrixSolver {
 
         // Pastikan A adalah matriks persegi
         if (!A.isSquare()) {
-            throw new IllegalArgumentException("Matriks A harus berbentuk persegi.");
+            throw new IllegalArgumentException("Matriks harus berbentuk persegi.");
         }
 
         // Menghitung invers matriks A
