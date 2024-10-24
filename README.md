@@ -14,7 +14,7 @@ eliminasi gauss Jordan, invers, dan cramer. Program ini juga dapat menyelesaikan
 
 CARA RUN PROGRAM VIA JAR<br/>
 
-Buka terminal di folder /bin lalu masukkan 'java -jar Algeo01-23011.<br/>
+Buka terminal di folder /bin lalu masukkan "java -jar Algeo01-23011."<br/>
 
 STRUKTUR SOURCE PROGRAM<br/>
 
