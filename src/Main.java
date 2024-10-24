@@ -611,18 +611,22 @@ public class Main {
                 }
             }
 
-            // Jika data sudah siap, jalankan regresi
-            Matrix coefficients = MultipleQuadraticRegression.trainQuadraticModel(data_array, n);
+            try {
+                // Jika data sudah siap, jalankan regresi
+                Matrix coefficients = MultipleQuadraticRegression.trainQuadraticModel(data_array, n);
 
-            // Prediksi dengan observasi baru
-            double[][] observation = MultipleQuadraticRegression.inputObservation(n);
+                // Prediksi dengan observasi baru
+                double[][] observation = MultipleQuadraticRegression.inputObservation(n);
 
-            // Lakukan prediksi
-            double prediction = MultipleQuadraticRegression.predictQuadratic(coefficients, observation);
-            System.out.println("Hasil prediksi: " + prediction);
+                // Lakukan prediksi
+                double prediction = MultipleQuadraticRegression.predictQuadratic(coefficients, observation);
+                System.out.println("Hasil prediksi: " + prediction);
 
-            // Opsi untuk menyimpan hasil ke file
-            OutputUtils.SaveRegresiKuadratikBerganda(coefficients, observation, prediction);
+                // Opsi untuk menyimpan hasil ke file
+                OutputUtils.SaveRegresiKuadratikBerganda(coefficients, observation, prediction);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
             break;
         }
     }
