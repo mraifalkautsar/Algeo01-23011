@@ -137,11 +137,9 @@ public class Main {
                         System.out.println(solution_string);
                         gauss = true;
                     } else if (choice == 3) {
-                        solution = MatrixSolver.solveUsingInverse(matrixAugmented);
-                        OutputUtils.printCoefficients(solution, true);
+                        solution_double = MatrixSolver.solveUsingInverse(matrixAugmented);
                     } else {
-                        solution = MatrixSolver.solveUsingCramer(matrixAugmented);
-                        OutputUtils.printCoefficients(solution, true);
+                        solution_double = MatrixSolver.solveUsingCramer(matrixAugmented);
                     }
                     break; // Keluar dari loop jika tidak ada exception
                 } catch (Exception e) {
