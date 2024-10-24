@@ -47,10 +47,33 @@ public class InputUtils {
         int cols = scanner.nextInt();
 
         Matrix matrix = new Matrix(rows, cols);
+        scanner.nextLine(); // Consume newline character
         System.out.println("Masukkan elemen matriks:");
         for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                matrix.setElement(i, j, scanner.nextDouble());
+            while (true) {
+                String input = scanner.nextLine();
+                String[] rowValues = input.trim().split(" ");
+
+                // Validasi jumlah elemen dalam baris
+                if (rowValues.length != cols) {
+                    System.out.println("Jumlah elemen dalam baris tidak sesuai. Silakan masukkan ulang baris ke-" + (i + 1));
+                    continue; // Ulangi input untuk baris ini
+                }
+
+                boolean validRow = true; // Penanda untuk validasi baris
+                for (int j = 0; j < cols; j++) {
+                    try {
+                        matrix.data[i][j] = Double.parseDouble(rowValues[j]);
+                    } catch (NumberFormatException e) {
+                        System.out.println("Input tidak valid untuk elemen baris ke-[" + (i + 1) + "] kolom ke-[" + (j + 1) + "]. Silakan masukkan ulang baris ke-" + (i + 1));
+                        validRow = false; // Tandai baris tidak valid
+                        break; // Keluar dari loop validasi
+                    }
+                }
+
+                if (validRow) {
+                    break; // Jika baris valid, keluar dari loop
+                }
             }
         }
         return matrix;
