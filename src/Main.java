@@ -618,7 +618,9 @@ public class Main {
 
             int m = 0, n = 0;
             double[][] data_array = null;
-
+            double[][] observationfromfile = null;
+            boolean isObservation = false;
+            
             if ((choice <= 0) || (choice > 2)) {
                 System.out.println("Masukan salah.");
             } else if (choice == 1) {
@@ -654,6 +656,14 @@ public class Main {
                     // Proses data menjadi array 2D untuk regresi
                     m = dataList.size();
                     n = dataList.get(0).length - 1; // Jumlah peubah (n) = jumlah kolom - 1 (kolom y)
+
+                    double[] lastRow = dataList.remove(m - 1); // Menghapus dan mengambil baris terakhir
+                    m--;
+
+                    observationfromfile = new double[1][n]; // Simpan dalam variabel luar
+                    System.arraycopy(lastRow, 0, observationfromfile[0], 0, n);
+                    isObservation = true;
+
                     data_array = new double[m][n + 1];
                     for (int i = 0; i < m; i++) {
                         data_array[i] = dataList.get(i);
@@ -675,11 +685,18 @@ public class Main {
                 Matrix coefficients = MultipleQuadraticRegression.trainQuadraticModel(data_array, n);
                 String equation = MultipleQuadraticRegression.getQuadraticEquation(coefficients, n);
 
-                // Prediksi dengan observasi baru
-                double[][] observation = MultipleQuadraticRegression.inputObservation(n);
+                double prediction = 0;
+                double[][] observation = null;
 
-                // Lakukan prediksi
-                double prediction = MultipleQuadraticRegression.predictQuadratic(coefficients, observation);
+                if (isObservation) {
+                    prediction = MultipleQuadraticRegression.predictQuadratic(coefficients, observationfromfile);
+                } else {
+                    // Prediksi dengan observasi baru
+                    observation = MultipleQuadraticRegression.inputObservation(n);
+    
+                    // Lakukan prediksi
+                    prediction = MultipleQuadraticRegression.predictQuadratic(coefficients, observation);
+                }
 
                 // Opsi untuk menyimpan hasil ke file
                 OutputUtils.saveRegresiKuadratikBerganda(equation, observation, prediction);
