@@ -119,9 +119,36 @@ public class MultipleQuadraticRegression {
         Matrix coefficients = MultipleQuadraticRegression.calculateBetaQuadraticRegression(designMatrix, Y);
         
         // Mencetak fungsi regresi
-        MultipleQuadraticRegression.printQuadraticEquation(coefficients, X[0].length);
+        String equation = MultipleQuadraticRegression.getQuadraticEquation(coefficients, X[0].length);
+        System.out.println(equation);
     
         return coefficients;
+    }
+
+    // Fungsi untuk mendapatkan persamaan regresi kuadratik sebagai string
+    public static String getQuadraticEquation(Matrix coefficients, int numFeatures) {
+        StringBuilder equation = new StringBuilder();
+        equation.append("y = ").append(String.format("%.4f", coefficients.data[0][0]));
+
+        // Tambah istilah linear
+        for (int i = 0; i < numFeatures; i++) {
+            equation.append(" + ").append(String.format("%.4f",coefficients.data[i + 1][0])).append(" * x").append(i + 1);
+        }
+
+        // Tambah istilah kuadrat
+        for (int i = 0; i < numFeatures; i++) {
+            equation.append(" + ").append(String.format("%.4f", coefficients.data[i + 1 + numFeatures][0])).append(" * x").append(i + 1).append("^2");
+        }
+
+        // Tambah istilah interaksi
+        int idx = 1 + 2 * numFeatures;
+        for (int i = 0; i < numFeatures; i++) {
+            for (int j = i + 1; j < numFeatures; j++) {
+                equation.append(" + ").append(String.format("%.4f", coefficients.data[idx++][0])).append(" * x").append(i + 1).append(" * x").append(j + 1);
+            }
+        }
+
+        return equation.toString();
     }
 
     public static double[][] inputObservation(int n) {
