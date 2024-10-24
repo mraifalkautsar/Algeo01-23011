@@ -90,8 +90,8 @@ public class Main {
                 matrixAugmented = InputUtils.readMatrixFromInput();
                 break;
             } else {
-                String fileName = InputUtils.getString("Masukkan nama file: ");
                 try {
+                    String fileName = InputUtils.getString("Masukkan nama file: ");
                     matrixAugmented = InputUtils.readMatrixFromFile("spl", fileName);
                 } catch (IOException e) {
                     System.out.println("Error membaca matriks dari file: " + e.getMessage());
@@ -108,6 +108,8 @@ public class Main {
         System.out.println("4. Cramer");
 
         double[] solution = null;
+        boolean gauss = false;
+        String sol = null;
 
         while (true) {
             int choice = InputUtils.getInt("Masukkan pilihanmu: ");
@@ -116,11 +118,15 @@ public class Main {
                 System.out.println("Masukan salah.");
             } else {
                 try {
+                    
                     if (choice == 1) {
-                        solution = MatrixSolver.gaussElimination(matrixAugmented);
-                        OutputUtils.printCoefficients(solution, true);
+                        sol = MatrixSolver.gaussEliminationForMain(matrixAugmented);
+                        System.out.println(sol);
+                        gauss = true;
                     } else if (choice == 2) {
-                        MatrixSolver.gaussJordanEliminationForMain(matrixAugmented);
+                        sol = MatrixSolver.gaussJordanEliminationForMain(matrixAugmented);
+                        System.out.println(sol);
+                        gauss = true;
                     } else if (choice == 3) {
                         solution = MatrixSolver.solveUsingInverse(matrixAugmented);
                         OutputUtils.printCoefficients(solution, true);
@@ -136,8 +142,6 @@ public class Main {
             }
         }
 
-        OutputUtils.printCoefficients(solution, true);
-
         // Opsi untuk menyimpan solusi ke file
         System.out.println("Apakah Anda ingin menyimpan hasil ke dalam file?");
         System.out.println("1. Ya");
@@ -148,7 +152,11 @@ public class Main {
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
             try {
-                OutputUtils.SaveSistemPersamaanLinier(solution, "test/spl/output/" + outputFileName + ".txt");
+                if (gauss) {
+                    OutputUtils.SaveSistemPersamaanLinierGauss(sol, "test/spl/output/" + outputFileName + ".txt");
+                } else {
+                    OutputUtils.SaveSistemPersamaanLinier(solution, "test/spl/output/" + outputFileName + ".txt");
+                }
                 System.out.println("Hasil berhasil disimpan ke dalam file: test/spl/output/" + outputFileName + ".txt");
             } catch (IOException e) {
                 System.out.println("Terjadi kesalahan saat menyimpan file: " + e.getMessage());

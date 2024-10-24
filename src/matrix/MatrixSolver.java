@@ -433,7 +433,6 @@ public class MatrixSolver {
         return solution; // mengembalikan solusi
     }
 
-
     // Fungsi Eliminasi gauss jordan
     public static double[] gaussJordanElimination(Matrix matrix) {
         int row = matrix.data.length;
@@ -523,11 +522,16 @@ public class MatrixSolver {
     }
 
 // Fungsi Eliminasi gauss jordan
-    public static void gaussJordanEliminationForMain(Matrix matrix) { 
+    public static String gaussJordanEliminationForMain(Matrix matrix) { 
         int row = matrix.rowEff;
         int col = matrix.colEff;
         int i, j, k, colEff;
         double koefisien, divider;
+        
+        // Untuk menyimpan output solusi
+        StringBuilder result = new StringBuilder();
+        
+        // Proses eliminasi Gauss-Jordan
         for (k = 0; k < row; k++) { // k adalah basis row 
             if (!isRowZero(matrix.data[k])) {
                 colEff = k;
@@ -540,13 +544,13 @@ public class MatrixSolver {
                     }
                 }
                 for (i = 0; i < col; i++) {
-                    matrix.data[k][i] /= divider ; // generate angka 1 
+                    matrix.data[k][i] /= divider; // generate angka 1 
                 }
                 for (i = 0; i < row; i++) { // generate angka 0
-                    if (i == k) {continue;}
+                    if (i == k) { continue; }
                     koefisien = matrix.data[i][colEff];
                     for (j = 0; j < col; j++) {
-                        matrix.data[i][j] -= koefisien*matrix.data[k][j];
+                        matrix.data[i][j] -= koefisien * matrix.data[k][j];
                         if (Math.abs(matrix.data[k][j]) < epsilon) {
                             matrix.data[k][j] = 0;
                         }
@@ -554,44 +558,153 @@ public class MatrixSolver {
                 }
             }
         }
-        // cek inkonsistensi
+
+        // Cek inkonsistensi
         boolean konsisten = true;
         for (i = 0; i < row; i++) {
             double[] truncatedRow = truncateLastCol(matrix.data[i]);
             if (isRowZero(truncatedRow) && matrix.data[i][col - 1] != 0) {
                 konsisten = false;
-                System.out.println("Tidak ada Solusi");
+                result.append("Tidak ada Solusi\n");
             }
         }
-        // hitung SPL
+
+        // Hitung SPL dan hasilkan solusi parametrik
         boolean[] foundedSol = new boolean[col - 1];  // array yang menyimpan index solusi2 yg sudah ketemu
         if (konsisten) {
             boolean found = false;
             for (i = 0; i < row; i++) {
-                for (j = 0; j < col -1; j++) {
-                    if (matrix.data[i][j] == 1  && !found) {
-                        System.out.print("X" + (i+1) + " = " + matrix.data[i][col - 1]);
+                for (j = 0; j < col - 1; j++) {
+                    if (matrix.data[i][j] == 1 && !found) {
+                        result.append("X").append(j + 1).append(" = ").append(matrix.data[i][col - 1]);
                         foundedSol[j] = true;
                         found = true;
                     } else if (found && matrix.data[i][j] != 0) {
                         if (matrix.data[i][j] < 0) {
-                            System.out.print(" + ");
-                        } else {System.out.print(" - ");}
+                            result.append(" + ");
+                        } else {
+                            result.append(" - ");
+                        }
                         if (Math.abs(matrix.data[i][j]) == 1) {  // handling output solusi parameter jika koefisiennya 1
-                            System.out.print("X"+(j+1));
-                        } else {System.out.print(Math.abs(matrix.data[i][j])+"X"+(j+1));}
+                            result.append("X").append(j + 1);
+                        } else {
+                            result.append(Math.abs(matrix.data[i][j])).append("X").append(j + 1);
+                        }
                     }
                 }
+                if (found) {
+                    result.append("\n");
+                }
                 found = false;
-                System.out.println();
             }
+
+            // Output untuk variabel bebas (free)
             for (i = 0; i < foundedSol.length; i++) {
                 if (!foundedSol[i]) {
-                    System.out.println("X"+(i+1)+" = free");
+                    result.append("X").append(i + 1).append(" = free\n");
                 }
             }
         }
+
+        return result.toString();
     }
 
+// Fungsi Eliminasi gauss jordan
+    public static String gaussEliminationForMain(Matrix matrix) { 
+        int row = matrix.rowEff;
+        int col = matrix.colEff;
+        int i, j, k, colEff;
+        double koefisien, divider;
+
+        // Untuk menyimpan output solusi
+        StringBuilder result = new StringBuilder();
+        
+        // Proses eliminasi Gauss
+        for (k = 0; k < row; k++) { // k adalah basis row 
+            if (!isRowZero(matrix.data[k])) {
+                colEff = k;
+                divider = matrix.data[k][k];
+                for (j = 0; j < col; j++) { // mencari divider
+                    if (matrix.data[k][j] != 0) {
+                        divider = matrix.data[k][j];
+                        colEff = j;
+                        break;
+                    }
+                }
+                for (i = 0; i < col; i++) {
+                    matrix.data[k][i] /= divider; // generate angka 1 
+                }
+                for (i = k + 1; i < row; i++) { // generate angka 0
+                    if (i == k) { continue; }
+                    koefisien = matrix.data[i][colEff];
+                    for (j = 0; j < col; j++) {
+                        matrix.data[i][j] -= koefisien * matrix.data[k][j];
+                        if (Math.abs(matrix.data[k][j]) < epsilon) {
+                            matrix.data[k][j] = 0;
+                        }
+                    }
+                }
+                for (i = 0; i < row; i++) { // generate angka 0
+                    if (i == k) { continue; }
+                    koefisien = matrix.data[i][colEff];
+                    for (j = 0; j < col; j++) {
+                        matrix.data[i][j] -= koefisien * matrix.data[k][j];
+                        if (Math.abs(matrix.data[k][j]) < epsilon) {
+                            matrix.data[k][j] = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Cek inkonsistensi
+        boolean konsisten = true;
+        for (i = 0; i < row; i++) {
+            double[] truncatedRow = truncateLastCol(matrix.data[i]);
+            if (isRowZero(truncatedRow) && matrix.data[i][col - 1] != 0) {
+                konsisten = false;
+                result.append("Tidak ada Solusi\n");
+            }
+        }
+
+        // Hitung SPL dan hasilkan solusi parametrik
+        boolean[] foundedSol = new boolean[col - 1];  // array yang menyimpan index solusi2 yg sudah ketemu
+        if (konsisten) {
+            boolean found = false;
+            for (i = 0; i < row; i++) {
+                for (j = 0; j < col - 1; j++) {
+                    if (matrix.data[i][j] == 1 && !found) {
+                        result.append("X").append(j + 1).append(" = ").append(matrix.data[i][col - 1]);
+                        foundedSol[j] = true;
+                        found = true;
+                    } else if (found && matrix.data[i][j] != 0) {
+                        if (matrix.data[i][j] < 0) {
+                            result.append(" + ");
+                        } else {
+                            result.append(" - ");
+                        }
+                        if (Math.abs(matrix.data[i][j]) == 1) {  // handling output solusi parameter jika koefisiennya 1
+                            result.append("X").append(j + 1);
+                        } else {
+                            result.append(Math.abs(matrix.data[i][j])).append("X").append(j + 1);
+                        }
+                    }
+                }
+                if (found) {
+                    result.append("\n");
+                }
+                found = false;
+            }
+
+            // Output untuk variabel bebas (free)
+            for (i = 0; i < foundedSol.length; i++) {
+                if (!foundedSol[i]) {
+                    result.append("X").append(i + 1).append(" = free\n");
+                }
+            }
+        }
+
+        return result.toString();
+    }
 }
 

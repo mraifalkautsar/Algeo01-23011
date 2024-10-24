@@ -71,13 +71,19 @@ public class OutputUtils {
         }
     }
 
-
     public static void SaveSistemPersamaanLinier(double[] solution, String filePath) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write("Hasil Penyelesaian SPL:\n");
             for (int i = 0; i < solution.length; i++) {
                 writer.write("x" + (i + 1) + " = " + solution[i] + "\n");
             }
+        }
+    }
+
+    public static void SaveSistemPersamaanLinierGauss(String solution, String filePath) throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+            writer.write("Hasil Penyelesaian SPL:\n");
+            writer.write(solution);
         }
     }
 
