@@ -75,10 +75,7 @@ public class MultipleLinearRegression {
         for (int i = 0; i < numFeatures; i++) {
             equation.append(" + ").append(String.format("%.4f", coefficients[i + 1])).append(" * x").append(i + 1);
         }
-
         return equation.toString();
     }
-
-
 }
 

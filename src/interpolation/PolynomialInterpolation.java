@@ -31,4 +31,19 @@ public class PolynomialInterpolation {
 
         return estimatedY;
     }
+
+    public static String getPolynomialEquation(double[] coefficients, int numFeatures) {
+        StringBuilder equation = new StringBuilder();
+        equation.append("y = ").append(String.format("%.4f", coefficients[0]));
+
+        for (int i = 1; i < numFeatures; i++) {
+            if (coefficients[i] >= 0) {
+                equation.append(" + ").append(String.format("%.4f", coefficients[i])).append(" * x^").append(i);
+            } else {
+                equation.append(" - ").append(String.format("%.4f", Math.abs(coefficients[i]))).append(" * x^").append(i);
+            }
+        }
+
+        return equation.toString();
+    }
 }
