@@ -633,7 +633,7 @@ public class Main {
                 String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
 
                 try {
-                    String filePath = "../test/regresi_kuadratik/input/" + filename;
+                    String filePath = "../test/regresi_kuadratik/input/" + filename + ".txt";
                     File file = new File(filePath);
                     Scanner scanner = new Scanner(file);
 
