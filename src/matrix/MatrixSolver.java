@@ -397,11 +397,9 @@ public class MatrixSolver {
         }
 
         // cek inkonsistensi
-        boolean consistent = true;
         for (i = 0; i < n; i++) {
             double[] truncatedRow = truncateLastCol(matrix.data[i]);
             if (isRowZero(truncatedRow) && matrix.data[i][m - 1] != 0) {
-                consistent = false;
                 return null; // mengembalikan null jika tidak ada solusi
             }
         }
