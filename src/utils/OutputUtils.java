@@ -32,19 +32,13 @@ public class OutputUtils {
     }
 
     // Metode untuk mencetak solusi persamaan linier
-    public static void printCoefficients(double[] solution, boolean alpha) {
+    public static void printCoefficients(double[] solution) {
         if (solution == null) {
-            System.out.println("No solution found.");
+            System.out.println("Solusi tidak ditemukan.");
         } else {
-            System.out.println("Solution:");
-            if (alpha) {
-                for (int i = 0; i < solution.length; i++) {
-                    System.out.printf("a%d = %.4f%n", (i + 1), solution[i]);
-                }
-            } else {
-                for (int i = 0; i < solution.length; i++) {
-                    System.out.printf("b%d = %.4f%n", (i + 1), solution[i]);
-                }
+            System.out.println("Solusi:");
+            for (int i = 0; i < solution.length; i++) {
+                System.out.printf("x%d = %.4f%n", (i + 1), solution[i]);
             }
         }
     }
@@ -148,18 +142,15 @@ public class OutputUtils {
         }
     }
 
-    public static void saveRegresiLinier(double[] solution, double estimation) {
+    public static void saveRegresiLinier(String equation, String estimationOutput) {
         int saveChoice = InputUtils.getInt("Apakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");
 
         if (saveChoice == 1) {
             String outputFileName = InputUtils.getString("Masukkan nama file output: ");
             String filePath = "test/regresi_linier/output/" + outputFileName + ".txt";
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                writer.write("Hasil Regresi Linier:\n");
-                for (int i = 0; i < solution.length; i++) {
-                    writer.write("x" + (i + 1) + " = " + solution[i] + "\n");
-                }
-                writer.write("Nilai y hasil taksiran: " + estimation + "\n");
+                writer.write(equation);
+                writer.write(estimationOutput);
                 System.out.println("Hasil berhasil disimpan di " + filePath);
             } catch (IOException e) {
                 System.out.println("Gagal menyimpan hasil ke file: " + e.getMessage());
@@ -168,6 +159,7 @@ public class OutputUtils {
             System.out.println("Hasil tidak disimpan.");
         }
     }
+
 
     public static void saveRegresiKuadratikBerganda(String equation, double[][] observation, double prediction) {
         int saveChoice = InputUtils.getInt("\nApakah Anda ingin menyimpan hasil ke file? (1: Ya, 2: Tidak)");

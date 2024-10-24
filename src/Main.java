@@ -37,7 +37,7 @@ public class Main {
             System.out.println("3. Matriks Balikan");
             System.out.println("4. Interpolasi Polinom");
             System.out.println("5. Interpolasi Bicubic Spline");
-            System.out.println("6. Regresi Linier");
+            System.out.println("6. Regresi Linier Berganda");
             System.out.println("7. Regresi Kuadratik Berganda");
             System.out.println("8. Interpolasi Gambar");
             System.out.println("9. Keluar");
@@ -116,9 +116,9 @@ public class Main {
         System.out.println("3. Matriks Balikan");
         System.out.println("4. Cramer");
 
-        double[] solution = null;
+        double[] solution_double = null;
         boolean gauss = false;
-        String sol = null;
+        String solution_string = null;
 
         while (true) {
             int choice = InputUtils.getInt("Masukkan pilihanmu: ");
@@ -129,12 +129,12 @@ public class Main {
                 try {
                     
                     if (choice == 1) {
-                        sol = MatrixSolver.gaussEliminationForMain(matrixAugmented);
-                        System.out.println(sol);
+                        solution_string = MatrixSolver.gaussEliminationForMain(matrixAugmented);
+                        System.out.println(solution_string);
                         gauss = true;
                     } else if (choice == 2) {
-                        sol = MatrixSolver.gaussJordanEliminationForMain(matrixAugmented);
-                        System.out.println(sol);
+                        solution_string = MatrixSolver.gaussJordanEliminationForMain(matrixAugmented);
+                        System.out.println(solution_string);
                         gauss = true;
                     } else if (choice == 3) {
                         solution = MatrixSolver.solveUsingInverse(matrixAugmented);
@@ -151,6 +151,10 @@ public class Main {
             }
         }
 
+        if (!gauss) {
+            OutputUtils.printCoefficients(solution_double);
+        }
+
         // Opsi untuk menyimpan solusi ke file
         System.out.println("\nApakah Anda ingin menyimpan hasil ke dalam file?");
         System.out.println("1. Ya");
@@ -162,9 +166,9 @@ public class Main {
             String outputFileName = InputUtils.getString("Masukkan nama file output (tanpa path): ");
             try {
                 if (gauss) {
-                    OutputUtils.saveSistemPersamaanLinierGauss(sol, "test/spl/output/" + outputFileName + ".txt");
+                    OutputUtils.saveSistemPersamaanLinierGauss(solution_string, "test/spl/output/" + outputFileName + ".txt");
                 } else {
-                    OutputUtils.saveSistemPersamaanLinier(solution, "test/spl/output/" + outputFileName + ".txt");
+                    OutputUtils.saveSistemPersamaanLinier(solution_double, "test/spl/output/" + outputFileName + ".txt");
                 }
                 System.out.println("Hasil berhasil disimpan ke dalam file: test/spl/output/" + outputFileName + ".txt");
             } catch (IOException e) {
@@ -357,7 +361,7 @@ public class Main {
                 int n = InputUtils.getInt("Masukkan jumlah data: ");
                 double[][] data_array = InputUtils.getXYdata(n, "Masukkan titik-titik data: ");
                 double[] solution = PolynomialInterpolation.calculatePolynomialEquation(n, data_array);
-                OutputUtils.printCoefficients(solution, true);
+                OutputUtils.printCoefficients(solution);
 
                 double x = InputUtils.getDouble("Nilai x yang ingin ditaksir: ");
                 double estimation = PolynomialInterpolation.calculateY(solution, x);
@@ -411,7 +415,7 @@ public class Main {
 
                     // Hitung solusi interpolasi polinomial
                     double[] solution = PolynomialInterpolation.calculatePolynomialEquation(n, data_array);
-                    OutputUtils.printCoefficients(solution, true);
+                    OutputUtils.printCoefficients(solution);
 
                     // Estimasi nilai y untuk x yang diberikan
                     double estimation = PolynomialInterpolation.calculateY(solution, xToEstimate);
@@ -498,22 +502,32 @@ public class Main {
                 // Input dari keyboard
                 int m = InputUtils.getInt("Masukkan jumlah data: ");
                 int n = InputUtils.getInt("Masukkan banyak peubah: ");
-                double[][] data_array = InputUtils.getMatrix(m, n + 1, "Masukkan titik-titik data:");
+                double[][] data_array = InputUtils.readAugmentedMatrixFromKeyboard(m, n);
 
                 double[] solution = MultipleLinearRegression.calculateRegressionEquation(data_array, m, n);
-                OutputUtils.printCoefficients(solution, true);
+                String equation = MultipleLinearRegression.getLinearRegressionEquation(solution, n);
 
                 double[] x_array = InputUtils.getArray(n, "Masukkan data yang ingin ditaksir:");
                 double estimation = MultipleLinearRegression.calculateY(solution, x_array);
 
-                System.out.println("Nilai y hasil taksiran: " + estimation);
+                // Format the output as f(x1, x2, ..., xn) = estimated y
+                StringBuilder estimationOutput = new StringBuilder("f(");
+                for (int i = 0; i < x_array.length; i++) {
+                    estimationOutput.append(x_array[i]);
+                    if (i < x_array.length - 1) {
+                        estimationOutput.append(", ");
+                    }
+                }
+                estimationOutput.append(") = ").append(estimation);
 
-                // Opsi untuk menyimpan solusi ke file
-                OutputUtils.saveRegresiLinier(solution, estimation);
+                System.out.println(estimationOutput);
+
+                // Option to save solution and estimation to file
+                OutputUtils.saveRegresiLinier(equation, estimationOutput.toString());
                 break;
 
             } else if (choice == 2) {
-                // Input dari file menggunakan Scanner
+                // Input from file using Scanner
                 String filename = InputUtils.getString("Masukkan nama file (tanpa path): ");
 
                 try {
@@ -530,7 +544,7 @@ public class Main {
                         String[] values = line.split("\\s+");
 
                         if (n == -1) {
-                            // Initialize number of variables from the first data line (number of variables = number of columns - 1)
+                            // Initialize number of variables from the first data line
                             n = values.length - 1;
                         }
 
@@ -540,34 +554,46 @@ public class Main {
                         }
 
                         if (values.length == n) {
-                            // Nilai x yang ingin ditaksir
+                            // Values of x to estimate
                             xToEstimate = row;
                         } else {
-                            // Menambahkan titik data x1, x2, ..., xn, y
+                            // Add data points x1, x2, ..., xn, y
                             dataList.add(row);
                         }
                     }
 
                     scanner.close();
 
-                    // Proses data menjadi array 2D untuk regresi
+                    // Process data into 2D array for regression
                     int m = dataList.size();
-                    n = dataList.get(0).length - 1; // Jumlah peubah (n) = jumlah kolom - 1 (kolom y)
+                    n = dataList.get(0).length - 1; // Number of variables = number of columns - 1 (y column)
                     double[][] data_array = new double[m][n + 1];
                     for (int i = 0; i < m; i++) {
                         data_array[i] = dataList.get(i);
                     }
 
-                    // Hitung solusi regresi
+                    // Calculate regression solution
                     double[] solution = MultipleLinearRegression.calculateRegressionEquation(data_array, m, n);
-                    OutputUtils.printCoefficients(solution, true);
+                    String equation = MultipleLinearRegression.getLinearRegressionEquation(solution, n);
+                    OutputUtils.printCoefficients(solution);
 
                     if (xToEstimate != null) {
                         double estimation = MultipleLinearRegression.calculateY(solution, xToEstimate);
-                        System.out.println("Nilai y hasil taksiran: " + estimation);
 
-                        // Opsi untuk menyimpan hasil ke file
-                        OutputUtils.saveRegresiLinier(solution, estimation);
+                        // Format the output as f(x1, x2, ..., xn) = estimated y
+                        StringBuilder estimationOutput = new StringBuilder("f(");
+                        for (int i = 0; i < xToEstimate.length; i++) {
+                            estimationOutput.append(xToEstimate[i]);
+                            if (i < xToEstimate.length - 1) {
+                                estimationOutput.append(", ");
+                            }
+                        }
+                        estimationOutput.append(") = ").append(estimation);
+
+                        System.out.println(estimationOutput);
+
+                        // Option to save solution and estimation to file
+                        OutputUtils.saveRegresiLinier(equation, estimationOutput.toString());
                     } else {
                         System.out.println("Tidak ada nilai x untuk ditaksir di file.");
                     }
@@ -584,6 +610,7 @@ public class Main {
         }
         InputUtils.pressAnyKeyToProceed();
     }
+
 
     public static void RegresiKuadratikBerganda() {
         System.out.println("\n== REGRESI KUADRATIK BERGANDA ==");
